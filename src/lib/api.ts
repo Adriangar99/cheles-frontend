@@ -1,50 +1,13 @@
-export type Account = {
-  id: number;
-  name: string;
-  iban_tail: string | null;
-  currency: string;
-  role: "main" | "savings" | "excluded";
-  balance: number | null;
-  balance_at: string | null;
-  connection_id: number | null;
-};
+import type { components } from "@/shared/api/schema";
 
-export type Connection = {
-  id: number;
-  bank: string;
-  status: "active" | "expired" | "revoked";
-  valid_until: string;
-  last_synced_at: string | null;
-  last_error: string | null;
-  accounts: Account[];
-};
+type Schemas = components["schemas"];
 
-export type Category = { id: number; name: string; kind: "expense" | "income"; icon: string; color: string };
-
-export type Tx = {
-  id: number;
-  date: string;
-  amount: number;
-  status: string;
-  counterparty: string | null;
-  description: string;
-  kind: "normal" | "transfer";
-  category_id: number | null;
-  category_manual: boolean;
-  account: string;
-};
-
-export type Summary = {
-  month: string;
-  income: number;
-  expenses: number;
-  net: number;
-  saved: number;
-  by_category: { id: number | null; name: string; icon: string; color: string; amount: number }[];
-  balances: Record<string, number>;
-};
-
-export type HistoryPoint = { month: string; income: number; expenses: number };
+export type Account = Schemas["AccountOut"];
+export type Connection = Schemas["ConnectionOut"];
+export type Category = Schemas["CategoryOut"];
+export type Tx = Schemas["TransactionOut"];
+export type Summary = Schemas["SummaryOut"];
+export type HistoryPoint = Schemas["MonthTotalsOut"];
 
 export async function api<T = unknown>(path: string, init?: RequestInit & { json?: unknown }): Promise<T> {
   const res = await fetch(`/api${path}`, {
