@@ -71,6 +71,13 @@ test("Negative month", async () => {
   expect(await card("sobra")).toHaveClass("neg");
 });
 
+// Requirement boundary not covered by a scenario: «sobra» is green when zero.
+test("Break-even month", async () => {
+  open({ net: 0 });
+
+  expect(await card("sobra")).toHaveClass("pos");
+});
+
 test("No savings accounts", async () => {
   open({ balances: { total: 1500, main: 1500 } });
 
