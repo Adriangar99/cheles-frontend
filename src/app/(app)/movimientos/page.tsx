@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { api, Category, currentMonth, money, monthLabel, shiftMonth, Tx } from "@/lib/api";
+import { api, type Category, currentMonth, money, monthLabel, shiftMonth, type Tx } from "@/lib/api";
 
 export default function Movements() {
   const [month, setMonth] = useState(currentMonth());
@@ -41,11 +41,12 @@ export default function Movements() {
   return (
     <>
       <div className="month-nav">
-        <button className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">
+        <button type="button" className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">
           ‹
         </button>
         <h1 style={{ textTransform: "capitalize" }}>{monthLabel(month)}</h1>
         <button
+          type="button"
           className="btn"
           disabled={month === currentMonth()}
           onClick={() => setMonth(shiftMonth(month, 1))}
@@ -70,6 +71,7 @@ export default function Movements() {
                 </div>
                 {tx.kind === "transfer" ? (
                   <button
+                    type="button"
                     className="btn"
                     style={{ marginTop: 6, padding: "4px 10px", fontSize: 12 }}
                     onClick={() => toggleTransfer(tx)}
@@ -98,6 +100,7 @@ export default function Movements() {
                       )}
                     </select>
                     <button
+                      type="button"
                       className="btn"
                       style={{ padding: "6px 10px", fontSize: 12 }}
                       onClick={() => toggleTransfer(tx)}

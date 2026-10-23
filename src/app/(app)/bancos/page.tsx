@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Account, api, Connection, money } from "@/lib/api";
+import { type Account, api, type Connection, money } from "@/lib/api";
 
 type Banks = { connections: Connection[]; detached_accounts: Account[] };
 type Available = { name: string; country: string }[];
@@ -86,11 +86,12 @@ export default function Banks() {
                   {c.last_error && <div className="err">{c.last_error.slice(0, 120)}</div>}
                 </div>
                 {expired ? (
-                  <button className="btn primary" onClick={() => connect(c.bank, "ES")}>
+                  <button type="button" className="btn primary" onClick={() => connect(c.bank, "ES")}>
                     reconectar
                   </button>
                 ) : (
                   <button
+                    type="button"
                     className="btn"
                     disabled={busy === `sync${c.id}`}
                     onClick={() => run(`sync${c.id}`, () => api(`/banks/${c.id}/sync`, { method: "POST" }))}
@@ -128,7 +129,7 @@ export default function Banks() {
 
       <h2>añadir un banco</h2>
       {!available ? (
-        <button className="btn primary" disabled={busy === "picker"} onClick={openPicker}>
+        <button type="button" className="btn primary" disabled={busy === "picker"} onClick={openPicker}>
           conectar un banco
         </button>
       ) : (
@@ -136,7 +137,7 @@ export default function Banks() {
           {available.map((b) => (
             <div className="row" key={`${b.name}${b.country}`}>
               <span>{b.name}</span>
-              <button className="btn" onClick={() => connect(b.name, b.country)}>
+              <button type="button" className="btn" onClick={() => connect(b.name, b.country)}>
                 conectar
               </button>
             </div>
@@ -152,6 +153,7 @@ export default function Banks() {
             <div className="sub">recalcula categorías y transferencias; no cambia lo que has tocado a mano</div>
           </div>
           <button
+            type="button"
             className="btn"
             disabled={busy === "reprocess"}
             onClick={() => run("reprocess", () => api("/reprocess", { method: "POST" }))}
@@ -162,6 +164,7 @@ export default function Banks() {
       </div>
 
       <button
+        type="button"
         className="btn"
         style={{ marginTop: 28 }}
         onClick={async () => {

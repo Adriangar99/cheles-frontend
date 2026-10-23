@@ -40,7 +40,7 @@ export default function LoginPage() {
           required
         />
         {error && <p className="err">{error}</p>}
-        <button className="btn primary" disabled={busy}>
+        <button type="submit" className="btn primary" disabled={busy}>
           entrar
         </button>
       </form>
