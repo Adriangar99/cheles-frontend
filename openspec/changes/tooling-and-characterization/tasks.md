@@ -8,7 +8,7 @@ before any mutation check.
 
 - [x] 1.1 Adopt pnpm: `packageManager` field, generate and commit `pnpm-lock.yaml`, switch the Dockerfile to Corepack + `pnpm install --frozen-lockfile` / `pnpm build`, and replace npm in the README; verify `pnpm install --frozen-lockfile` succeeds and `docker compose build web` works
 - [x] 1.2 Add Biome (`biome.json` with formatter settings, recommended rules and the feature-boundary `noRestrictedImports` patterns) and apply formatting in an isolated commit; verify `pnpm biome check .` passes
-- [ ] 1.3 Add Vitest + Testing Library + jsdom (`vitest.config.ts`, setup file, `pnpm test`) and a `typecheck` script (`tsc --noEmit`); verify both run (Vitest with no tests yet exits cleanly with `--passWithNoTests`)
+- [x] 1.3 Add Vitest + Testing Library + jsdom (`vitest.config.ts`, setup file, `pnpm test`) and a `typecheck` script (`tsc --noEmit`); verify both run (Vitest with no tests yet exits cleanly with `--passWithNoTests`)
 
 ## 2. Generated API types
 
