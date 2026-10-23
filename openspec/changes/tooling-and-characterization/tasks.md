@@ -17,7 +17,7 @@ before any mutation check.
 
 ## 3. Characterization tests
 
-- [ ] 3.1 Add the test harness (`tests/fake-api.ts` stubbing `fetch`, location stub, render helpers) and the meta-test listing the three Docker-only scenarios; verify the meta-test runs and reports the missing scenarios
+- [x] 3.1 Add the test harness (`tests/fake-api.ts` stubbing `fetch`, location stub, render helpers) and the meta-test listing the three Docker-only scenarios; verify the meta-test runs and reports the missing scenarios
 - [ ] 3.2 `tests/api-access.test.tsx`, `tests/app-shell.test.tsx` and `tests/login.test.tsx`: one test per scenario (middleware, next.config, layout metadata, API client behavior, login form); verify they pass
 - [ ] 3.3 `tests/locale-formatting.test.tsx`, `tests/monthly-overview.test.tsx` and `tests/transactions.test.tsx`: one test per scenario; verify they pass
 - [ ] 3.4 `tests/bank-management.test.tsx`: one test per scenario; verify they pass and the meta-test reports no missing scenario
