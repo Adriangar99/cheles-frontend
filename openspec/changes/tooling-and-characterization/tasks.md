@@ -12,7 +12,7 @@ before any mutation check.
 
 ## 2. Generated API types
 
-- [ ] 2.1 Add openapi-typescript, `pnpm api:sync` and `pnpm api:types`, copy the backend contract to `openapi/cheles-api.json` and generate `src/shared/api/schema.d.ts`; verify `pnpm api:types` produces no diff
+- [x] 2.1 Add openapi-typescript, `pnpm api:sync` and `pnpm api:types`, copy the backend contract to `openapi/cheles-api.json` and generate `src/shared/api/schema.d.ts`; verify `pnpm api:types` produces no diff
 - [ ] 2.2 Replace the hand-written response types in `src/lib/api.ts` with aliases of the generated ones and fix any type-only drift; verify `pnpm typecheck` and `pnpm build` pass
 
 ## 3. Characterization tests
