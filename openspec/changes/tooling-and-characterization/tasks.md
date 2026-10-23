@@ -24,7 +24,7 @@ before any mutation check.
 
 ## 4. CI, docs and verification
 
-- [ ] 4.1 Add `.github/workflows/ci.yml` (pnpm install --frozen-lockfile, biome check, typecheck, test, api types up to date, build) and document the scripts in the README; verify the workflow passes on the pull request
+- [x] 4.1 Add `.github/workflows/ci.yml` (pnpm install --frozen-lockfile, biome check, typecheck, test, api types up to date, build) and document the scripts in the README; verify the workflow passes on the pull request
 - [x] 4.2 Run `docker compose up -d --build` (backend already up); verify `/login` returns 200, `/api/health` returns `{"ok":true}` through the proxy, a proxied `/api/*` response lacks the page security headers, and port 3000 is bound only to `127.0.0.1`
 
 ## Workflow follow-up
