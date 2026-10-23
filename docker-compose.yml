@@ -1,4 +1,5 @@
-name: cheles-web
+# Same project name as cheles-backend, so api, db and web are grouped together
+name: cheles
 
 services:
   web:
@@ -6,13 +7,14 @@ services:
       context: .
       args:
         API_URL: ${API_URL:-http://api:8000}
+    image: cheles-web
     restart: unless-stopped
     ports:
-      # Solo accesible desde este Mac
+      # Only reachable from this Mac
       - "127.0.0.1:3000:3000"
     networks: [cheles-net]
 
 networks:
-  # Creada por el compose de cheles-backend (arrancar primero el backend)
+  # Created by the cheles-backend compose file (start the backend first)
   cheles-net:
     external: true

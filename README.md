@@ -1,24 +1,33 @@
 # Cheles · frontend
 
-Web de Cheles (nombre provisional): Next.js, mobile-first. Habla con la API de
-[cheles-backend](https://github.com/Adriangar99/cheles-backend) a través de un rewrite `/api/*`, así el navegador
-solo conoce la web.
+Cheles web app (working name): mobile-first Next.js. It talks to the
+[cheles-backend](https://github.com/Adriangar99/cheles-backend) API through an `/api/*` rewrite, so the browser only
+knows about the web app.
 
-## Arrancar
+## Getting started
 
-Primero el backend (crea la red Docker `cheles-net`), después:
+Start the backend first (it creates the Docker network `cheles-net`), then:
 
     docker compose up -d --build        # http://localhost:3000
 
-Sin Docker: `npm install && API_URL=http://localhost:8000 npm run dev` (con la API accesible en esa URL).
+Without Docker: `npm install && API_URL=http://localhost:8000 npm run dev` (with the API reachable at that URL).
 
-`API_URL` se fija **al construir** (Next resuelve los rewrites en el build); por defecto `http://api:8000`.
+`API_URL` is fixed **at build time** (Next resolves rewrites during the build); it defaults to `http://api:8000`.
 
-## Seguridad
+Both repos share the Compose project name `cheles`, so `api`, `db` and `web` show up together. Never run
+`docker compose down --remove-orphans` from one repo: it would also remove the other repo's containers.
 
-Puerto publicado solo en `127.0.0.1`; cabeceras `X-Frame-Options`, `nosniff`, `no-referrer` y `no-store`.
+## Security
 
-## Desarrollo con OpenSpec
+Port published only on `127.0.0.1`; `X-Frame-Options`, `nosniff`, `no-referrer` and `no-store` headers on the pages
+it serves (proxied `/api/*` responses keep the API's own headers).
 
-Cambios planificados con [OpenSpec](https://github.com/Fission-AI/OpenSpec) (`openspec/`), con los comandos
-`/opsx:explore`, `/opsx:propose`, `/opsx:update`, `/opsx:apply`, `/opsx:sync` y `/opsx:archive` de Claude Code.
+## Language
+
+Code, specs and documentation are written in English. The app's user-facing copy is Spanish (Spain).
+
+## Development with OpenSpec
+
+Changes are planned with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (`openspec/`), using the Claude Code
+commands `/opsx:explore`, `/opsx:propose`, `/opsx:update`, `/opsx:apply`, `/opsx:sync` and `/opsx:archive`. Current
+behavior is specified under `openspec/specs/`, one capability per screen or user flow.
