@@ -25,7 +25,8 @@ function open(connections: Connection[], routes: Routes = {}, path = "/bancos") 
 const status = async (text: string) => screen.findByText(text);
 
 test("Healthy connection", async () => {
-  open([connection({ valid_until: daysFromNow(90), last_synced_at: "2026-10-23T17:00:00+00:00" })]);
+  // Consent ends at any time of day; part of a day counts as a whole one.
+  open([connection({ valid_until: daysFromNow(89.75), last_synced_at: "2026-10-23T17:00:00+00:00" })]);
 
   expect(await status("al día · 90 días de permiso")).toHaveClass("pos");
   expect(screen.getByText("leído el 23 oct, 19:00")).toBeInTheDocument();
