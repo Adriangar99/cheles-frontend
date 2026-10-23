@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # Corepack provides the pnpm version pinned in package.json, as in the Docker image
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint and format
+        run: pnpm check
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Tests
+        run: pnpm test
+
+      - name: API types match the versioned contract
+        run: pnpm api:types && git diff --exit-code -- src/shared/api/schema.d.ts
+
+      - name: Build
+        run: pnpm build

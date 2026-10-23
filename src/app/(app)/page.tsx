@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api, currentMonth, HistoryPoint, money, monthLabel, shiftMonth, Summary } from "@/lib/api";
+import { api, currentMonth, type HistoryPoint, money, monthLabel, type Summary, shiftMonth } from "@/lib/api";
 
 export default function MyMonth() {
   const [month, setMonth] = useState(currentMonth());
@@ -22,9 +22,19 @@ export default function MyMonth() {
   return (
     <>
       <div className="month-nav">
-        <button className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">‹</button>
+        <button type="button" className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">
+          ‹
+        </button>
         <h1 style={{ textTransform: "capitalize" }}>{monthLabel(month)}</h1>
-        <button className="btn" disabled={isCurrent} onClick={() => setMonth(shiftMonth(month, 1))} aria-label="mes siguiente">›</button>
+        <button
+          type="button"
+          className="btn"
+          disabled={isCurrent}
+          onClick={() => setMonth(shiftMonth(month, 1))}
+          aria-label="mes siguiente"
+        >
+          ›
+        </button>
       </div>
 
       {summary && (
@@ -61,10 +71,14 @@ export default function MyMonth() {
             {summary.by_category.map((c) => (
               <div className="row" key={c.name} style={{ display: "block" }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span>{c.icon} {c.name}</span>
+                  <span>
+                    {c.icon} {c.name}
+                  </span>
                   <span className="tx-amount">{money(c.amount)}</span>
                 </div>
-                <div className="bar"><span style={{ width: `${(c.amount / maxCategory) * 100}%`, background: c.color }} /></div>
+                <div className="bar">
+                  <span style={{ width: `${(c.amount / maxCategory) * 100}%`, background: c.color }} />
+                </div>
               </div>
             ))}
           </div>
@@ -72,16 +86,20 @@ export default function MyMonth() {
       )}
 
       <h2>últimos 12 meses</h2>
-      <div className="card history" aria-label="ingresos y gastos por mes">
+      <div className="card history" role="img" aria-label="ingresos y gastos por mes">
         {history.map((h) => (
           <div className="col" key={h.month} title={`${h.month}: ${money(h.income)} / ${money(h.expenses)}`}>
             <div className="b" style={{ height: `${(h.income / maxHistory) * 70}px`, background: "var(--accent)" }} />
             <div className="b" style={{ height: `${(h.expenses / maxHistory) * 70}px`, background: "var(--danger)" }} />
-            <span className="sub" style={{ fontSize: 10 }}>{h.month.slice(5)}</span>
+            <span className="sub" style={{ fontSize: 10 }}>
+              {h.month.slice(5)}
+            </span>
           </div>
         ))}
       </div>
-      <p className="sub" style={{ margin: "8px 4px" }}>verde = ingresos · rojo = gastos</p>
+      <p className="sub" style={{ margin: "8px 4px" }}>
+        verde = ingresos · rojo = gastos
+      </p>
     </>
   );
 }

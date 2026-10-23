@@ -2,3 +2,5 @@
 node_modules/
 .next/
 .DS_Store
+tsconfig.tsbuildinfo
+next-env.d.ts

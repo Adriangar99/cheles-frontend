@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 // Quick filter: no session cookie, straight to login. The API does the real session check.
 export function middleware(req: NextRequest) {
