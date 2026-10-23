@@ -54,7 +54,7 @@ exist). Formatting applied in its own commit.
 ### pnpm, lockfile and Docker
 pnpm is the package manager for every JavaScript project (project rule). `package.json` declares
 `"packageManager": "pnpm@<version>"`, so Corepack provides the same pnpm locally, in the Docker image
-(`corepack enable`) and in CI (`pnpm/action-setup` reads the field). `pnpm-lock.yaml` is committed; Docker and CI
+and in CI (`corepack enable` in both). `pnpm-lock.yaml` is committed; Docker and CI
 install with `pnpm install --frozen-lockfile`. The Dockerfile copies `pnpm-lock.yaml` instead of
 `package-lock.json*`, and its build stage runs `pnpm build`. The standalone Next.js output is unaffected by pnpm's
 symlinked `node_modules` (Next traces the real files).
