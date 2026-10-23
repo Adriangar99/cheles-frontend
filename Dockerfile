@@ -1,7 +1,8 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
 FROM node:22-alpine AS build
 WORKDIR /app
@@ -10,7 +11,7 @@ COPY . .
 # Next fixes rewrites at build time, so the API's internal URL goes here
 ARG API_URL=http://api:8000
 ENV NEXT_TELEMETRY_DISABLED=1 API_URL=$API_URL
-RUN npm run build
+RUN corepack enable && pnpm build
 
 FROM node:22-alpine
 WORKDIR /app

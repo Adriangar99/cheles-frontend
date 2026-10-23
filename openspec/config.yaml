@@ -29,6 +29,8 @@ context: |
     cheles-backend; they are never written by hand.
   - TDD: Vitest + Testing Library; hook and component tests use a fake adapter for the API
     port (no MSW). Lint and formatting with Biome.
+  - Package manager: pnpm always (never npm or yarn): pnpm-lock.yaml, `pnpm install --frozen-lockfile`
+    in Docker and CI, `pnpm dlx` instead of npx.
 
 rules:
   proposal:

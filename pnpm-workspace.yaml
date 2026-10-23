@@ -1,0 +1,3 @@
+# Packages allowed to run install scripts. sharp ships prebuilt binaries (@img/sharp-*), so its script never runs.
+allowBuilds:
+  sharp: false

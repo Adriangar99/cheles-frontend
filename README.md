@@ -10,7 +10,8 @@ Start the backend first (it creates the Docker network `cheles-net`), then:
 
     docker compose up -d --build        # http://localhost:3000
 
-Without Docker: `npm install && API_URL=http://localhost:8000 npm run dev` (with the API reachable at that URL).
+Without Docker: `pnpm install && API_URL=http://localhost:8000 pnpm dev` (with the API reachable at that URL).
+pnpm is the package manager (version pinned in `package.json`, provided by Corepack); never npm or yarn.
 
 `API_URL` is fixed **at build time** (Next resolves rewrites during the build); it defaults to `http://api:8000`.
 
