@@ -56,7 +56,11 @@ export default function Banks() {
     <>
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
-      {message && <p className="sub" style={{ marginTop: 12 }}>{message}</p>}
+      {message && (
+        <p className="sub" style={{ marginTop: 12 }}>
+          {message}
+        </p>
+      )}
 
       {data?.connections.map((c) => {
         const daysLeft = Math.ceil((new Date(c.valid_until).getTime() - Date.now()) / 86400000);
@@ -68,17 +72,29 @@ export default function Banks() {
               <div className="row">
                 <div className="grow">
                   <div className={expired || daysLeft < 14 ? "neg" : "pos"}>
-                    {expired ? "hay que reconectar" : daysLeft < 14 ? `caduca en ${daysLeft} días` : `al día · ${daysLeft} días de permiso`}
+                    {expired
+                      ? "hay que reconectar"
+                      : daysLeft < 14
+                        ? `caduca en ${daysLeft} días`
+                        : `al día · ${daysLeft} días de permiso`}
                   </div>
                   <div className="sub">
-                    {c.last_synced_at ? `leído el ${new Date(c.last_synced_at).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` : "sin leer aún"}
+                    {c.last_synced_at
+                      ? `leído el ${new Date(c.last_synced_at).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}`
+                      : "sin leer aún"}
                   </div>
                   {c.last_error && <div className="err">{c.last_error.slice(0, 120)}</div>}
                 </div>
                 {expired ? (
-                  <button className="btn primary" onClick={() => connect(c.bank, "ES")}>reconectar</button>
+                  <button className="btn primary" onClick={() => connect(c.bank, "ES")}>
+                    reconectar
+                  </button>
                 ) : (
-                  <button className="btn" disabled={busy === `sync${c.id}`} onClick={() => run(`sync${c.id}`, () => api(`/banks/${c.id}/sync`, { method: "POST" }))}>
+                  <button
+                    className="btn"
+                    disabled={busy === `sync${c.id}`}
+                    onClick={() => run(`sync${c.id}`, () => api(`/banks/${c.id}/sync`, { method: "POST" }))}
+                  >
                     {busy === `sync${c.id}` ? "leyendo…" : "leer ahora"}
                   </button>
                 )}
@@ -86,11 +102,22 @@ export default function Banks() {
               {c.accounts.map((a) => (
                 <div className="row" key={a.id}>
                   <div className="grow">
-                    <div className="ellipsis">{a.name}{a.iban_tail && <span className="muted"> ·· {a.iban_tail}</span>}</div>
+                    <div className="ellipsis">
+                      {a.name}
+                      {a.iban_tail && <span className="muted"> ·· {a.iban_tail}</span>}
+                    </div>
                     <div className="sub">{money(a.balance)}</div>
                   </div>
-                  <select value={a.role} onChange={(e) => patch(a.id, { role: e.target.value })} aria-label="para qué es esta cuenta">
-                    {Object.entries(ROLE_LABEL).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                  <select
+                    value={a.role}
+                    onChange={(e) => patch(a.id, { role: e.target.value })}
+                    aria-label="para qué es esta cuenta"
+                  >
+                    {Object.entries(ROLE_LABEL).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
                   </select>
                 </div>
               ))}
@@ -101,13 +128,17 @@ export default function Banks() {
 
       <h2>añadir un banco</h2>
       {!available ? (
-        <button className="btn primary" disabled={busy === "picker"} onClick={openPicker}>conectar un banco</button>
+        <button className="btn primary" disabled={busy === "picker"} onClick={openPicker}>
+          conectar un banco
+        </button>
       ) : (
         <div className="card">
           {available.map((b) => (
             <div className="row" key={`${b.name}${b.country}`}>
               <span>{b.name}</span>
-              <button className="btn" onClick={() => connect(b.name, b.country)}>conectar</button>
+              <button className="btn" onClick={() => connect(b.name, b.country)}>
+                conectar
+              </button>
             </div>
           ))}
         </div>
@@ -120,7 +151,11 @@ export default function Banks() {
             <div>reprocesar desde los bancos</div>
             <div className="sub">recalcula categorías y transferencias; no cambia lo que has tocado a mano</div>
           </div>
-          <button className="btn" disabled={busy === "reprocess"} onClick={() => run("reprocess", () => api("/reprocess", { method: "POST" }))}>
+          <button
+            className="btn"
+            disabled={busy === "reprocess"}
+            onClick={() => run("reprocess", () => api("/reprocess", { method: "POST" }))}
+          >
             {busy === "reprocess" ? "…" : "hazlo ahora"}
           </button>
         </div>

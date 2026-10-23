@@ -29,7 +29,10 @@ export default function Movements() {
   }
 
   async function toggleTransfer(tx: Tx) {
-    await api(`/transactions/${tx.id}`, { method: "PATCH", json: { kind: tx.kind === "transfer" ? "normal" : "transfer" } });
+    await api(`/transactions/${tx.id}`, {
+      method: "PATCH",
+      json: { kind: tx.kind === "transfer" ? "normal" : "transfer" },
+    });
     load();
   }
 
@@ -38,9 +41,18 @@ export default function Movements() {
   return (
     <>
       <div className="month-nav">
-        <button className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">‹</button>
+        <button className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">
+          ‹
+        </button>
         <h1 style={{ textTransform: "capitalize" }}>{monthLabel(month)}</h1>
-        <button className="btn" disabled={month === currentMonth()} onClick={() => setMonth(shiftMonth(month, 1))} aria-label="mes siguiente">›</button>
+        <button
+          className="btn"
+          disabled={month === currentMonth()}
+          onClick={() => setMonth(shiftMonth(month, 1))}
+          aria-label="mes siguiente"
+        >
+          ›
+        </button>
       </div>
       <input placeholder="buscar…" value={query} onChange={(e) => setQuery(e.target.value)} />
 
@@ -57,19 +69,42 @@ export default function Movements() {
                   {tx.status === "PDNG" && " · pendiente"}
                 </div>
                 {tx.kind === "transfer" ? (
-                  <button className="btn" style={{ marginTop: 6, padding: "4px 10px", fontSize: 12 }} onClick={() => toggleTransfer(tx)}>
+                  <button
+                    className="btn"
+                    style={{ marginTop: 6, padding: "4px 10px", fontSize: 12 }}
+                    onClick={() => toggleTransfer(tx)}
+                  >
                     ⇄ entre mis cuentas (quitar)
                   </button>
                 ) : (
                   <div style={{ display: "flex", gap: 6, marginTop: 6, alignItems: "center" }}>
-                    <select value={tx.category_id ?? ""} onChange={(e) => setCategory(tx, Number(e.target.value))} aria-label="categoría">
+                    <select
+                      value={tx.category_id ?? ""}
+                      onChange={(e) => setCategory(tx, Number(e.target.value))}
+                      aria-label="categoría"
+                    >
                       {!tx.category_id && <option value="">sin categoría</option>}
-                      {categories.filter((c) => c.kind === (tx.amount > 0 ? "income" : "expense")).map((c) => (
-                        <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
-                      ))}
-                      {cat && cat.kind !== (tx.amount > 0 ? "income" : "expense") && <option value={cat.id}>{cat.icon} {cat.name}</option>}
+                      {categories
+                        .filter((c) => c.kind === (tx.amount > 0 ? "income" : "expense"))
+                        .map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.icon} {c.name}
+                          </option>
+                        ))}
+                      {cat && cat.kind !== (tx.amount > 0 ? "income" : "expense") && (
+                        <option value={cat.id}>
+                          {cat.icon} {cat.name}
+                        </option>
+                      )}
                     </select>
-                    <button className="btn" style={{ padding: "6px 10px", fontSize: 12 }} onClick={() => toggleTransfer(tx)} title="marcar como transferencia entre mis cuentas">⇄</button>
+                    <button
+                      className="btn"
+                      style={{ padding: "6px 10px", fontSize: 12 }}
+                      onClick={() => toggleTransfer(tx)}
+                      title="marcar como transferencia entre mis cuentas"
+                    >
+                      ⇄
+                    </button>
                   </div>
                 )}
               </div>

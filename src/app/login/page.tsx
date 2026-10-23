@@ -31,9 +31,18 @@ export default function LoginPage() {
         <p className="sub">entra para ver tus cuentas</p>
         <input name="username" placeholder="usuario" autoComplete="username" autoCapitalize="none" required />
         <input name="password" type="password" placeholder="contraseña" autoComplete="current-password" required />
-        <input name="code" inputMode="numeric" placeholder="código de 6 dígitos" autoComplete="one-time-code" maxLength={6} required />
+        <input
+          name="code"
+          inputMode="numeric"
+          placeholder="código de 6 dígitos"
+          autoComplete="one-time-code"
+          maxLength={6}
+          required
+        />
         {error && <p className="err">{error}</p>}
-        <button className="btn primary" disabled={busy}>entrar</button>
+        <button className="btn primary" disabled={busy}>
+          entrar
+        </button>
       </form>
     </div>
   );
