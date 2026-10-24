@@ -13,7 +13,7 @@ helper changes. Commit before any mutation check.
 
 ## 3. auth feature
 
-- [ ] 3.1 Create `src/features/auth/` (port and HTTP adapter in `api.ts`, `AuthApiProvider`/`useAuthApi`, `useLogin`/`useLogout`, `LoginForm`, entry point `index.ts`), wire `AuthApiProvider` in `providers.tsx` and make `src/app/login/page.tsx` a thin route; verify the login and api-access characterization tests pass and mutation-check `LoginForm` (busy state, error message, navigation to `/`)
+- [x] 3.1 Create `src/features/auth/` (port and HTTP adapter in `api.ts`, `AuthApiProvider`/`useAuthApi`, `useLogin`/`useLogout`, `LoginForm`, entry point `index.ts`), wire `AuthApiProvider` in `providers.tsx` and make `src/app/login/page.tsx` a thin route; verify the login and api-access characterization tests pass and mutation-check `LoginForm` (busy state, error message, navigation to `/`)
 
 ## 4. Boundaries, docs and verification
 
