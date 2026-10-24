@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import MyMonth from "@/app/(app)/page";
-import { fakeApi, ok, pending } from "./fake-api";
+import { fail, fakeApi, ok, pending } from "./fake-api";
 import { today } from "./location";
 import { renderScreen } from "./render";
 import { summary } from "./screens";
@@ -158,4 +158,39 @@ test("Month navigation does not reload history", async () => {
   expect(await screen.findByText("09")).toBeInTheDocument();
   expect(api.to("GET", "/api/stats/history")).toHaveLength(1);
   expect(api.to("GET", "/api/stats/history")[0].query.get("months")).toBe("12");
+});
+
+// ---------- Load errors ----------
+
+const belowHeading = () => heading().closest(".month-nav")?.nextElementSibling;
+
+test("Summary unavailable", async () => {
+  fakeApi({ "GET /api/stats/summary": fail(500), "GET /api/stats/history": ok([]) });
+  renderScreen(<MyMonth />);
+
+  await waitFor(() => expect(belowHeading()).toHaveTextContent("Error 500"));
+  expect(screen.queryByText("ingresos")).not.toBeInTheDocument();
+});
+
+test("History unavailable", async () => {
+  fakeApi({ "GET /api/stats/summary": ok(summary({ income: 2000 })), "GET /api/stats/history": fail(503) });
+  renderScreen(<MyMonth />);
+
+  await waitFor(() => expect(belowHeading()).toHaveTextContent("Error 503"));
+  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
+});
+
+test("Error cleared by changing the month", async () => {
+  fakeApi({
+    "GET /api/stats/summary": (req) =>
+      req.query.get("month") === "2026-10" ? fail(500) : ok(summary({ month: "2026-09", income: 1500 })),
+    "GET /api/stats/history": ok([]),
+  });
+  renderScreen(<MyMonth />);
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+
+  expect(await card("ingresos")).toHaveTextContent("1500,00 €");
+  expect(screen.queryByText("Error 500")).not.toBeInTheDocument();
 });

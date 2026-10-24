@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { errorMessage } from "@/shared/api/http";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
 import { useHistory, useSummary } from "../hooks";
@@ -12,10 +13,12 @@ export function MyMonthScreen() {
   const [month, setMonth] = useState(currentMonth);
   const summary = useSummary(month);
   const history = useHistory();
+  const error = errorMessage(summary.error, history.error);
 
   return (
     <>
       <MonthNav month={month} onChange={setMonth} />
+      {error && <p className="err">{error}</p>}
       {summary.data && (
         <>
           <MonthlyFigures summary={summary.data} />

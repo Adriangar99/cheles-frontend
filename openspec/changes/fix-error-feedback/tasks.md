@@ -9,7 +9,7 @@ check.
 
 ## 2. Visible errors
 
-- [ ] 2.1 Tests for «Summary unavailable», «History unavailable» and «Error cleared by changing the month», then show the stats error under `MonthNav` (skipping «No autenticado»); verify the monthly-overview, api-access and app-shell tests pass
+- [x] 2.1 Tests for «Summary unavailable», «History unavailable» and «Error cleared by changing the month», then show the stats error under `MonthNav` (skipping «No autenticado»); verify the monthly-overview, api-access and app-shell tests pass
 - [ ] 2.2 Tests for «List unavailable», «Change rejected» and «Error cleared by the next edit», then show the transactions load and edit errors under the search box; verify the transactions tests pass
 - [ ] 2.3 Tests for «Connections unavailable», «Connecting fails» and «Logout fails», then route those errors to the banks message (connect and logout without clearing it); verify the bank-management tests pass and mutation-check the three screens' error rendering
 
