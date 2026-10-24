@@ -3,7 +3,8 @@ import type { components } from "@/shared/api/schema";
 
 export type Transaction = components["schemas"]["TransactionOut"];
 export type Category = components["schemas"]["CategoryOut"];
-export type TransactionPatch = components["schemas"]["TxPatch"];
+// openapi-typescript marks defaulted fields as required; in a request body the API applies the defaults
+export type TransactionPatch = Partial<components["schemas"]["TxPatch"]>;
 export type TransactionFilter = { month: string; q: string };
 
 const LIST_LIMIT = 500;
