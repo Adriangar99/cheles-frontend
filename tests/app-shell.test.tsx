@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { NextRequest } from "next/server";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test, vi } from "vitest";
@@ -10,6 +10,7 @@ import LoginPage from "@/app/login/page";
 import { config, middleware } from "@/middleware";
 import { fail, fakeApi } from "./fake-api";
 import { stubLocation } from "./location";
+import { renderScreen } from "./render";
 
 const navigation = vi.hoisted(() => ({ path: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => navigation.path }));
@@ -32,7 +33,7 @@ test("Stale session cookie", async () => {
 
   const location = stubLocation("/");
   fakeApi({ "GET /api/stats/summary": fail(401), "GET /api/stats/history": fail(401) });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
 
   await waitFor(() => expect(location.href).toBe("/login"));
 });
@@ -40,7 +41,7 @@ test("Stale session cookie", async () => {
 test("Login page is reachable", () => {
   expect(guarded("/login")).toBe(false);
 
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   expect(screen.getByRole("heading", { name: "cheles" })).toBeInTheDocument();
 });
@@ -48,7 +49,7 @@ test("Login page is reachable", () => {
 test("Navigate between screens", () => {
   navigation.path = "/movimientos";
 
-  render(<AppLayout>contenido</AppLayout>);
+  renderScreen(<AppLayout>contenido</AppLayout>);
 
   const tabs = screen.getAllByRole("link");
   expect(tabs.map((t) => [t.textContent, t.getAttribute("href"), t.className])).toEqual([

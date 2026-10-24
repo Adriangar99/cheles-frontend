@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import Banks from "@/app/(app)/bancos/page";
@@ -6,6 +6,7 @@ import MyMonth from "@/app/(app)/page";
 import LoginPage from "@/app/login/page";
 import { fail, fakeApi, ok } from "./fake-api";
 import { stubLocation } from "./location";
+import { renderScreen } from "./render";
 
 const SECURITY_HEADERS = [
   { key: "X-Frame-Options", value: "DENY" },
@@ -38,7 +39,7 @@ test("Proxied request", async () => {
 test("JSON payload", async () => {
   stubLocation("/login");
   const api = fakeApi({ "POST /api/auth/login": ok({ ok: true }) });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await login();
 
@@ -50,7 +51,7 @@ test("JSON payload", async () => {
 test("Session expired while browsing", async () => {
   const location = stubLocation("/");
   fakeApi({ "GET /api/stats/summary": fail(401), "GET /api/stats/history": fail(401) });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
 
   await waitFor(() => expect(location.href).toBe("/login"));
 });
@@ -58,7 +59,7 @@ test("Session expired while browsing", async () => {
 test("Failed login is not redirected", async () => {
   const location = stubLocation("/login");
   fakeApi({ "POST /api/auth/login": fail(401, { detail: "Datos incorrectos" }) });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await login();
 
@@ -69,7 +70,7 @@ test("Failed login is not redirected", async () => {
 test("Error with detail", async () => {
   stubLocation("/bancos");
   fakeApi({ "GET /api/banks": noBanks, "POST /api/reprocess": fail(502, { detail: "Enable Banking: caído" }) });
-  render(<Banks />);
+  renderScreen(<Banks />);
 
   await userEvent.click(await screen.findByRole("button", { name: "hazlo ahora" }));
 
@@ -79,7 +80,7 @@ test("Error with detail", async () => {
 test("Error without detail", async () => {
   stubLocation("/bancos");
   fakeApi({ "GET /api/banks": noBanks, "POST /api/reprocess": fail(500) });
-  render(<Banks />);
+  renderScreen(<Banks />);
 
   await userEvent.click(await screen.findByRole("button", { name: "hazlo ahora" }));
 

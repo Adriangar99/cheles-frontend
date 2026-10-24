@@ -1,9 +1,10 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import Banks from "@/app/(app)/bancos/page";
 import { fail, fakeApi, ok, pending } from "./fake-api";
 import { stubLocation, today } from "./location";
+import { renderScreen } from "./render";
 import { account, connection } from "./screens";
 
 type Connection = ReturnType<typeof connection>;
@@ -18,7 +19,7 @@ const daysFromNow = (days: number) => new Date(Date.now() + days * DAY).toISOStr
 function open(connections: Connection[], routes: Routes = {}, path = "/bancos") {
   const location = stubLocation(path);
   const api = fakeApi({ "GET /api/banks": ok({ connections, detached_accounts: [] }), ...routes });
-  render(<Banks />);
+  renderScreen(<Banks />);
   return { api, location };
 }
 

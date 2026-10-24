@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test } from "vitest";
 import Banks from "@/app/(app)/bancos/page";
@@ -6,12 +6,13 @@ import Movements from "@/app/(app)/movimientos/page";
 import MyMonth from "@/app/(app)/page";
 import { fakeApi, ok } from "./fake-api";
 import { stubLocation, today } from "./location";
+import { renderScreen } from "./render";
 import { account, connection, noHistory, summary, tx } from "./screens";
 
 async function incomeShownFor(income: number) {
   today("2026-10-15T12:00:00");
   fakeApi({ "GET /api/stats/summary": ok(summary({ income })), "GET /api/stats/history": noHistory });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
   return (await screen.findByText("ingresos")).nextElementSibling?.textContent?.replace(/\s/g, " ");
 }
 
@@ -35,7 +36,7 @@ test("Missing amount", async () => {
       detached_accounts: [],
     }),
   });
-  render(<Banks />);
+  renderScreen(<Banks />);
 
   expect(await screen.findByText("—")).toBeInTheDocument();
 });
@@ -43,7 +44,7 @@ test("Missing amount", async () => {
 test("Month heading", async () => {
   today("2026-10-15T12:00:00");
   fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
 
   const heading = screen.getByRole("heading", { level: 1 });
   expect(heading).toHaveTextContent("octubre de 2026");
@@ -53,7 +54,7 @@ test("Month heading", async () => {
 test("Forward across the year", async () => {
   today("2027-01-15T12:00:00");
   const api = fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
 
   await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
   await userEvent.click(screen.getByRole("button", { name: "mes siguiente" }));
@@ -69,7 +70,7 @@ test("Forward across the year", async () => {
 test("Backward across the year", async () => {
   today("2026-01-15T12:00:00");
   const api = fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
 
   await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
 
@@ -79,7 +80,7 @@ test("Backward across the year", async () => {
 test("Transaction date", async () => {
   today("2026-10-15T12:00:00");
   fakeApi({ "GET /api/transactions": ok([tx({ date: "2026-10-03" })]), "GET /api/categories": ok([]) });
-  render(<Movements />);
+  renderScreen(<Movements />);
 
   expect(await screen.findByText("3 oct · Nómina")).toBeInTheDocument();
 });
