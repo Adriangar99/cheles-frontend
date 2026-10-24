@@ -248,3 +248,33 @@ test("Morning read times keep the leading zero", async () => {
 
   expect(await screen.findByText("leído el 23 oct, 09:05")).toBeInTheDocument();
 });
+
+// ---------- Action errors (loading, connecting, logging out) ----------
+
+test("Connections unavailable", async () => {
+  open([], { "GET /api/banks": fail(500) });
+
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+});
+
+test("Connecting fails", async () => {
+  const { location } = open([], {
+    "GET /api/banks/available": ok([{ name: "Revolut", country: "LT" }]),
+    "POST /api/banks/connect": fail(503, { detail: "Enable Banking no está configurado" }),
+  });
+  await userEvent.click(await screen.findByRole("button", { name: "conectar un banco" }));
+
+  await userEvent.click(await screen.findByRole("button", { name: "conectar" }));
+
+  expect(await screen.findByText("Enable Banking no está configurado")).toBeInTheDocument();
+  expect(location.href).toBe("http://localhost/bancos");
+});
+
+test("Logout fails", async () => {
+  const { location } = open([], { "POST /api/auth/logout": fail(500) });
+
+  await userEvent.click(await screen.findByRole("button", { name: "salir" }));
+
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+  expect(location.href).toBe("http://localhost/bancos");
+});
