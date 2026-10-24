@@ -1,9 +1,10 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import Movements from "@/app/(app)/movimientos/page";
 import { type ApiRequest, fakeApi, ok } from "./fake-api";
 import { today } from "./location";
+import { renderScreen } from "./render";
 import { category, tx } from "./screens";
 
 type Tx = ReturnType<typeof tx>;
@@ -35,7 +36,7 @@ function open(stored: Tx[]) {
     "GET /api/categories": ok([supermercado, restaurantes, nomina]),
     ...patches,
   });
-  render(<Movements />);
+  renderScreen(<Movements />);
   return api;
 }
 

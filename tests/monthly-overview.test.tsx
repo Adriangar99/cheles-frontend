@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import MyMonth from "@/app/(app)/page";
 import { fakeApi, ok } from "./fake-api";
 import { today } from "./location";
+import { renderScreen } from "./render";
 import { summary } from "./screens";
 
 type Summary = ReturnType<typeof summary>;
@@ -15,7 +16,7 @@ function open(month: Partial<Summary> = {}, history: unknown[] = []) {
     "GET /api/stats/summary": (req) => ok(summary({ month: req.query.get("month") ?? "", ...month })),
     "GET /api/stats/history": ok(history),
   });
-  render(<MyMonth />);
+  renderScreen(<MyMonth />);
   return api;
 }
 

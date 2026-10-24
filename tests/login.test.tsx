@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test } from "vitest";
 import LoginPage from "@/app/login/page";
 import { fail, fakeApi, ok, pending } from "./fake-api";
 import { stubLocation } from "./location";
+import { renderScreen } from "./render";
 
 async function submit(user = userEvent.setup()) {
   await user.type(screen.getByPlaceholderText("usuario"), "adrian");
@@ -14,7 +15,7 @@ async function submit(user = userEvent.setup()) {
 
 test("Empty field", async () => {
   const api = fakeApi({ "POST /api/auth/login": ok({ ok: true }) });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await userEvent.type(screen.getByPlaceholderText("usuario"), "adrian");
   await userEvent.click(screen.getByRole("button", { name: "entrar" }));
@@ -23,7 +24,7 @@ test("Empty field", async () => {
 });
 
 test("Code autofill", () => {
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   const code = screen.getByPlaceholderText("código de 6 dígitos");
   expect(code).toHaveAttribute("autocomplete", "one-time-code");
@@ -34,7 +35,7 @@ test("Code autofill", () => {
 test("Correct credentials", async () => {
   const location = stubLocation("/login");
   const api = fakeApi({ "POST /api/auth/login": ok({ ok: true }) });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await submit();
 
@@ -45,7 +46,7 @@ test("Correct credentials", async () => {
 test("Wrong credentials", async () => {
   stubLocation("/login");
   fakeApi({ "POST /api/auth/login": fail(401, { detail: "Datos incorrectos" }) });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await submit();
 
@@ -56,7 +57,7 @@ test("Wrong credentials", async () => {
 test("Too many attempts", async () => {
   stubLocation("/login");
   fakeApi({ "POST /api/auth/login": fail(429, { detail: "Demasiados intentos, espera unos minutos" }) });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await submit();
 
@@ -67,7 +68,7 @@ test("Request in progress", async () => {
   stubLocation("/login");
   const reply = pending();
   fakeApi({ "POST /api/auth/login": reply.route });
-  render(<LoginPage />);
+  renderScreen(<LoginPage />);
 
   await submit();
 

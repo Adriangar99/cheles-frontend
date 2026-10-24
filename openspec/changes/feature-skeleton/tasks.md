@@ -9,7 +9,7 @@ helper changes. Commit before any mutation check.
 
 ## 2. Query and providers
 
-- [ ] 2.1 Add `@tanstack/react-query` (exact version), `src/shared/query.ts` (`createQueryClient` with no retries and no focus/reconnect refetch) and `src/app/providers.tsx` in the root layout; add `tests/render.tsx` (`renderScreen`) and switch every characterization test to it; verify `pnpm test` passes unchanged
+- [x] 2.1 Add `@tanstack/react-query` (exact version), `src/shared/query.ts` (`createQueryClient` with no retries and no focus/reconnect refetch) and `src/app/providers.tsx` in the root layout; add `tests/render.tsx` (`renderScreen`) and switch every characterization test to it; verify `pnpm test` passes unchanged
 
 ## 3. auth feature
 
