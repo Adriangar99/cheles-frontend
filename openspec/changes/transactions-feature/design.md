@@ -36,6 +36,8 @@ Today one effect waits 250 ms after either changes, including on the first rende
 `useTransactions`. `useDebounced(value, 250)` returns `undefined` until the value has been stable for 250 ms and the
 list query is disabled while it is `undefined`, so the first load is delayed exactly as now and quick typing makes a
 single request. The characterization tests count requests and fail if this drifts.
+It compares by content (JSON): with identity comparison a fresh `{ month, q }` object on every render would restart
+the timer after each settle and re-render the screen every 250 ms.
 
 ### Queries and the reload after an edit
 - `useTransactions(month, q)`: key `["transactions", month, q]`, `limit: 500`, `placeholderData: keepPreviousData` —
