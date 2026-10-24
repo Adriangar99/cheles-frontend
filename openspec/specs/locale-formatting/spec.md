@@ -36,7 +36,7 @@ display it with every word capitalized («Octubre De 2026»).
 
 ### Requirement: Month arithmetic
 Moving a month forward or backward SHALL produce a valid `YYYY-MM` across year boundaries, and the current month SHALL
-be derived from the current date.
+be derived from the current date in the user's local time zone.
 
 #### Scenario: Forward across the year
 - **WHEN** moving one month forward from `2026-12`
@@ -45,6 +45,10 @@ be derived from the current date.
 #### Scenario: Backward across the year
 - **WHEN** moving one month back from `2026-01`
 - **THEN** the result is `2025-12`
+
+#### Scenario: Just after midnight on the first day
+- **WHEN** a screen opens at 00:30 on 1 November 2026 in Madrid (still 31 October in UTC)
+- **THEN** the current month is `2026-11`
 
 ### Requirement: Short dates and timestamps
 Transaction dates SHALL be shown as day and short month in es-ES (e.g. «3 oct»), and sync timestamps as day, short
