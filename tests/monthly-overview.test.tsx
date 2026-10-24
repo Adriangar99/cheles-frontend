@@ -1,8 +1,8 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import MyMonth from "@/app/(app)/page";
-import { fakeApi, ok } from "./fake-api";
+import { fakeApi, ok, pending } from "./fake-api";
 import { today } from "./location";
 import { renderScreen } from "./render";
 import { summary } from "./screens";
@@ -119,6 +119,34 @@ test("History bars", async () => {
   expect(inline(expenses)).toMatchObject({ height: "35px", background: "var(--danger)" });
   expect(september.title.replace(/\s/g, " ")).toBe("2026-09: 2000,00 € / 1000,00 €");
   expect(screen.getByText("verde = ingresos · rojo = gastos")).toBeInTheDocument();
+});
+
+// Requirement detail not covered by a scenario: the largest value may be an expense.
+test("Expenses can set the history scale", async () => {
+  open({}, [{ month: "2026-09", income: 500, expenses: 1000 }]);
+
+  const [income, expenses] = (await screen.findByText("09")).closest(".col")?.querySelectorAll(".b") ?? [];
+  expect(inline(income).height).toBe("35px");
+  expect(inline(expenses).height).toBe("70px");
+});
+
+// Current behavior not covered by a scenario: figures stay until the next month's arrive.
+test("Previous figures stay while the next month loads", async () => {
+  const september = pending();
+  fakeApi({
+    "GET /api/stats/summary": (req) =>
+      req.query.get("month") === "2026-09" ? september.route() : ok(summary({ income: 2000 })),
+    "GET /api/stats/history": ok([]),
+  });
+  renderScreen(<MyMonth />);
+  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
+
+  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+
+  expect(heading()).toHaveTextContent("septiembre de 2026");
+  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
+  september.release(ok(summary({ month: "2026-09", income: 1500 })));
+  await waitFor(async () => expect(await card("ingresos")).toHaveTextContent("1500,00 €"));
 });
 
 test("Month navigation does not reload history", async () => {
