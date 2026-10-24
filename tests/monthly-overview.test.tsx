@@ -194,3 +194,12 @@ test("Error cleared by changing the month", async () => {
   expect(await card("ingresos")).toHaveTextContent("1500,00 €");
   expect(screen.queryByText("Error 500")).not.toBeInTheDocument();
 });
+
+// Requirement detail not covered by a scenario: with both failing, the summary's error is the one shown.
+test("Summary error first when both fail", async () => {
+  fakeApi({ "GET /api/stats/summary": fail(500), "GET /api/stats/history": fail(503) });
+  renderScreen(<MyMonth />);
+
+  await waitFor(() => expect(belowHeading()).toHaveTextContent("Error 500"));
+  expect(screen.queryByText("Error 503")).not.toBeInTheDocument();
+});
