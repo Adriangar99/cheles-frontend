@@ -5,7 +5,7 @@ check.
 
 ## 1. Local current month
 
-- [ ] 1.1 Test «Just after midnight on the first day» in `tests/locale-formatting.test.tsx`, then make `currentMonth()` use the local date; verify the locale and monthly-overview tests pass
+- [x] 1.1 Test «Just after midnight on the first day» in `tests/locale-formatting.test.tsx`, then make `currentMonth()` use the local date; verify the locale and monthly-overview tests pass
 
 ## 2. Visible errors
 
