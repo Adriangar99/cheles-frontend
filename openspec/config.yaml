@@ -21,9 +21,9 @@ context: |
     income. Account roles: main (day to day), savings, excluded.
 
   Architecture (lightweight, feature-based; incremental migration in progress):
-  - Migration status: shared kernel, providers and auth (feature-skeleton) and stats (stats-feature)
-    done; transactions and banks still use the transitional src/lib/api.ts, removed by the last
-    feature change. Month navigation is shared (src/shared/MonthNav.tsx).
+  - Migration status: shared kernel, providers and auth (feature-skeleton), stats (stats-feature) and
+    transactions (transactions-feature) done; banks still uses the transitional src/lib/api.ts, removed
+    by its change. Month navigation is shared (src/shared/MonthNav.tsx).
   - Ports are injected through React context: each feature owns `<Feature>ApiProvider` and
     `use<Feature>Api()`; src/app/providers.tsx wires the HTTP adapters.
   - src/app/ only holds thin Next.js routes that compose features.
