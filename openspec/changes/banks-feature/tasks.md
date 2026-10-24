@@ -14,7 +14,7 @@ any mutation check.
 
 ## 3. End of the transition
 
-- [ ] 3.1 Delete `src/lib/api.ts`, drop `@/lib` from the Biome rules and the transitional notes from the README and `openspec/config.yaml`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the banks endpoints answer through the proxy with a session on a throwaway stack (removed afterwards with its volume)
+- [x] 3.1 Delete `src/lib/api.ts`, drop `@/lib` from the Biome rules and the transitional notes from the README and `openspec/config.yaml`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the banks endpoints answer through the proxy with a session on a throwaway stack (removed afterwards with its volume)
 
 ## Workflow follow-up
 
