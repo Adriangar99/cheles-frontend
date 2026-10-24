@@ -17,7 +17,7 @@ helper changes. Commit before any mutation check.
 
 ## 4. Boundaries, docs and verification
 
-- [ ] 4.1 Add the Biome boundary overrides (shared, features) and include `src/**/*.test.{ts,tsx}` in Vitest; verify `pnpm check` passes and a probe import from `src/shared` into a feature is rejected
+- [x] 4.1 Add the Biome boundary overrides (shared, features) and include `src/**/*.test.{ts,tsx}` in Vitest; verify `pnpm check` passes and a probe import from `src/shared` into a feature is rejected
 - [ ] 4.2 Document the architecture in the README (layout, ports through context, test pyramid) and mark the migration progress in `openspec/config.yaml`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the login flow works in Docker (`/login` 200, wrong code shows the error)
 
 ## Workflow follow-up
