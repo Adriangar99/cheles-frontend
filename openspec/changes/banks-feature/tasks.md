@@ -5,7 +5,7 @@ any mutation check.
 
 ## 1. Domain and shared formatting
 
-- [ ] 1.1 Add `dayMonthTime` to `src/shared/format.ts` and `src/features/banks/domain/banks.ts` (`consentStatus`, `lastReadLabel`, `errorExcerpt`, `ROLE_LABEL`, `authorizationMessage`) test-first for the cases screen tests leave out (exactly 14 days, revoked connection, both query parameters); verify the domain tests pass
+- [x] 1.1 Add `dayMonthTime` to `src/shared/format.ts` and `src/features/banks/domain/banks.ts` (`consentStatus`, `lastReadLabel`, `errorExcerpt`, `ROLE_LABEL`, `authorizationMessage`) test-first for the cases screen tests leave out (exactly 14 days, revoked connection, both query parameters); verify the domain tests pass
 
 ## 2. Port, hooks and screen
 
