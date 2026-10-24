@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useLogout } from "@/features/auth";
+import { errorMessage } from "@/shared/api/http";
+import type { Role } from "../api";
 import { authorizationMessage } from "../domain/banks";
 import { useAvailableBanks, useBanks, useConnectBank, useReprocess, useSetRole, useSyncConnection } from "../hooks";
 import { BankPicker } from "./BankPicker";
 import { ConnectionCard } from "./ConnectionCard";
+import { DetachedAccounts } from "./DetachedAccounts";
 import { ReprocessCard } from "./ReprocessCard";
 
 export function BanksScreen() {
@@ -23,16 +26,27 @@ export function BanksScreen() {
     if (result) setMessage(result);
   }, []);
 
-  // Sync, reprocess and role changes clear the previous message; opening the bank list does not.
-  const onError = { onError: (error: Error) => setMessage(error.message) };
+  // Sync, reprocess and role changes clear the previous message; opening the bank list, connecting and logging out
+  // do not.
+  const onError = {
+    onError: (error: Error) => {
+      const shown = errorMessage(error);
+      if (shown) setMessage(shown);
+    },
+  };
+  const shown = message || errorMessage(banks.error);
+  const changeRole = (accountId: number, role: Role) => {
+    setMessage("");
+    setRole.mutate({ accountId, role }, onError);
+  };
 
   return (
     <>
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
-      {message && (
+      {shown && (
         <p className="sub" style={{ marginTop: 12 }}>
-          {message}
+          {shown}
         </p>
       )}
 
@@ -46,19 +60,18 @@ export function BanksScreen() {
             setMessage("");
             sync.mutate(c.id, onError);
           }}
-          onReconnect={() => connect.mutate({ name: c.bank, country: "ES" })}
-          onRoleChange={(accountId, role) => {
-            setMessage("");
-            setRole.mutate({ accountId, role }, onError);
-          }}
+          onReconnect={() => connect.mutate({ name: c.bank, country: "ES" }, onError)}
+          onRoleChange={changeRole}
         />
       ))}
+
+      <DetachedAccounts accounts={banks.data?.detached_accounts ?? []} onRoleChange={changeRole} />
 
       <BankPicker
         banks={available.data}
         loading={available.isPending}
         onOpen={() => available.mutate(undefined, onError)}
-        onConnect={(b) => connect.mutate({ name: b.name, country: b.country })}
+        onConnect={(b) => connect.mutate({ name: b.name, country: b.country }, onError)}
       />
 
       <ReprocessCard
@@ -69,7 +82,7 @@ export function BanksScreen() {
         }}
       />
 
-      <button type="button" className="btn" style={{ marginTop: 28 }} onClick={() => logout.mutate()}>
+      <button type="button" className="btn" style={{ marginTop: 28 }} onClick={() => logout.mutate(undefined, onError)}>
         salir
       </button>
     </>

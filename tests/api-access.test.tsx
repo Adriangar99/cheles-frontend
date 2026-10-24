@@ -54,6 +54,8 @@ test("Session expired while browsing", async () => {
   renderScreen(<MyMonth />);
 
   await waitFor(() => expect(location.href).toBe("/login"));
+  // The browser is leaving; the screen does not flash the client's «No autenticado»
+  expect(screen.queryByText("No autenticado")).not.toBeInTheDocument();
 });
 
 test("Failed login is not redirected", async () => {

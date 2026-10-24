@@ -542,6 +542,8 @@ export interface components {
              * @enum {string}
              */
             kind: "normal" | "transfer";
+            /** Kind Manual */
+            kind_manual: boolean;
             /** Note */
             note: string | null;
             /** Status */

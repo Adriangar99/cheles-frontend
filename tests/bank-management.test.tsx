@@ -248,3 +248,68 @@ test("Morning read times keep the leading zero", async () => {
 
   expect(await screen.findByText("leído el 23 oct, 09:05")).toBeInTheDocument();
 });
+
+// ---------- Action errors (loading, connecting, logging out) ----------
+
+test("Connections unavailable", async () => {
+  open([], { "GET /api/banks": fail(500) });
+
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+});
+
+test("Connecting fails", async () => {
+  const { location } = open([], {
+    "GET /api/banks/available": ok([{ name: "Revolut", country: "LT" }]),
+    "POST /api/banks/connect": fail(503, { detail: "Enable Banking no está configurado" }),
+  });
+  await userEvent.click(await screen.findByRole("button", { name: "conectar un banco" }));
+
+  await userEvent.click(await screen.findByRole("button", { name: "conectar" }));
+
+  expect(await screen.findByText("Enable Banking no está configurado")).toBeInTheDocument();
+  expect(location.href).toBe("http://localhost/bancos");
+});
+
+test("Logout fails", async () => {
+  const { location } = open([], { "POST /api/auth/logout": fail(500) });
+
+  await userEvent.click(await screen.findByRole("button", { name: "salir" }));
+
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+  expect(location.href).toBe("http://localhost/bancos");
+});
+
+// ---------- Accounts without a bank ----------
+
+const colchon = account({ id: 9, name: "Colchón", iban_tail: "9876", balance: 500, connection_id: null });
+
+function openWithDetached(routes: Routes = {}) {
+  return open([], { "GET /api/banks": ok({ connections: [], detached_accounts: [colchon] }), ...routes });
+}
+
+test("Detached account", async () => {
+  openWithDetached();
+
+  const section = (await screen.findByRole("heading", { name: "cuentas sin banco" })).nextElementSibling as HTMLElement;
+  const row = within(section).getByText("Colchón").closest(".row") as HTMLElement;
+  expect(within(row).getByText("·· 9876")).toBeInTheDocument();
+  expect(within(row).getByText("500,00 €")).toBeInTheDocument();
+  expect(within(row).getByRole("combobox", { name: "para qué es esta cuenta" })).toHaveValue("main");
+});
+
+test("Role of a detached account", async () => {
+  const { api } = openWithDetached({ "PATCH /api/accounts/9": ok(account({ id: 9, role: "savings" })) });
+  const row = (await screen.findByText("Colchón")).closest(".row") as HTMLElement;
+
+  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "para qué es esta cuenta" }), "ahorro");
+
+  expect(api.to("PATCH", "/api/accounts/9")[0].body).toEqual({ role: "savings" });
+  await waitFor(() => expect(api.to("GET", "/api/banks")).toHaveLength(2));
+});
+
+test("No detached accounts", async () => {
+  open([connection({ valid_until: daysFromNow(90), accounts: [account()] })]);
+
+  await screen.findByText("Nómina");
+  expect(screen.queryByRole("heading", { name: "cuentas sin banco" })).not.toBeInTheDocument();
+});

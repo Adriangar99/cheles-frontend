@@ -4,4 +4,8 @@ export const shiftMonth = (m: string, delta: number) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 };
 
-export const currentMonth = () => shiftMonth(new Date().toISOString().slice(0, 7), 0);
+// The user's local month (not UTC: just after midnight on the 1st it is already the new month)
+export const currentMonth = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+};

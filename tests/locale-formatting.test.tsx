@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test } from "vitest";
 import Banks from "@/app/(app)/bancos/page";
@@ -83,4 +83,14 @@ test("Transaction date", async () => {
   renderScreen(<Movements />);
 
   expect(await screen.findByText("3 oct · Nómina")).toBeInTheDocument();
+});
+
+test("Just after midnight on the first day", async () => {
+  // 00:30 on 1 November in Madrid is still 31 October in UTC
+  today("2026-10-31T23:30:00Z");
+  const api = fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
+  renderScreen(<MyMonth />);
+
+  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("noviembre de 2026");
+  await waitFor(() => expect(api.to("GET", "/api/stats/summary")[0]?.query.get("month")).toBe("2026-11"));
 });
