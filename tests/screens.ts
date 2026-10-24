@@ -23,6 +23,7 @@ export const tx = (overrides: Partial<Schemas["TransactionOut"]> = {}): Schemas[
   counterparty: "MERCADONA",
   description: "COMPRA",
   kind: "normal",
+  kind_manual: false,
   category_id: null,
   category_manual: false,
   account: "Nómina",
