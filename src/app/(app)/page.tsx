@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api, currentMonth, type HistoryPoint, money, monthLabel, type Summary, shiftMonth } from "@/lib/api";
+import { api, currentMonth, type HistoryPoint, money, type Summary } from "@/lib/api";
+import { MonthNav } from "@/shared/MonthNav";
 
 export default function MyMonth() {
   const [month, setMonth] = useState(currentMonth());
@@ -17,25 +18,10 @@ export default function MyMonth() {
 
   const maxHistory = Math.max(1, ...history.flatMap((h) => [h.income, h.expenses]));
   const maxCategory = Math.max(1, ...(summary?.by_category.map((c) => c.amount) ?? [1]));
-  const isCurrent = month === currentMonth();
 
   return (
     <>
-      <div className="month-nav">
-        <button type="button" className="btn" onClick={() => setMonth(shiftMonth(month, -1))} aria-label="mes anterior">
-          ‹
-        </button>
-        <h1 style={{ textTransform: "capitalize" }}>{monthLabel(month)}</h1>
-        <button
-          type="button"
-          className="btn"
-          disabled={isCurrent}
-          onClick={() => setMonth(shiftMonth(month, 1))}
-          aria-label="mes siguiente"
-        >
-          ›
-        </button>
-      </div>
+      <MonthNav month={month} onChange={setMonth} />
 
       {summary && (
         <>

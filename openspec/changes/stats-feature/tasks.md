@@ -5,7 +5,7 @@ any mutation check.
 
 ## 1. Shared month navigation
 
-- [ ] 1.1 Extract `src/shared/MonthNav.tsx` (controlled: `month`, `onChange`) and use it from «mi mes»; verify the monthly-overview and locale-formatting tests pass
+- [x] 1.1 Extract `src/shared/MonthNav.tsx` (controlled: `month`, `onChange`) and use it from «mi mes»; verify the monthly-overview and locale-formatting tests pass
 
 ## 2. stats feature
 
