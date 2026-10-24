@@ -14,7 +14,7 @@ any mutation check.
 
 ## 3. Docs and verification
 
-- [ ] 3.1 Update the migration status in `openspec/config.yaml`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the transactions endpoints answer through the proxy with a session on a throwaway stack (removed afterwards)
+- [x] 3.1 Update the migration status in `openspec/config.yaml`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the transactions endpoints answer through the proxy with a session on a throwaway stack (removed afterwards)
 
 ## Workflow follow-up
 
