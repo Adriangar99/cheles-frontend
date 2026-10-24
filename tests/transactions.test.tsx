@@ -2,7 +2,7 @@ import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import Movements from "@/app/(app)/movimientos/page";
-import { type ApiRequest, fakeApi, ok } from "./fake-api";
+import { type ApiRequest, fail, fakeApi, ok } from "./fake-api";
 import { today } from "./location";
 import { renderScreen } from "./render";
 import { category, tx } from "./screens";
@@ -128,4 +128,52 @@ test("Unmark a transfer", async () => {
   const row = await rowOf("MERCADONA");
   expect(await within(row).findByRole("combobox", { name: "categoría" })).toBeInTheDocument();
   expect(row.style.opacity).toBe("");
+});
+
+// ---------- Load and edit errors ----------
+
+const belowSearch = () => screen.getByPlaceholderText("buscar…").nextElementSibling;
+
+test("List unavailable", async () => {
+  fakeApi({ "GET /api/transactions": fail(500), "GET /api/categories": ok([]) });
+  renderScreen(<Movements />);
+
+  await waitFor(() => expect(belowSearch()).toHaveTextContent("Error 500"));
+});
+
+test("Change rejected", async () => {
+  const api = fakeApi({
+    "GET /api/transactions": ok([tx({ id: 7, category_id: 1 })]),
+    "GET /api/categories": ok([supermercado, restaurantes]),
+    "PATCH /api/transactions/7": fail(400, { detail: "Categoría inexistente" }),
+  });
+  renderScreen(<Movements />);
+  const row = await rowOf("MERCADONA");
+  await waitFor(() => expect(optionsOf(row)).toContain("🍽 Restaurantes"));
+
+  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "categoría" }), "🍽 Restaurantes");
+
+  await waitFor(() => expect(belowSearch()).toHaveTextContent("Categoría inexistente"));
+  expect(api.to("GET", "/api/transactions")).toHaveLength(1);
+});
+
+test("Error cleared by the next edit", async () => {
+  let patches = 0;
+  fakeApi({
+    "GET /api/transactions": ok([tx({ id: 7, category_id: 1 })]),
+    "GET /api/categories": ok([supermercado, restaurantes]),
+    "PATCH /api/transactions/7": () => {
+      patches += 1;
+      return patches === 1 ? fail(400, { detail: "Categoría inexistente" }) : ok({});
+    },
+  });
+  renderScreen(<Movements />);
+  const row = await rowOf("MERCADONA");
+  await waitFor(() => expect(optionsOf(row)).toContain("🍽 Restaurantes"));
+  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "categoría" }), "🍽 Restaurantes");
+  expect(await screen.findByText("Categoría inexistente")).toBeInTheDocument();
+
+  await userEvent.click(within(await rowOf("MERCADONA")).getByRole("button", { name: "⇄" }));
+
+  await waitFor(() => expect(screen.queryByText("Categoría inexistente")).not.toBeInTheDocument());
 });
