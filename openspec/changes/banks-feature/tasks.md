@@ -9,7 +9,7 @@ any mutation check.
 
 ## 2. Port, hooks and screen
 
-- [ ] 2.1 Add the `BanksApi` port and HTTP adapter, `BanksApiProvider`/`useBanksApi`, and the hooks (`useBanks`, `useAvailableBanks`, `useConnectBank`, `useSyncConnection`, `useReprocess`, `useSetRole`, the action mutations awaiting the refetch), and wire the provider in `providers.tsx`; verify `pnpm typecheck` passes
+- [x] 2.1 Add the `BanksApi` port and HTTP adapter, `BanksApiProvider`/`useBanksApi`, and the hooks (`useBanks`, `useAvailableBanks`, `useConnectBank`, `useSyncConnection`, `useReprocess`, `useSetRole`, the action mutations awaiting the refetch), and wire the provider in `providers.tsx`; verify `pnpm typecheck` passes
 - [ ] 2.2 Add `ConnectionCard`, `BankPicker`, `ReprocessCard` and `BanksScreen` (message rules, logout through `useLogout`), and make `src/app/(app)/bancos/page.tsx` a thin route; verify every characterization test passes and mutation-check the screen (busy until reload, message cleared on actions but not on the picker, authorization message, consent thresholds, connect URL, logout)
 
 ## 3. End of the transition
