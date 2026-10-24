@@ -19,7 +19,7 @@ check.
 
 ## 4. Contract and verification
 
-- [ ] 4.1 After the backend change is merged, run `pnpm api:sync` and commit the copy and regenerated types; verify `pnpm check`, `pnpm typecheck`, `pnpm test` (spec-coverage meta-test included), `pnpm build` and CI pass, and on a throwaway stack without `EB_APPLICATION_ID` «conectar un banco» shows «Enable Banking no está configurado» through the proxy (removed afterwards with its volume)
+- [x] 4.1 After the backend change is merged, run `pnpm api:sync` and commit the copy and regenerated types; verify `pnpm check`, `pnpm typecheck`, `pnpm test` (spec-coverage meta-test included), `pnpm build` and CI pass, and on a throwaway stack without `EB_APPLICATION_ID` «conectar un banco» shows «Enable Banking no está configurado» through the proxy (removed afterwards with its volume)
 
 ## Workflow follow-up
 
