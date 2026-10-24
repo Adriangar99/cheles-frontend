@@ -41,6 +41,28 @@ build time, proxied API headers, local-only port) are checked against the runnin
 **API contract.** The backend versions its OpenAPI document; when it changes, run `pnpm api:sync` and commit the copy
 and the regenerated types together. Response types come from `src/shared/api/schema.d.ts`, never written by hand.
 
+## Architecture
+
+```
+src/app/            thin Next.js routes and layouts; providers.tsx is the composition root
+src/features/<f>/   one per area (auth, stats, transactions, banks)
+  index.ts          entry point: the only module other code may import
+  api.ts            the feature's API port (interface) and its HTTP adapter
+  provider.tsx      <F>ApiProvider and use<F>Api(): the port, injected through React context
+  hooks.ts          TanStack Query queries and mutations over the port
+  components/       React components
+  domain/           pure rules (no React, no fetch), only when the feature has any
+src/shared/         HTTP client, generated API types, es-ES formatting, month arithmetic, query client
+```
+
+Biome enforces the boundaries: features are imported only through their entry point, `src/shared/` depends on
+nothing above it, and features never import `src/app/`. `src/lib/api.ts` is transitional (screens not migrated yet)
+and features may not use it.
+
+Tests: the characterization tests in `tests/` render screens inside the real providers with `fetch` stubbed, and
+are the behavior net. Feature tests (colocated `*.test.ts(x)`) pass a fake adapter to the feature's provider and are
+written for logic a screen test cannot reach cheaply, such as pure domain rules.
+
 ## Security
 
 Port published only on `127.0.0.1`; `X-Frame-Options`, `nosniff`, `no-referrer` and `no-store` headers on the pages

@@ -21,6 +21,10 @@ context: |
     income. Account roles: main (day to day), savings, excluded.
 
   Architecture (lightweight, feature-based; incremental migration in progress):
+  - Migration status: shared kernel, providers and auth done (feature-skeleton); stats, transactions
+    and banks still use the transitional src/lib/api.ts, removed by the last feature change.
+  - Ports are injected through React context: each feature owns `<Feature>ApiProvider` and
+    `use<Feature>Api()`; src/app/providers.tsx wires the HTTP adapters.
   - src/app/ only holds thin Next.js routes that compose features.
   - src/features/<feature>/ (auth, stats, transactions, banks): domain/ (pure, no React or fetch),
     api.ts (adapter behind an interface/port), TanStack Query hooks and components/.
