@@ -23,14 +23,8 @@ export function BanksScreen() {
     if (result) setMessage(result);
   }, []);
 
-  const showError = (error: Error) => setMessage(error.message);
   // Sync, reprocess and role changes clear the previous message; opening the bank list does not.
-  const action =
-    <T,>(mutation: { mutate: (variables: T, options: { onError: typeof showError }) => void }) =>
-    (variables: T) => {
-      setMessage("");
-      mutation.mutate(variables, { onError: showError });
-    };
+  const onError = { onError: (error: Error) => setMessage(error.message) };
 
   return (
     <>
@@ -48,20 +42,32 @@ export function BanksScreen() {
           connection={c}
           now={Date.now()}
           syncing={sync.isPending && sync.variables === c.id}
-          onSync={() => action(sync)(c.id)}
+          onSync={() => {
+            setMessage("");
+            sync.mutate(c.id, onError);
+          }}
           onReconnect={() => connect.mutate({ name: c.bank, country: "ES" })}
-          onRoleChange={(accountId, role) => action(setRole)({ accountId, role })}
+          onRoleChange={(accountId, role) => {
+            setMessage("");
+            setRole.mutate({ accountId, role }, onError);
+          }}
         />
       ))}
 
       <BankPicker
         banks={available.data}
         loading={available.isPending}
-        onOpen={() => available.mutate(undefined, { onError: showError })}
+        onOpen={() => available.mutate(undefined, onError)}
         onConnect={(b) => connect.mutate({ name: b.name, country: b.country })}
       />
 
-      <ReprocessCard busy={reprocess.isPending} onReprocess={() => action(reprocess)(undefined)} />
+      <ReprocessCard
+        busy={reprocess.isPending}
+        onReprocess={() => {
+          setMessage("");
+          reprocess.mutate(undefined, onError);
+        }}
+      />
 
       <button type="button" className="btn" style={{ marginTop: 28 }} onClick={() => logout.mutate()}>
         salir
