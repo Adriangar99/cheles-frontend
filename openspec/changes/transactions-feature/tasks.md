@@ -5,7 +5,7 @@ any mutation check.
 
 ## 1. Domain and shared formatting
 
-- [ ] 1.1 Add `dayMonth` to `src/shared/format.ts` and `src/features/transactions/domain/transactions.ts` (`rowLabel`, `isCredit`, `categoryOptions`) test-first for the cases screen tests leave out (description and «—» fallbacks, «sin categoría», zero amount as debit); verify the domain tests pass
+- [x] 1.1 Add `dayMonth` to `src/shared/format.ts` and `src/features/transactions/domain/transactions.ts` (`rowLabel`, `isCredit`, `categoryOptions`) test-first for the cases screen tests leave out (description and «—» fallbacks, «sin categoría», zero amount as debit); verify the domain tests pass
 
 ## 2. Port, hooks and screen
 
