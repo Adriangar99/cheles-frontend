@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { useLogout } from "@/features/auth";
 import { errorMessage } from "@/shared/api/http";
+import type { Role } from "../api";
 import { authorizationMessage } from "../domain/banks";
 import { useAvailableBanks, useBanks, useConnectBank, useReprocess, useSetRole, useSyncConnection } from "../hooks";
 import { BankPicker } from "./BankPicker";
 import { ConnectionCard } from "./ConnectionCard";
+import { DetachedAccounts } from "./DetachedAccounts";
 import { ReprocessCard } from "./ReprocessCard";
 
 export function BanksScreen() {
@@ -33,6 +35,10 @@ export function BanksScreen() {
     },
   };
   const shown = message || errorMessage(banks.error);
+  const changeRole = (accountId: number, role: Role) => {
+    setMessage("");
+    setRole.mutate({ accountId, role }, onError);
+  };
 
   return (
     <>
@@ -55,12 +61,11 @@ export function BanksScreen() {
             sync.mutate(c.id, onError);
           }}
           onReconnect={() => connect.mutate({ name: c.bank, country: "ES" }, onError)}
-          onRoleChange={(accountId, role) => {
-            setMessage("");
-            setRole.mutate({ accountId, role }, onError);
-          }}
+          onRoleChange={changeRole}
         />
       ))}
+
+      <DetachedAccounts accounts={banks.data?.detached_accounts ?? []} onRoleChange={changeRole} />
 
       <BankPicker
         banks={available.data}

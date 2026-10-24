@@ -15,7 +15,7 @@ check.
 
 ## 3. Accounts without a bank
 
-- [ ] 3.1 Tests for «Detached account», «Role of a detached account» and «No detached accounts», then extract `AccountRow` and add the «cuentas sin banco» section; verify the bank-management tests pass
+- [x] 3.1 Tests for «Detached account», «Role of a detached account» and «No detached accounts», then extract `AccountRow` and add the «cuentas sin banco» section; verify the bank-management tests pass
 
 ## 4. Contract and verification
 
