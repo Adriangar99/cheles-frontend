@@ -10,7 +10,7 @@ any mutation check.
 ## 2. Port, hooks and screen
 
 - [x] 2.1 Add the `TransactionsApi` port and HTTP adapter, `TransactionsApiProvider`/`useTransactionsApi`, `useDebounced`, `useTransactions` (debounced, `keepPreviousData`), `useCategories` and `useUpdateTransaction` (invalidates the list), and wire the provider in `providers.tsx`; verify `pnpm typecheck` passes
-- [ ] 2.2 Add `TransactionRow` and `TransactionsScreen` (with `MonthNav`), and make `src/app/(app)/movimientos/page.tsx` a thin route; verify every characterization test passes and mutation-check the screen (debounce delay and single request, list kept while loading, reload after an edit, category options, transfer dimming)
+- [x] 2.2 Add `TransactionRow` and `TransactionsScreen` (with `MonthNav`), and make `src/app/(app)/movimientos/page.tsx` a thin route; verify every characterization test passes and mutation-check the screen (debounce delay and single request, list kept while loading, reload after an edit, category options, transfer dimming)
 
 ## 3. Docs and verification
 

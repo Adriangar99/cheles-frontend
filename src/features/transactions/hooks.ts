@@ -5,13 +5,15 @@ import { useTransactionsApi } from "./provider";
 
 const DEBOUNCE_MS = 250;
 
-// The value once it has not changed for `ms`; undefined until then, including on the first render.
+// The value once its content has not changed for `ms`; undefined until then, including on the first render.
+// Compared by content (JSON), so callers can pass a fresh object on every render.
 export function useDebounced<T>(value: T, ms = DEBOUNCE_MS) {
   const [settled, setSettled] = useState<T>();
+  const content = JSON.stringify(value);
   useEffect(() => {
-    const timer = setTimeout(() => setSettled(value), ms);
+    const timer = setTimeout(() => setSettled(JSON.parse(content)), ms);
     return () => clearTimeout(timer);
-  }, [value, ms]);
+  }, [content, ms]);
   return settled;
 }
 

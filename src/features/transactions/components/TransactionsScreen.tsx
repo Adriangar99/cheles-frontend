@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
 import { useCategories, useDebounced, useTransactions, useUpdateTransaction } from "../hooks";
@@ -9,9 +9,7 @@ import { TransactionRow } from "./TransactionRow";
 export function TransactionsScreen() {
   const [month, setMonth] = useState(currentMonth);
   const [query, setQuery] = useState("");
-  // Memoized so the debounce only restarts when the month or the text change
-  const filter = useMemo(() => ({ month, q: query }), [month, query]);
-  const transactions = useTransactions(useDebounced(filter));
+  const transactions = useTransactions(useDebounced({ month, q: query }));
   const categories = useCategories();
   const update = useUpdateTransaction();
 
