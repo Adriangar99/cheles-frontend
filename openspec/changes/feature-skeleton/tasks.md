@@ -5,7 +5,7 @@ helper changes. Commit before any mutation check.
 
 ## 1. Shared kernel
 
-- [ ] 1.1 Move the HTTP client to `src/shared/api/http.ts`, formatting to `src/shared/format.ts` and month arithmetic to `src/shared/month.ts`; `src/lib/api.ts` re-exports them; verify `pnpm typecheck` and `pnpm test` pass
+- [x] 1.1 Move the HTTP client to `src/shared/api/http.ts`, formatting to `src/shared/format.ts` and month arithmetic to `src/shared/month.ts`; `src/lib/api.ts` re-exports them; verify `pnpm typecheck` and `pnpm test` pass
 
 ## 2. Query and providers
 
