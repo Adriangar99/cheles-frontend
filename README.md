@@ -52,12 +52,11 @@ src/features/<f>/   one per area (auth, stats, transactions, banks)
   hooks.ts          TanStack Query queries and mutations over the port
   components/       React components
   domain/           pure rules (no React, no fetch), only when the feature has any
-src/shared/         HTTP client, generated API types, es-ES formatting, month arithmetic, query client
+src/shared/         HTTP client, generated API types, es-ES formatting, month arithmetic, MonthNav, query client
 ```
 
 Biome enforces the boundaries: features are imported only through their entry point, `src/shared/` depends on
-nothing above it, and features never import `src/app/`. `src/lib/api.ts` is transitional (screens not migrated yet)
-and features may not use it.
+nothing above it, and features never import `src/app/`.
 
 Tests: the characterization tests in `tests/` render screens inside the real providers with `fetch` stubbed, and
 are the behavior net. Feature tests (colocated `*.test.ts(x)`) pass a fake adapter to the feature's provider and are

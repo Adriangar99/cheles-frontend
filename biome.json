@@ -69,8 +69,8 @@
                     "message": "Import a feature only through its entry point (@/features/<name>); its internals are private."
                   },
                   {
-                    "group": ["@/features/**", "@/app/**", "@/lib/**"],
-                    "message": "Shared code cannot depend on features, routes or the transitional src/lib."
+                    "group": ["@/features/**", "@/app/**"],
+                    "message": "Shared code cannot depend on features or routes."
                   }
                 ]
               }
@@ -93,8 +93,8 @@
                     "message": "Import a feature only through its entry point (@/features/<name>); its internals are private."
                   },
                   {
-                    "group": ["@/app/**", "@/lib/**"],
-                    "message": "Features cannot depend on routes or the transitional src/lib; use @/shared."
+                    "group": ["@/app/**"],
+                    "message": "Features cannot depend on routes; use @/shared."
                   }
                 ]
               }

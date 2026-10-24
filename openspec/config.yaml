@@ -20,10 +20,8 @@ context: |
   - Transfers between the user's own accounts (detected by IBAN) count as neither expense nor
     income. Account roles: main (day to day), savings, excluded.
 
-  Architecture (lightweight, feature-based; incremental migration in progress):
-  - Migration status: shared kernel, providers and auth (feature-skeleton), stats (stats-feature) and
-    transactions (transactions-feature) done; banks still uses the transitional src/lib/api.ts, removed
-    by its change. Month navigation is shared (src/shared/MonthNav.tsx).
+  Architecture (lightweight, feature-based; every screen is a feature since banks-feature):
+  - Month navigation is shared (src/shared/MonthNav.tsx); es-ES formatting lives in src/shared/format.ts.
   - Ports are injected through React context: each feature owns `<Feature>ApiProvider` and
     `use<Feature>Api()`; src/app/providers.tsx wires the HTTP adapters.
   - src/app/ only holds thin Next.js routes that compose features.

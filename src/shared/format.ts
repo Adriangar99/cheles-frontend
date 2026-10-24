@@ -6,3 +6,6 @@ export const monthLabel = (m: string) =>
 
 export const dayMonth = (date: string) =>
   new Date(date).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+
+export const dayMonthTime = (timestamp: string) =>
+  new Date(timestamp).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
