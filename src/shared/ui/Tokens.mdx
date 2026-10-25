@@ -1,0 +1,47 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Design system/Tokens" />
+
+# Tokens
+
+Defined once in `src/shared/ui/tokens.css`; every rule and component uses them.
+
+## Colors
+
+export const Swatch = ({ name, use }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "6px 0" }}>
+    <div style={{ width: 48, height: 32, borderRadius: 8, border: "1px solid var(--color-line)", background: `var(${name})` }} />
+    <code>{name}</code>
+    <span style={{ color: "var(--color-muted)" }}>{use}</span>
+  </div>
+);
+
+<Swatch name="--color-bg" use="page background" />
+<Swatch name="--color-surface" use="cards" />
+<Swatch name="--color-surface-raised" use="buttons, inputs, tracks" />
+<Swatch name="--color-line" use="borders and separators" />
+<Swatch name="--color-text" use="text" />
+<Swatch name="--color-muted" use="secondary text, headings of sections" />
+<Swatch name="--color-positive" use="income, healthy states, primary actions" />
+<Swatch name="--color-negative" use="expenses over income, errors, states that need action" />
+
+## Type scale
+
+export const Size = ({ name }) => (
+  <p style={{ fontSize: `var(${name})`, margin: "4px 0" }}>
+    <code>{name}</code> · 1234,50 € · octubre de 2026
+  </p>
+);
+
+<Size name="--text-2xs" />
+<Size name="--text-xs" />
+<Size name="--text-sm" />
+<Size name="--text-md" />
+<Size name="--text-base" />
+<Size name="--text-lg" />
+<Size name="--text-xl" />
+<Size name="--text-2xl" />
+
+## Shape
+
+`--radius` rounds cards and buttons.
