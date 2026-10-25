@@ -27,7 +27,7 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
             <div className="sub">{lastReadLabel(c.last_synced_at)}</div>
             {c.last_error && <div className="err">{errorExcerpt(c.last_error)}</div>}
           </div>
-          {c.status !== "active" ? (
+          {status.needsReconnect ? (
             <button type="button" className="btn primary" onClick={onReconnect}>
               reconectar
             </button>

@@ -60,7 +60,7 @@ export function BanksScreen() {
             setMessage("");
             sync.mutate(c.id, onError);
           }}
-          onReconnect={() => connect.mutate({ name: c.bank, country: "ES" }, onError)}
+          onReconnect={() => connect.mutate({ name: c.bank, country: c.country }, onError)}
           onRoleChange={changeRole}
         />
       ))}

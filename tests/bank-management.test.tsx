@@ -46,6 +46,14 @@ test("Expired connection", async () => {
   expect(screen.getByText("x".repeat(120))).toBeInTheDocument();
 });
 
+test("Consent date already passed", async () => {
+  open([connection({ status: "active", valid_until: daysFromNow(-3) })]);
+
+  expect(await status("hay que reconectar")).toHaveAttribute("data-tone", "neg");
+  expect(screen.getByRole("button", { name: "reconectar" })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "leer ahora" })).not.toBeInTheDocument();
+});
+
 test("Never synced", async () => {
   open([connection({ valid_until: daysFromNow(90), last_synced_at: null })]);
 
@@ -73,6 +81,18 @@ test("Reconnect", async () => {
 
   await waitFor(() => expect(location.href).toBe("https://bbva.example/authorize"));
   expect(api.to("POST", "/api/banks/connect")[0].body).toEqual({ name: "BBVA", country: "ES" });
+});
+
+test("Reconnect in the connection's country", async () => {
+  const { api } = open([connection({ bank: "Revolut", country: "LT", status: "expired" })], {
+    "POST /api/banks/connect": ok({ url: "https://revolut.example/authorize" }),
+  });
+
+  await userEvent.click(await screen.findByRole("button", { name: "reconectar" }));
+
+  await waitFor(() =>
+    expect(api.to("POST", "/api/banks/connect")[0]?.body).toEqual({ name: "Revolut", country: "LT" }),
+  );
 });
 
 test("Pick a bank", async () => {
