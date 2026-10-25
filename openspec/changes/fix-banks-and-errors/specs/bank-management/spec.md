@@ -65,7 +65,8 @@ message again.
 ### Requirement: Removing a connection
 Each connection SHALL offer «quitar», which asks for confirmation («¿Quitar <banco>? Sus cuentas y movimientos se
 quedan en "cuentas sin banco".») and then removes it and reloads the screen; its accounts then appear under «cuentas
-sin banco». Cancelling does nothing.
+sin banco». Cancelling does nothing. Like the other actions, removing clears the previous message and shows its error
+if it fails.
 
 #### Scenario: Remove a connection
 - **WHEN** the user taps «quitar» on BBVA and confirms
@@ -74,3 +75,7 @@ sin banco». Cancelling does nothing.
 #### Scenario: Cancel removing
 - **WHEN** the user taps «quitar» and cancels
 - **THEN** nothing is requested
+
+#### Scenario: Removing fails
+- **WHEN** the user confirms removing a connection and the API answers 500
+- **THEN** «Error 500» is shown and the connection stays listed

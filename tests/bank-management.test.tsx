@@ -370,3 +370,16 @@ test("Cancel removing", async () => {
 
   expect(api.requests.filter((r) => r.method === "DELETE")).toEqual([]);
 });
+
+test("Removing fails", async () => {
+  vi.stubGlobal(
+    "confirm",
+    vi.fn(() => true),
+  );
+  open([connection({ id: 3, bank: "BBVA", valid_until: daysFromNow(90) })], { "DELETE /api/banks/3": fail(500) });
+
+  await userEvent.click(await screen.findByRole("button", { name: "quitar" }));
+
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "BBVA" })).toBeInTheDocument();
+});
