@@ -15,14 +15,18 @@ preview with every wallet going to a new account.
 ### Requirement: Preview per wallet
 For each wallet the screen SHALL show its name, «<n> movimientos · <first date> – <last date>», a selector «dónde
 van» with «nueva cuenta», every existing account and «no importar», and what would happen: «entran <n>», «<n> ya
-los trajo el banco (desde <date>)» when some are skipped, «<n> ya importados» when some were imported before. Changing
-a selector requests the preview again with the new targets.
+los trajo el banco (desde <date>)» when some are skipped, «<n> ya importados» when some were imported before and «<n>
+ajustes de saldo no se importan» when the wallet has any. Changing a selector requests the preview again.
 
 #### Scenario: Wallet onto a bank account
 - **WHEN** the user sends «Cuenta Principal» to «Nómina» and the preview answers 300 to import and 120 skipped since
   2026-07-01
 - **THEN** the preview was requested with «Cuenta Principal» going to Nómina's id and the wallet shows «entran 300» and
   «120 ya los trajo el banco (desde 1 jul 2026)»
+
+#### Scenario: Balance adjustments
+- **WHEN** the preview counts 2 adjustments for «Cuenta Principal»
+- **THEN** the wallet shows «2 ajustes de saldo no se importan»
 
 #### Scenario: Not imported
 - **WHEN** the user chooses «no importar» for «Revolut»

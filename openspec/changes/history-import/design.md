@@ -4,7 +4,7 @@
 
 The backend takes `{"file": <base64>, "accounts": {<wallet>: <account id> | "new" | null}}` on both endpoints. Preview
 answers per wallet (`name`, `rows`, `first_date`, `last_date`, `target`, `to_import`, `skipped`, `bank_since`,
-`already_imported`) plus `unmatched_categories` (`name`, `rows`); import answers `imported`, `skipped`,
+`already_imported`, `adjustments`) plus `unmatched_categories` (`name`, `rows`); import answers `imported`, `skipped`,
 `already_imported`.
 
 ## Decisions
@@ -26,7 +26,9 @@ Feature `imports` with its own port, like the other features; «bancos» renders
 ### Copy
 - Wallet line: «<wallet>», «<rows> movimientos · <first> – <last>» (dates as «5 may 2025»).
 - Outcome under the selector: «entran <n>»; «<n> ya los trajo el banco (desde <date>)» when skipped; «<n> ya
-  importados» when any; «no se importa» for «no importar».
+  importados» when any; «<n> ajustes de saldo no se importan» when any; «no se importa» for «no importar».
+- MoneyLover transfers arrive as ordinary movements (owner's choice); the section reminds it once under the wallets:
+  «las transferencias de MoneyLover entran como ingresos y gastos; marca ⇄ las que sean entre tus cuentas».
 - Unmatched: «sin equivalencia, irán por reglas: Ahorro (12), Invertir (3)».
 - Errors from the API (unrecognized file, bad line, too large) are shown as they come.
 
