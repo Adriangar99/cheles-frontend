@@ -11,17 +11,17 @@ type Props = {
 export function BankPicker({ banks, loading, onOpen, onConnect }: Props) {
   return (
     <>
-      <h2>añadir un banco</h2>
+      <h2>Añadir un banco</h2>
       {!banks ? (
         <Button variant="primary" disabled={loading} onClick={onOpen}>
-          conectar un banco
+          Conectar un banco
         </Button>
       ) : (
         <List>
           {banks.map((b) => (
             <ListItem key={`${b.name}${b.country}`} aria-label={b.name}>
               <span>{b.name}</span>
-              <Button onClick={() => onConnect(b)}>conectar</Button>
+              <Button onClick={() => onConnect(b)}>Conectar</Button>
             </ListItem>
           ))}
         </List>

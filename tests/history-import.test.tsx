@@ -55,12 +55,12 @@ function open(routes: Routes = {}) {
 }
 
 const choose = async () =>
-  userEvent.upload(await screen.findByLabelText("elegir fichero CSV"), new File([CSV], "moneylover.csv"));
+  userEvent.upload(await screen.findByLabelText("Elegir fichero CSV"), new File([CSV], "moneylover.csv"));
 const walletRow = (name: string) => screen.findByRole("listitem", { name });
 const previews = (api: ReturnType<typeof fakeApi>) =>
   api.to("POST", "/api/imports/preview").map((r) => r.body as { file: string; accounts: Accounts });
 const target = async (name: string, option: string) =>
-  userEvent.selectOptions(within(await walletRow(name)).getByRole("combobox", { name: "dónde van" }), option);
+  userEvent.selectOptions(within(await walletRow(name)).getByRole("combobox", { name: "Dónde van" }), option);
 
 test("Choose a file", async () => {
   const api = open();
@@ -81,7 +81,7 @@ test("Unrecognized file", async () => {
   await choose();
 
   expect(await screen.findByText("No reconozco este fichero: falta la columna Cuenta")).toBeInTheDocument();
-  expect(screen.queryByRole("button", { name: /^importar/ })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: /^Importar/ })).not.toBeInTheDocument();
 });
 
 test("Wallet onto a bank account", async () => {
@@ -92,7 +92,7 @@ test("Wallet onto a bank account", async () => {
   await target("Revolut", "Nómina");
 
   const wallet = await walletRow("Cuenta Principal");
-  await waitFor(() => expect(within(wallet).getByText("entran 300")).toBeInTheDocument());
+  await waitFor(() => expect(within(wallet).getByText("Entran 300")).toBeInTheDocument());
   expect(within(wallet).getByText("120 ya los trajo el banco (desde 1 jul 2026)")).toBeInTheDocument();
   expect(previews(api).at(-1)?.accounts).toEqual({ "Cuenta Principal": NOMINA, Revolut: NOMINA });
   // Every Revolut row is older than the bank's: nothing skipped, no line about it
@@ -113,17 +113,17 @@ test("Not imported", async () => {
   const api = open();
   await choose();
 
-  await target("Revolut", "no importar");
+  await target("Revolut", "No importar");
 
   await waitFor(() => expect(previews(api).at(-1)?.accounts).toEqual({ "Cuenta Principal": "new", Revolut: null }));
-  expect(within(await walletRow("Revolut")).getByText("no se importa")).toBeInTheDocument();
+  expect(within(await walletRow("Revolut")).getByText("No se importa")).toBeInTheDocument();
 });
 
 test("Categories without equivalent", async () => {
   open();
   await choose();
 
-  expect(await screen.findByText("sin equivalencia, irán por reglas: Ahorro (12), Invertir (3)")).toBeInTheDocument();
+  expect(await screen.findByText("Sin equivalencia, irán por reglas: Ahorro (12), Invertir (3)")).toBeInTheDocument();
 });
 
 test("Import", async () => {
@@ -131,7 +131,7 @@ test("Import", async () => {
   await choose();
   await walletRow("Revolut");
 
-  await userEvent.click(await screen.findByRole("button", { name: "importar 460 movimientos" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Importar 460 movimientos" }));
 
   expect(await screen.findByText("460 movimientos importados ✓")).toBeInTheDocument();
   expect((api.to("POST", "/api/imports")[0].body as { accounts: Accounts }).accounts).toEqual({
@@ -146,10 +146,10 @@ test("Nothing to import", async () => {
   open();
   await choose();
 
-  await target("Cuenta Principal", "no importar");
-  await target("Revolut", "no importar");
+  await target("Cuenta Principal", "No importar");
+  await target("Revolut", "No importar");
 
-  expect(await screen.findByRole("button", { name: "importar 0 movimientos" })).toBeDisabled();
+  expect(await screen.findByRole("button", { name: "Importar 0 movimientos" })).toBeDisabled();
 });
 
 test("Cancel", async () => {
@@ -157,11 +157,11 @@ test("Cancel", async () => {
   await choose();
   await walletRow("Revolut");
 
-  await userEvent.click(screen.getByRole("button", { name: "cancelar" }));
+  await userEvent.click(screen.getByRole("button", { name: "Cancelar" }));
 
   expect(screen.queryByRole("listitem", { name: "Revolut" })).not.toBeInTheDocument();
   expect(api.to("POST", "/api/imports")).toHaveLength(0);
-  expect(screen.getByLabelText("elegir fichero CSV")).toBeInTheDocument();
+  expect(screen.getByLabelText("Elegir fichero CSV")).toBeInTheDocument();
 });
 
 test("Import fails", async () => {
@@ -169,7 +169,7 @@ test("Import fails", async () => {
   await choose();
   await walletRow("Revolut");
 
-  await userEvent.click(await screen.findByRole("button", { name: /^importar \d+ movimientos$/ }));
+  await userEvent.click(await screen.findByRole("button", { name: /^Importar \d+ movimientos$/ }));
 
   expect(await screen.findByText("Error 500")).toBeInTheDocument();
   expect(screen.getByRole("listitem", { name: "Revolut" })).toBeInTheDocument();

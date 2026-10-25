@@ -58,8 +58,8 @@ export function BanksScreen() {
 
   return (
     <>
-      <h1>los bancos</h1>
-      <p className="sub">de dónde salen tus movimientos</p>
+      <h1>Los bancos</h1>
+      <p className="sub">De dónde salen tus movimientos</p>
       {shown && (
         <Message kind="status" className="notice">
           {shown}
@@ -80,7 +80,7 @@ export function BanksScreen() {
           }}
           onReconnect={() => connect.mutate({ name: c.bank, country: c.country }, onError)}
           onRemove={() => {
-            if (!window.confirm(`¿Quitar ${c.bank}? Sus cuentas y movimientos se quedan en "cuentas sin banco".`))
+            if (!window.confirm(`¿Quitar ${c.bank}? Sus cuentas y movimientos se quedan en "Cuentas sin banco".`))
               return;
             setMessage("");
             remove.mutate(c.id, onError);
@@ -114,7 +114,7 @@ export function BanksScreen() {
       />
 
       <Button className="leave" onClick={() => logout.mutate(undefined, onError)}>
-        salir
+        Salir
       </Button>
     </>
   );

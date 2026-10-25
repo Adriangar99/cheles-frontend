@@ -21,16 +21,16 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
         </div>
         {transfer ? (
           <Button size="small" className="tx-tools" onClick={() => onChange({ kind: "normal" })}>
-            ⇄ entre mis cuentas (quitar)
+            ⇄ Entre mis cuentas (quitar)
           </Button>
         ) : (
           <div className="tx-tools">
             <Select
               value={tx.category_id ?? ""}
               onChange={(e) => onChange({ category_id: Number(e.target.value) })}
-              label="categoría"
+              label="Categoría"
             >
-              {uncategorized && <option value="">sin categoría</option>}
+              {uncategorized && <option value="">Sin categoría</option>}
               {options.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.icon} {c.name}
@@ -40,7 +40,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
             <Button
               size="small"
               onClick={() => onChange({ kind: "transfer" })}
-              title="marcar como transferencia entre mis cuentas"
+              title="Marcar como transferencia entre mis cuentas"
             >
               ⇄
             </Button>

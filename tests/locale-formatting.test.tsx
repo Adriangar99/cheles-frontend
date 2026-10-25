@@ -13,7 +13,7 @@ async function incomeShownFor(income: number) {
   today("2026-10-15T12:00:00");
   fakeApi({ "GET /api/stats/summary": ok(summary({ income })), "GET /api/stats/history": noHistory });
   renderScreen(<MyMonth />);
-  return (await screen.findByText("ingresos", { selector: "dt" })).nextElementSibling?.textContent?.replace(/\s/g, " ");
+  return (await screen.findByText("Ingresos", { selector: "dt" })).nextElementSibling?.textContent?.replace(/\s/g, " ");
 }
 
 test("Four digits are not grouped", async () => {
@@ -47,7 +47,7 @@ test("Month heading", async () => {
   renderScreen(<MyMonth />);
 
   const heading = screen.getByRole("heading", { level: 1 });
-  expect(heading).toHaveTextContent("octubre de 2026");
+  expect(heading).toHaveTextContent("Octubre de 2026");
   expect(heading).not.toHaveStyle({ textTransform: "capitalize" });
 });
 
@@ -56,10 +56,10 @@ test("Forward across the year", async () => {
   const api = fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
   renderScreen(<MyMonth />);
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
-  await userEvent.click(screen.getByRole("button", { name: "mes siguiente" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes siguiente" }));
 
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("enero de 2027");
+  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Enero de 2027");
   expect(api.to("GET", "/api/stats/summary").map((r) => r.query.get("month"))).toEqual([
     "2027-01",
     "2026-12",
@@ -72,7 +72,7 @@ test("Backward across the year", async () => {
   const api = fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
   renderScreen(<MyMonth />);
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
 
   expect(api.to("GET", "/api/stats/summary").at(-1)?.query.get("month")).toBe("2025-12");
 });
@@ -82,7 +82,7 @@ test("Transaction date", async () => {
   fakeApi({ "GET /api/transactions": ok([tx({ date: "2026-10-03" })]), "GET /api/categories": ok([]) });
   renderScreen(<Movements />);
 
-  expect(await screen.findByRole("heading", { name: "sábado, 3 de octubre" })).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: "Sábado, 3 de octubre" })).toBeInTheDocument();
 });
 
 test("Just after midnight on the first day", async () => {
@@ -91,6 +91,6 @@ test("Just after midnight on the first day", async () => {
   const api = fakeApi({ "GET /api/stats/summary": ok(summary()), "GET /api/stats/history": noHistory });
   renderScreen(<MyMonth />);
 
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("noviembre de 2026");
+  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Noviembre de 2026");
   await waitFor(() => expect(api.to("GET", "/api/stats/summary")[0]?.query.get("month")).toBe("2026-11"));
 });

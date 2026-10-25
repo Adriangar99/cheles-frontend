@@ -38,7 +38,6 @@ h2 {
   font-size: var(--text-md);
   font-weight: 600;
   margin: var(--space-8) 0 var(--space-2);
-  text-transform: lowercase;
 }
 .sub {
   color: var(--color-muted);

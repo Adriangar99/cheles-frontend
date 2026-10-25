@@ -16,7 +16,7 @@ export function AccountRow({ account: a, onRoleChange }: { account: Account; onR
           <Amount value={a.balance} />
         </div>
       </div>
-      <Select value={a.role} onChange={(e) => onRoleChange(parseRole(e.target.value))} label="para qué es esta cuenta">
+      <Select value={a.role} onChange={(e) => onRoleChange(parseRole(e.target.value))} label="Para qué es esta cuenta">
         {Object.entries(ROLE_LABEL).map(([value, label]) => (
           <option key={value} value={value}>
             {label}

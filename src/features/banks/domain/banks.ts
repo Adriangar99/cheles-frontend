@@ -5,30 +5,30 @@ const DAY_MS = 86_400_000;
 const EXPIRY_WARNING_DAYS = 14;
 const ERROR_EXCERPT_LENGTH = 120;
 
-export const ROLE_LABEL: Record<Role, string> = { main: "día a día", savings: "ahorro", excluded: "no cuenta" };
+export const ROLE_LABEL: Record<Role, string> = { main: "Día a día", savings: "Ahorro", excluded: "No cuenta" };
 
 // Part of a day of consent counts as a whole one.
 // A consent whose date has passed needs reconnecting even before a sync marks the connection expired.
 export function consentStatus(connection: Connection, now: number) {
   const days = Math.ceil((new Date(connection.valid_until).getTime() - now) / DAY_MS);
   if (connection.status !== "active" || days <= 0) {
-    return { tone: "neg", text: "hay que reconectar", needsReconnect: true } as const;
+    return { tone: "neg", text: "Hay que reconectar", needsReconnect: true } as const;
   }
   return days < EXPIRY_WARNING_DAYS
-    ? ({ tone: "neg", text: `caduca en ${days} días`, needsReconnect: false } as const)
-    : ({ tone: "pos", text: `al día · ${days} días de permiso`, needsReconnect: false } as const);
+    ? ({ tone: "neg", text: `Caduca en ${days} días`, needsReconnect: false } as const)
+    : ({ tone: "pos", text: `Al día · ${days} días de permiso`, needsReconnect: false } as const);
 }
 
 export const lastReadLabel = (lastSyncedAt: string | null) =>
-  lastSyncedAt ? `leído el ${dayMonthTime(lastSyncedAt)}` : "sin leer aún";
+  lastSyncedAt ? `Leído el ${dayMonthTime(lastSyncedAt)}` : "Sin leer aún";
 
 export const errorExcerpt = (error: string) => error.slice(0, ERROR_EXCERPT_LENGTH);
 
 // The bank authorization redirects back with ?connected=1 or ?error=1; the error wins if both are present.
 export function authorizationMessage(search: string) {
   const params = new URLSearchParams(search);
-  if (params.get("error")) return "no se pudo conectar el banco";
-  if (params.get("connected")) return "banco conectado ✓";
+  if (params.get("error")) return "No se pudo conectar el banco";
+  if (params.get("connected")) return "Banco conectado ✓";
   return null;
 }
 
@@ -50,7 +50,7 @@ export function banksSummary(banks: Banks, now: number) {
     accounts: counted.length === 1 ? "en 1 cuenta" : `en ${counted.length} cuentas`,
     attention:
       attention === 0
-        ? ({ tone: "pos", text: "todos los bancos al día" } as const)
+        ? ({ tone: "pos", text: "Todos los bancos al día" } as const)
         : ({
             tone: "neg",
             text: attention === 1 ? "1 banco necesita atención" : `${attention} bancos necesitan atención`,

@@ -10,10 +10,10 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
 
   await test.step("connect through the bank's authorization page", async () => {
     await page.goto("/bancos");
-    await page.getByRole("button", { name: "conectar un banco" }).click();
-    await page.getByRole("listitem", { name: "Banco E2E" }).getByRole("button", { name: "conectar" }).click();
+    await page.getByRole("button", { name: "Conectar un banco" }).click();
+    await page.getByRole("listitem", { name: "Banco E2E" }).getByRole("button", { name: "Conectar" }).click();
 
-    await expect(page.getByRole("status")).toHaveText("banco conectado ✓");
+    await expect(page.getByRole("status")).toHaveText("Banco conectado ✓");
     await expect(page).toHaveURL("/bancos");
     const bank = page.getByRole("region", { name: "Banco E2E" });
     await expect(bank.getByRole("listitem", { name: "Cuenta Online" })).toContainText("1612,70");
@@ -22,23 +22,23 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
 
   await test.step("mark the savings account", async () => {
     const savings = page.getByRole("listitem", { name: "Ahorro" });
-    await savings.getByRole("combobox", { name: "para qué es esta cuenta" }).selectOption({ label: "ahorro" });
+    await savings.getByRole("combobox", { name: "Para qué es esta cuenta" }).selectOption({ label: "Ahorro" });
     await expect(savings.getByRole("combobox")).toHaveValue("savings");
     // The last read time changes on every run: masked so screenshots compare across runs
     await page.screenshot({
       path: `${SCREENSHOTS}/bancos.png`,
       fullPage: true,
-      mask: [page.getByText(/^leído el /)],
+      mask: [page.getByText(/^Leído el /)],
     });
   });
 
   await test.step("«mi mes» counts the month, without the transfer to savings", async () => {
     await page.goto("/");
     const figure = (label: string) => page.locator("dt", { hasText: label }).locator("+ dd");
-    await expect(figure("ingresos")).toHaveText("2000,00 €");
-    await expect(figure("gastos")).toHaveText("87,30 €");
-    await expect(figure("enviado a ahorro")).toHaveText("300,00 €");
-    await expect(figure("saldo total ahora")).toHaveText("6912,70 €");
+    await expect(figure("Ingresos")).toHaveText("2000,00 €");
+    await expect(figure("Gastos")).toHaveText("87,30 €");
+    await expect(figure("Enviado a ahorro")).toHaveText("300,00 €");
+    await expect(figure("Saldo total ahora")).toHaveText("6912,70 €");
     await page.screenshot({ path: `${SCREENSHOTS}/mi-mes.png`, fullPage: true });
   });
 
@@ -46,11 +46,11 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
     await page.goto("/movimientos");
     await expect(page.getByRole("heading", { name: "5 movimientos" })).toBeVisible();
     const groceries = page.getByRole("listitem", { name: "MERCADONA" });
-    await groceries.getByRole("combobox", { name: "categoría" }).selectOption({ label: "🍽 Restaurantes" });
+    await groceries.getByRole("combobox", { name: "Categoría" }).selectOption({ label: "🍽 Restaurantes" });
 
     await page.reload();
     await expect(
-      page.getByRole("listitem", { name: "MERCADONA" }).getByRole("combobox", { name: "categoría" }),
+      page.getByRole("listitem", { name: "MERCADONA" }).getByRole("combobox", { name: "Categoría" }),
     ).toHaveText(/Restaurantes/);
     await page.screenshot({ path: `${SCREENSHOTS}/movimientos.png`, fullPage: true });
   });
@@ -58,9 +58,9 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
   await test.step("removing the connection keeps its accounts", async () => {
     await page.goto("/bancos");
     page.once("dialog", (dialog) => dialog.accept());
-    await page.getByRole("region", { name: "Banco E2E" }).getByRole("button", { name: "quitar" }).click();
+    await page.getByRole("region", { name: "Banco E2E" }).getByRole("button", { name: "Quitar" }).click();
 
-    const detached = page.getByRole("region", { name: "cuentas sin banco" });
+    const detached = page.getByRole("region", { name: "Cuentas sin banco" });
     await expect(detached.getByRole("listitem", { name: "Cuenta Online" })).toBeVisible();
     await expect(detached.getByRole("listitem", { name: "Ahorro" })).toBeVisible();
     await expect(page.getByRole("region", { name: "Banco E2E" })).toHaveCount(0);
@@ -81,21 +81,21 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
     const utf16 = Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(csv, "utf16le")]);
 
     await page
-      .getByLabel("elegir fichero CSV")
+      .getByLabel("Elegir fichero CSV")
       .setInputFiles({ name: "moneylover.csv", mimeType: "text/csv", buffer: utf16 });
     const wallet = page.getByRole("listitem", { name: "Cartera E2E" });
-    await expect(wallet).toContainText("entran 3");
+    await expect(wallet).toContainText("Entran 3");
     await expect(wallet).toContainText("1 ajustes de saldo no se importan");
-    await page.getByRole("button", { name: "importar 3 movimientos" }).click();
+    await page.getByRole("button", { name: "Importar 3 movimientos" }).click();
     await expect(page.getByRole("status")).toHaveText("3 movimientos importados ✓");
     await expect(
-      page.getByRole("region", { name: "cuentas sin banco" }).getByRole("listitem", { name: "Cartera E2E" }),
+      page.getByRole("region", { name: "Cuentas sin banco" }).getByRole("listitem", { name: "Cartera E2E" }),
     ).toBeVisible();
 
     await page.goto("/");
-    await page.getByRole("button", { name: "mes anterior" }).click();
+    await page.getByRole("button", { name: "Mes anterior" }).click();
     const figure = (label: string) => page.locator("dt", { hasText: label }).locator("+ dd").first();
-    await expect(figure("ingresos")).toHaveText("1500,00 €");
-    await expect(figure("gastos")).toHaveText("57,20 €");
+    await expect(figure("Ingresos")).toHaveText("1500,00 €");
+    await expect(figure("Gastos")).toHaveText("57,20 €");
   });
 });

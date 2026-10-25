@@ -23,10 +23,10 @@ async function nextConfig() {
 const noBanks = ok({ connections: [], detached_accounts: [] });
 
 async function login(user = userEvent.setup()) {
-  await user.type(screen.getByPlaceholderText("usuario"), "adrian");
-  await user.type(screen.getByPlaceholderText("contraseña"), "secret");
-  await user.type(screen.getByPlaceholderText("código de 6 dígitos"), "123456");
-  await user.click(screen.getByRole("button", { name: "entrar" }));
+  await user.type(screen.getByPlaceholderText("Usuario"), "adrian");
+  await user.type(screen.getByPlaceholderText("Contraseña"), "secret");
+  await user.type(screen.getByPlaceholderText("Código de 6 dígitos"), "123456");
+  await user.click(screen.getByRole("button", { name: "Entrar" }));
 }
 
 test("Proxied request", async () => {
@@ -74,7 +74,7 @@ test("Error with detail", async () => {
   fakeApi({ "GET /api/banks": noBanks, "POST /api/reprocess": fail(502, { detail: "Enable Banking: caído" }) });
   renderScreen(<Banks />);
 
-  await userEvent.click(await screen.findByRole("button", { name: "hazlo ahora" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Hazlo ahora" }));
 
   expect(await screen.findByText("Enable Banking: caído")).toBeInTheDocument();
 });
@@ -84,7 +84,7 @@ test("Error without detail", async () => {
   fakeApi({ "GET /api/banks": noBanks, "POST /api/reprocess": fail(500) });
   renderScreen(<Banks />);
 
-  await userEvent.click(await screen.findByRole("button", { name: "hazlo ahora" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Hazlo ahora" }));
 
   expect(await screen.findByText("Error 500")).toBeInTheDocument();
 });
@@ -95,7 +95,7 @@ test("Validation error", async () => {
   fakeApi({ "GET /api/banks": noBanks, "POST /api/reprocess": fail(422, { detail }) });
   renderScreen(<Banks />);
 
-  await userEvent.click(await screen.findByRole("button", { name: "hazlo ahora" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Hazlo ahora" }));
 
   expect(await screen.findByText("Datos no válidos")).toBeInTheDocument();
 });

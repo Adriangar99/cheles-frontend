@@ -5,9 +5,9 @@ transactions and manage your bank connections. Mobile-first Next.js, run with Do
 [Cheles API](https://github.com/Adriangar99/cheles-backend), which it reaches through an `/api/*` rewrite so the browser
 only talks to the web app.
 
-- «mi mes»: income, expenses, savings, spending by category and the last 12 months.
-- «movimientos»: search, categories and transfers between your own accounts.
-- «bancos»: connections, reconnecting and removing banks, account roles.
+- «Mi mes»: income, expenses, savings, spending by category and the last 12 months.
+- «Movimientos»: search, categories and transfers between your own accounts.
+- «Bancos»: connections, reconnecting and removing banks, account roles.
 
 ## Quick start
 

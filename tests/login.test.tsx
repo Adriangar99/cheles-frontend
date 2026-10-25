@@ -7,18 +7,18 @@ import { stubLocation } from "./location";
 import { renderScreen } from "./render";
 
 async function submit(user = userEvent.setup()) {
-  await user.type(screen.getByPlaceholderText("usuario"), "adrian");
-  await user.type(screen.getByPlaceholderText("contraseña"), "secret");
-  await user.type(screen.getByPlaceholderText("código de 6 dígitos"), "123456");
-  await user.click(screen.getByRole("button", { name: "entrar" }));
+  await user.type(screen.getByPlaceholderText("Usuario"), "adrian");
+  await user.type(screen.getByPlaceholderText("Contraseña"), "secret");
+  await user.type(screen.getByPlaceholderText("Código de 6 dígitos"), "123456");
+  await user.click(screen.getByRole("button", { name: "Entrar" }));
 }
 
 test("Empty field", async () => {
   const api = fakeApi({ "POST /api/auth/login": ok({ ok: true }) });
   renderScreen(<LoginPage />);
 
-  await userEvent.type(screen.getByPlaceholderText("usuario"), "adrian");
-  await userEvent.click(screen.getByRole("button", { name: "entrar" }));
+  await userEvent.type(screen.getByPlaceholderText("Usuario"), "adrian");
+  await userEvent.click(screen.getByRole("button", { name: "Entrar" }));
 
   expect(api.requests).toEqual([]);
 });
@@ -26,7 +26,7 @@ test("Empty field", async () => {
 test("Code autofill", () => {
   renderScreen(<LoginPage />);
 
-  const code = screen.getByPlaceholderText("código de 6 dígitos");
+  const code = screen.getByPlaceholderText("Código de 6 dígitos");
   expect(code).toHaveAttribute("autocomplete", "one-time-code");
   expect(code).toHaveAttribute("inputmode", "numeric");
   expect(code).toHaveAttribute("maxlength", "6");
@@ -51,7 +51,7 @@ test("Wrong credentials", async () => {
   await submit();
 
   expect(await screen.findByText("Datos incorrectos")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "entrar" })).toBeEnabled();
+  expect(screen.getByRole("button", { name: "Entrar" })).toBeEnabled();
 });
 
 test("Too many attempts", async () => {
@@ -72,6 +72,6 @@ test("Request in progress", async () => {
 
   await submit();
 
-  expect(screen.getByRole("button", { name: "entrar" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Entrar" })).toBeDisabled();
   reply.release(ok({ ok: true }));
 });

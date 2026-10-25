@@ -28,19 +28,19 @@ const meter = (name: string) => screen.getByRole("meter", { name });
 test("Default month", async () => {
   const api = open();
 
-  expect(heading()).toHaveTextContent("octubre de 2026");
-  expect(screen.getByRole("button", { name: "mes siguiente" })).toBeDisabled();
-  await card("ingresos");
+  expect(heading()).toHaveTextContent("Octubre de 2026");
+  expect(screen.getByRole("button", { name: "Mes siguiente" })).toBeDisabled();
+  await card("Ingresos");
   expect(api.to("GET", "/api/stats/summary")[0].query.get("month")).toBe("2026-10");
 });
 
 test("Go to the previous month", async () => {
   const api = open();
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
 
-  expect(heading()).toHaveTextContent("septiembre de 2026");
-  expect(screen.getByRole("button", { name: "mes siguiente" })).toBeEnabled();
+  expect(heading()).toHaveTextContent("Septiembre de 2026");
+  expect(screen.getByRole("button", { name: "Mes siguiente" })).toBeEnabled();
   expect(api.to("GET", "/api/stats/summary").at(-1)?.query.get("month")).toBe("2026-09");
 });
 
@@ -48,40 +48,40 @@ test("Year boundary", async () => {
   today("2026-01-15T12:00:00");
   open();
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
 
-  expect(heading()).toHaveTextContent("diciembre de 2025");
+  expect(heading()).toHaveTextContent("Diciembre de 2025");
 });
 
 test("Positive month", async () => {
   open({ income: 2000, expenses: 1200, net: 800, saved: 300 });
 
-  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
-  expect(await card("gastos")).toHaveTextContent("1200,00 €");
-  expect(await card("sobra")).toHaveTextContent("800,00 €");
-  expect(await card("sobra")).toHaveAttribute("data-tone", "pos");
-  expect(await card("enviado a ahorro")).toHaveTextContent("300,00 €");
+  expect(await card("Ingresos")).toHaveTextContent("2000,00 €");
+  expect(await card("Gastos")).toHaveTextContent("1200,00 €");
+  expect(await card("Sobra")).toHaveTextContent("800,00 €");
+  expect(await card("Sobra")).toHaveAttribute("data-tone", "pos");
+  expect(await card("Enviado a ahorro")).toHaveTextContent("300,00 €");
 });
 
 test("Negative month", async () => {
   open({ net: -150 });
 
-  expect(await card("sobra")).toHaveTextContent("-150,00 €");
-  expect(await card("sobra")).toHaveAttribute("data-tone", "neg");
+  expect(await card("Sobra")).toHaveTextContent("-150,00 €");
+  expect(await card("Sobra")).toHaveAttribute("data-tone", "neg");
 });
 
 // Requirement boundary not covered by a scenario: «sobra» is green when zero.
 test("Break-even month", async () => {
   open({ net: 0 });
 
-  expect(await card("sobra")).toHaveAttribute("data-tone", "pos");
+  expect(await card("Sobra")).toHaveAttribute("data-tone", "pos");
 });
 
 test("No savings accounts", async () => {
   open({ balances: { total: 1500, main: 1500 } });
 
-  expect(await card("saldo total ahora")).toHaveTextContent("1500,00 €");
-  expect(await screen.findByText("día a día 1500,00 € · ahorro 0,00 €")).toBeInTheDocument();
+  expect(await card("Saldo total ahora")).toHaveTextContent("1500,00 €");
+  expect(await screen.findByText("Día a día 1500,00 € · ahorro 0,00 €")).toBeInTheDocument();
 });
 
 test("Spending rose", async () => {
@@ -89,25 +89,25 @@ test("Spending rose", async () => {
 
   const spendingRose = await screen.findByText("200,00 € más que en septiembre");
   expect(spendingRose).toHaveAttribute("data-tone", "neg");
-  expect((await card("gastos"))?.nextElementSibling).toBe(spendingRose);
+  expect((await card("Gastos"))?.nextElementSibling).toBe(spendingRose);
   expect(screen.getByText("200,00 € menos que en septiembre")).toHaveAttribute("data-tone", "neg");
-  expect((await card("ingresos"))?.nextElementSibling).toHaveTextContent("igual que en septiembre");
-  expect(screen.getByText("igual que en septiembre")).not.toHaveAttribute("data-tone");
+  expect((await card("Ingresos"))?.nextElementSibling).toHaveTextContent("Igual que en septiembre");
+  expect(screen.getByText("Igual que en septiembre")).not.toHaveAttribute("data-tone");
 });
 
 // Requirement detail: a rise in income or in what is left is good news
 test("Income rose", async () => {
   open({ income: 2500, expenses: 1000, net: 1500 }, [{ month: "2026-09", income: 2000, expenses: 1000 }]);
 
-  expect((await card("ingresos"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
-  expect((await card("sobra"))?.nextElementSibling).toHaveTextContent("500,00 € más que en septiembre");
-  expect((await card("sobra"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
+  expect((await card("Ingresos"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
+  expect((await card("Sobra"))?.nextElementSibling).toHaveTextContent("500,00 € más que en septiembre");
+  expect((await card("Sobra"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
 });
 
 test("No previous month in the history", async () => {
   open({ income: 2000 }, [{ month: "2026-08", income: 1500, expenses: 500 }]);
 
-  await card("ingresos");
+  await card("Ingresos");
   expect(screen.queryByText(/que en (agosto|septiembre)/)).not.toBeInTheDocument();
 });
 
@@ -126,14 +126,14 @@ test("Spending breakdown", async () => {
 
   expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "15");
   expect(meter("🍽 Restaurantes")).toHaveAttribute("aria-valuenow", "6");
-  expect(meter("sobra")).toHaveAttribute("aria-valuenow", "79");
+  expect(meter("Sobra")).toHaveAttribute("aria-valuenow", "79");
   // Each segment takes the category's own color
   expect(meter("🛒 Supermercado").style.background).toBe("rgb(76, 175, 80)");
   expect(meter("🍽 Restaurantes").style.background).toBe("rgb(255, 152, 0)");
   expect(share("🛒 Supermercado")).toHaveTextContent("300,00 €15 %");
   expect(share("🍽 Restaurantes")).toHaveTextContent("120,00 €6 %");
-  expect(share("sobra")).toHaveTextContent("1580,00 €79 %");
-  expect(screen.getByRole("heading", { name: "la nómina repartida" })).toBeInTheDocument();
+  expect(share("Sobra")).toHaveTextContent("1580,00 €79 %");
+  expect(screen.getByRole("heading", { name: "La nómina repartida" })).toBeInTheDocument();
 });
 
 test("Spending over income", async () => {
@@ -144,14 +144,14 @@ test("Spending over income", async () => {
   });
 
   expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "100");
-  expect(meter("sobra")).toHaveAttribute("aria-valuenow", "0");
-  expect(share("sobra")).toHaveTextContent("0,00 €0 %");
+  expect(meter("Sobra")).toHaveAttribute("aria-valuenow", "0");
+  expect(share("Sobra")).toHaveTextContent("0,00 €0 %");
 });
 
 test("No spending", async () => {
   open({ by_category: [] });
 
-  expect(await screen.findByText("sin gastos este mes")).toBeInTheDocument();
+  expect(await screen.findByText("Sin gastos este mes")).toBeInTheDocument();
 });
 
 test("History bars", async () => {
@@ -164,7 +164,7 @@ test("History bars", async () => {
   expect(meter("2026-09 gastos")).toHaveAttribute("aria-valuenow", "35");
   expect(screen.getByText("09")).toBeInTheDocument();
   expect(screen.getByTitle("2026-09: 2000,00 € / 1000,00 €")).toBeInTheDocument();
-  expect(screen.getByText("verde = ingresos · rojo = gastos")).toBeInTheDocument();
+  expect(screen.getByText("Verde = ingresos · rojo = gastos")).toBeInTheDocument();
 });
 
 // Requirement detail not covered by a scenario: the largest value may be an expense.
@@ -184,21 +184,21 @@ test("Previous figures stay while the next month loads", async () => {
     "GET /api/stats/history": ok([]),
   });
   renderScreen(<MyMonth />);
-  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
+  expect(await card("Ingresos")).toHaveTextContent("2000,00 €");
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
 
-  expect(heading()).toHaveTextContent("septiembre de 2026");
-  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
+  expect(heading()).toHaveTextContent("Septiembre de 2026");
+  expect(await card("Ingresos")).toHaveTextContent("2000,00 €");
   september.release(ok(summary({ month: "2026-09", income: 1500 })));
-  await waitFor(async () => expect(await card("ingresos")).toHaveTextContent("1500,00 €"));
+  await waitFor(async () => expect(await card("Ingresos")).toHaveTextContent("1500,00 €"));
 });
 
 test("Month navigation does not reload history", async () => {
   const api = open({}, [{ month: "2026-09", income: 2000, expenses: 1000 }]);
   await screen.findByText("09");
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
 
   expect(await screen.findByText("09")).toBeInTheDocument();
   expect(api.to("GET", "/api/stats/history")).toHaveLength(1);
@@ -214,7 +214,7 @@ test("Summary unavailable", async () => {
   renderScreen(<MyMonth />);
 
   await waitFor(() => expect(alert()).toHaveTextContent("Error 500"));
-  expect(screen.queryByText("ingresos")).not.toBeInTheDocument();
+  expect(screen.queryByText("Ingresos")).not.toBeInTheDocument();
 });
 
 test("History unavailable", async () => {
@@ -222,7 +222,7 @@ test("History unavailable", async () => {
   renderScreen(<MyMonth />);
 
   await waitFor(() => expect(alert()).toHaveTextContent("Error 503"));
-  expect(await card("ingresos")).toHaveTextContent("2000,00 €");
+  expect(await card("Ingresos")).toHaveTextContent("2000,00 €");
 });
 
 test("Error cleared by changing the month", async () => {
@@ -234,9 +234,9 @@ test("Error cleared by changing the month", async () => {
   renderScreen(<MyMonth />);
   expect(await screen.findByText("Error 500")).toBeInTheDocument();
 
-  await userEvent.click(screen.getByRole("button", { name: "mes anterior" }));
+  await userEvent.click(screen.getByRole("button", { name: "Mes anterior" }));
 
-  expect(await card("ingresos")).toHaveTextContent("1500,00 €");
+  expect(await card("Ingresos")).toHaveTextContent("1500,00 €");
   expect(screen.queryByText("Error 500")).not.toBeInTheDocument();
 });
 
@@ -260,7 +260,7 @@ test("Dollars left out", async () => {
 test("Only euros", async () => {
   open({ other_currencies: [] });
 
-  await card("ingresos");
+  await card("Ingresos");
   expect(screen.queryByRole("note")).not.toBeInTheDocument();
 });
 

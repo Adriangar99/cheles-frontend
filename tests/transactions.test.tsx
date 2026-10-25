@@ -50,7 +50,7 @@ test("Search", async () => {
   const api = open([tx({ id: 1, counterparty: "MERCADONA" }), tx({ id: 2, counterparty: "BAR PEPE" })]);
   await screen.findByText("BAR PEPE");
 
-  await userEvent.type(screen.getByPlaceholderText("buscar…"), "merca");
+  await userEvent.type(screen.getByPlaceholderText("Buscar…"), "merca");
 
   await waitFor(() => expect(screen.queryByText("BAR PEPE")).not.toBeInTheDocument());
   expect(screen.getByText("MERCADONA")).toBeInTheDocument();
@@ -67,7 +67,7 @@ test("Typing quickly", async () => {
   const api = open([tx()]);
   await screen.findByText("MERCADONA");
 
-  await user.type(screen.getByPlaceholderText("buscar…"), "merca");
+  await user.type(screen.getByPlaceholderText("Buscar…"), "merca");
   await vi.advanceTimersByTimeAsync(400);
 
   const searches = () => api.to("GET", "/api/transactions").filter((r) => r.query.has("q"));
@@ -81,7 +81,7 @@ test("Pending debit", async () => {
   const row = await rowOf("MERCADONA");
   expect(within(row).getByText("Nómina · pendiente")).toBeInTheDocument();
   expect(within(row).getByText("-12,50 €")).not.toHaveAttribute("data-tone");
-  expect(within(screen.getByRole("region", { name: "sábado, 3 de octubre" })).getByRole("listitem")).toBe(row);
+  expect(within(screen.getByRole("region", { name: "Sábado, 3 de octubre" })).getByRole("listitem")).toBe(row);
 });
 
 test("Day total", async () => {
@@ -92,10 +92,10 @@ test("Day total", async () => {
     tx({ id: 4, date: "2026-10-02", amount: -24.9, counterparty: "BAR PEPE" }),
   ]);
 
-  const day = await screen.findByRole("region", { name: "sábado, 3 de octubre" });
+  const day = await screen.findByRole("region", { name: "Sábado, 3 de octubre" });
   expect(within(day).getByText("1937,60 €")).toHaveAttribute("data-tone", "pos");
   expect(within(day).getAllByRole("listitem")).toHaveLength(3);
-  const before = screen.getByRole("region", { name: "viernes, 2 de octubre" });
+  const before = screen.getByRole("region", { name: "Viernes, 2 de octubre" });
   expect(within(before).getAllByText("-24,90 €")).toHaveLength(2);
 });
 
@@ -104,7 +104,7 @@ test("Empty month", async () => {
 
   await waitFor(() => expect(api.to("GET", "/api/transactions")).toHaveLength(1));
   expect(screen.getByText("0 movimientos")).toBeInTheDocument();
-  expect(screen.getByText("nada por aquí")).toBeInTheDocument();
+  expect(screen.getByText("Nada por aquí")).toBeInTheDocument();
 });
 
 test("Change category", async () => {
@@ -113,7 +113,7 @@ test("Change category", async () => {
   const row = await rowOf("MERCADONA");
   await waitFor(() => expect(optionsOf(row)).toContain("🍽 Restaurantes"));
 
-  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "categoría" }), "🍽 Restaurantes");
+  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "Categoría" }), "🍽 Restaurantes");
 
   expect(api.to("PATCH", "/api/transactions/7")[0].body).toEqual({ category_id: 2 });
   await waitFor(() => expect(api.to("GET", "/api/transactions")).toHaveLength(2));
@@ -134,9 +134,9 @@ test("Mark as transfer", async () => {
   await userEvent.click(within(await rowOf("MERCADONA")).getByRole("button", { name: "⇄" }));
 
   expect(api.to("PATCH", "/api/transactions/4")[0].body).toEqual({ kind: "transfer" });
-  const quitar = await screen.findByRole("button", { name: "⇄ entre mis cuentas (quitar)" });
+  const quitar = await screen.findByRole("button", { name: "⇄ Entre mis cuentas (quitar)" });
   const row = screen.getByRole("listitem", { name: "MERCADONA" });
-  expect(within(row).getByRole("button", { name: "⇄ entre mis cuentas (quitar)" })).toBe(quitar);
+  expect(within(row).getByRole("button", { name: "⇄ Entre mis cuentas (quitar)" })).toBe(quitar);
   expect(row).toHaveAttribute("data-kind", "transfer");
   expect(within(row).queryByRole("combobox")).not.toBeInTheDocument();
 });
@@ -144,11 +144,11 @@ test("Mark as transfer", async () => {
 test("Unmark a transfer", async () => {
   const api = open([tx({ id: 5, kind: "transfer" })]);
 
-  await userEvent.click(await screen.findByRole("button", { name: "⇄ entre mis cuentas (quitar)" }));
+  await userEvent.click(await screen.findByRole("button", { name: "⇄ Entre mis cuentas (quitar)" }));
 
   expect(api.to("PATCH", "/api/transactions/5")[0].body).toEqual({ kind: "normal" });
   const row = await rowOf("MERCADONA");
-  expect(await within(row).findByRole("combobox", { name: "categoría" })).toBeInTheDocument();
+  expect(await within(row).findByRole("combobox", { name: "Categoría" })).toBeInTheDocument();
   expect(row).toHaveAttribute("data-kind", "normal");
 });
 
@@ -173,7 +173,7 @@ test("Change rejected", async () => {
   const row = await rowOf("MERCADONA");
   await waitFor(() => expect(optionsOf(row)).toContain("🍽 Restaurantes"));
 
-  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "categoría" }), "🍽 Restaurantes");
+  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "Categoría" }), "🍽 Restaurantes");
 
   await waitFor(() => expect(alert()).toHaveTextContent("Categoría inexistente"));
   expect(api.to("GET", "/api/transactions")).toHaveLength(1);
@@ -192,7 +192,7 @@ test("Error cleared by the next edit", async () => {
   renderScreen(<Movements />);
   const row = await rowOf("MERCADONA");
   await waitFor(() => expect(optionsOf(row)).toContain("🍽 Restaurantes"));
-  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "categoría" }), "🍽 Restaurantes");
+  await userEvent.selectOptions(within(row).getByRole("combobox", { name: "Categoría" }), "🍽 Restaurantes");
   expect(await screen.findByText("Categoría inexistente")).toBeInTheDocument();
 
   await userEvent.click(within(await rowOf("MERCADONA")).getByRole("button", { name: "⇄" }));

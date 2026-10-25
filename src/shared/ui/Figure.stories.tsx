@@ -9,12 +9,12 @@ export const Grid: Story = {
   args: { children: null },
   render: () => (
     <Figures>
-      <Figure label="ingresos" value="2000,00 €" tone="pos" />
-      <Figure label="gastos" value="1200,00 €" />
-      <Figure label="sobra" value="-150,00 €" tone="neg" />
-      <Figure label="enviado a ahorro" value="300,00 €" />
-      <Figure label="saldo total ahora" value="6912,70 €" total>
-        <dd className="sub">día a día 1612,70 € · ahorro 5300,00 €</dd>
+      <Figure label="Ingresos" value="2000,00 €" tone="pos" />
+      <Figure label="Gastos" value="1200,00 €" />
+      <Figure label="Sobra" value="-150,00 €" tone="neg" />
+      <Figure label="Enviado a ahorro" value="300,00 €" />
+      <Figure label="Saldo total ahora" value="6912,70 €" total>
+        <dd className="sub">Día a día 1612,70 € · ahorro 5300,00 €</dd>
       </Figure>
     </Figures>
   ),

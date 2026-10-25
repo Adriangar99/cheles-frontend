@@ -43,7 +43,7 @@ test("Login page is reachable", () => {
 
   renderScreen(<LoginPage />);
 
-  expect(screen.getByRole("heading", { name: "cheles" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Cheles" })).toBeInTheDocument();
 });
 
 test("Navigate between screens", () => {
@@ -53,9 +53,9 @@ test("Navigate between screens", () => {
 
   const tabs = screen.getAllByRole("link");
   expect(tabs.map((t) => [t.textContent, t.getAttribute("href"), t.className])).toEqual([
-    ["◔mi mes", "/", ""],
-    ["☰movimientos", "/movimientos", "on"],
-    ["⌂bancos", "/bancos", ""],
+    ["◔Mi mes", "/", ""],
+    ["☰Movimientos", "/movimientos", "on"],
+    ["⌂Bancos", "/bancos", ""],
   ]);
 });
 
