@@ -15,7 +15,7 @@ TDD: write the scenario test first and see it fail for the right reason. Commit 
 ## 3. New capabilities
 
 - [x] 3.1 «Remove a connection» and «Cancel removing»: tests, then `remove()` in the port, `useRemoveConnection()` and the «quitar» button with confirmation
-- [ ] 3.2 «Dollars left out» and «Only euros»: tests, then the warning in «mi mes»
+- [x] 3.2 «Dollars left out» and «Only euros»: tests, then the warning in «mi mes»
 
 ## 4. Verification
 
