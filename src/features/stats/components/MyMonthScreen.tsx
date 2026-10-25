@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { errorMessage } from "@/shared/api/http";
+import { errorMessage } from "@/shared/api/client";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
 import { useHistory, useSummary } from "../hooks";

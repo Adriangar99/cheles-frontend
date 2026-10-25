@@ -1,10 +1,9 @@
-import { request } from "@/shared/api/http";
+import { api, call } from "@/shared/api/client";
 import type { components } from "@/shared/api/schema";
 
 export type Transaction = components["schemas"]["TransactionOut"];
 export type Category = components["schemas"]["CategoryOut"];
-// openapi-typescript marks defaulted fields as required; in a request body the API applies the defaults
-export type TransactionPatch = Partial<components["schemas"]["TxPatch"]>;
+export type TransactionPatch = components["schemas"]["TxPatch"];
 export type TransactionFilter = { month: string; q: string };
 
 const LIST_LIMIT = 500;
@@ -17,12 +16,12 @@ export interface TransactionsApi {
 
 export const httpTransactionsApi: TransactionsApi = {
   list({ month, q }) {
-    const params = new URLSearchParams({ month, limit: String(LIST_LIMIT) });
-    if (q) params.set("q", q);
-    return request(`/transactions?${params}`);
+    // No q parameter at all when there is no search text
+    const query = q ? { month, limit: LIST_LIMIT, q } : { month, limit: LIST_LIMIT };
+    return call(api().GET("/api/transactions", { params: { query } }));
   },
-  categories: () => request("/categories"),
+  categories: () => call(api().GET("/api/categories")),
   async update(id, patch) {
-    await request(`/transactions/${id}`, { method: "PATCH", json: patch });
+    await call(api().PATCH("/api/transactions/{tx_id}", { params: { path: { tx_id: id } }, body: patch }));
   },
 };

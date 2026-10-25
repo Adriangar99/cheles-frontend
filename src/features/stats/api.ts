@@ -1,4 +1,4 @@
-import { request } from "@/shared/api/http";
+import { api, call } from "@/shared/api/client";
 import type { components } from "@/shared/api/schema";
 
 export type Summary = components["schemas"]["SummaryOut"];
@@ -11,6 +11,6 @@ export interface StatsApi {
 }
 
 export const httpStatsApi: StatsApi = {
-  summary: (month) => request(`/stats/summary?month=${month}`),
-  history: (months) => request(`/stats/history?months=${months}`),
+  summary: (month) => call(api().GET("/api/stats/summary", { params: { query: { month } } })),
+  history: (months) => call(api().GET("/api/stats/history", { params: { query: { months } } })),
 };

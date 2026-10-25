@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLogout } from "@/features/auth";
-import { errorMessage } from "@/shared/api/http";
+import { errorMessage } from "@/shared/api/client";
 import type { Role } from "../api";
 import { authorizationMessage } from "../domain/banks";
 import { useAvailableBanks, useBanks, useConnectBank, useReprocess, useSetRole, useSyncConnection } from "../hooks";

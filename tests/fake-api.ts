@@ -13,13 +13,20 @@ export function fakeApi(routes: Record<string, Route>) {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = new URL(String(input), "http://localhost");
-      const method = init?.method ?? "GET";
-      const body = typeof init?.body === "string" ? JSON.parse(init.body) : undefined;
-      const req = { method, path: url.pathname, query: url.searchParams, body, headers: new Headers(init?.headers) };
+      // The typed client sends a Request; plain fetch(url, init) calls are accepted too
+      const request = input instanceof Request ? input : new Request(new URL(String(input), "http://localhost"), init);
+      const url = new URL(request.url);
+      const text = await request.text();
+      const req = {
+        method: request.method,
+        path: url.pathname,
+        query: url.searchParams,
+        body: text ? JSON.parse(text) : undefined,
+        headers: request.headers,
+      };
       requests.push(req);
-      const route = routes[`${method} ${url.pathname}`];
-      if (!route) throw new Error(`Unexpected request: ${method} ${url.pathname}${url.search}`);
+      const route = routes[`${req.method} ${url.pathname}`];
+      if (!route) throw new Error(`Unexpected request: ${req.method} ${url.pathname}${url.search}`);
       const reply = typeof route === "function" ? await route(req) : route;
       return new Response(reply.body === undefined ? null : JSON.stringify(reply.body), { status: reply.status });
     }),
