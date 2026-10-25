@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { money } from "@/shared/format";
 import type { Account, Role } from "../api";
-import { ROLE_LABEL } from "../domain/banks";
+import { parseRole, ROLE_LABEL } from "../domain/banks";
 
 export function AccountRow({ account: a, onRoleChange }: { account: Account; onRoleChange: (role: Role) => void }) {
   const nameId = useId();
@@ -16,7 +16,7 @@ export function AccountRow({ account: a, onRoleChange }: { account: Account; onR
       </div>
       <select
         value={a.role}
-        onChange={(e) => onRoleChange(e.target.value as Role)}
+        onChange={(e) => onRoleChange(parseRole(e.target.value))}
         aria-label="para qué es esta cuenta"
       >
         {Object.entries(ROLE_LABEL).map(([value, label]) => (

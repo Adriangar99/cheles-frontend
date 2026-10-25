@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, expect, test } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import Movements from "@/app/(app)/movimientos/page";
 import { type ApiRequest, fail, fakeApi, ok } from "./fake-api";
 import { today } from "./location";
@@ -60,14 +60,19 @@ test("Search", async () => {
 });
 
 test("Typing quickly", async () => {
+  // Timers advance with the test's clock (and with real time, so Testing Library's waits still work)
+  vi.useFakeTimers({ toFake: ["Date", "setTimeout", "clearTimeout"], shouldAdvanceTime: true });
+  vi.setSystemTime(new Date("2026-10-15T12:00:00"));
+  const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   const api = open([tx()]);
   await screen.findByText("MERCADONA");
 
-  await userEvent.type(screen.getByPlaceholderText("buscar…"), "merca");
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  await user.type(screen.getByPlaceholderText("buscar…"), "merca");
+  await vi.advanceTimersByTimeAsync(400);
 
-  const searches = api.to("GET", "/api/transactions").filter((r) => r.query.has("q"));
-  expect(searches.map((r) => r.query.get("q"))).toEqual(["merca"]);
+  const searches = () => api.to("GET", "/api/transactions").filter((r) => r.query.has("q"));
+  await waitFor(() => expect(searches()).not.toHaveLength(0));
+  expect(searches().map((r) => r.query.get("q"))).toEqual(["merca"]);
 });
 
 test("Pending debit", async () => {

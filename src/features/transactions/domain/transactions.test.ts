@@ -1,5 +1,5 @@
+import { category, tx } from "@tests/screens";
 import { expect, test } from "vitest";
-import { category, tx } from "../../../../tests/screens";
 import { categoryOptions, isCredit, rowLabel } from "./transactions";
 
 // Screen tests cover the counterparty label and the options of a categorized credit; these cover the rest.

@@ -1,4 +1,4 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, skipToken, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import type { TransactionFilter, TransactionPatch } from "./api";
 import { useTransactionsApi } from "./provider";
@@ -22,8 +22,7 @@ export function useTransactions(filter: TransactionFilter | undefined) {
   const api = useTransactionsApi();
   return useQuery({
     queryKey: ["transactions", filter?.month, filter?.q],
-    queryFn: () => api.list(filter as TransactionFilter),
-    enabled: filter !== undefined,
+    queryFn: filter ? () => api.list(filter) : skipToken,
     placeholderData: keepPreviousData,
   });
 }
