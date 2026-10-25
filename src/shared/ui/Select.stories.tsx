@@ -5,7 +5,7 @@ const meta = {
   title: "Design system/Select",
   component: Select,
   args: {
-    label: "para qué es esta cuenta",
+    label: "Para qué es esta cuenta",
     defaultValue: "savings",
     children: [
       <option key="main" value="main">

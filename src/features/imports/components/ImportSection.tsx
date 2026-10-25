@@ -54,12 +54,12 @@ export function ImportSection({ accounts }: { accounts: Account[] }) {
   const total = shown ? totalToImport(shown) : 0;
   return (
     <section aria-labelledby={headingId}>
-      <h2 id={headingId}>importar movimientos</h2>
+      <h2 id={headingId}>Importar movimientos</h2>
       {done && <Message kind="status">{done}</Message>}
       {error && <Message kind="error">{error}</Message>}
       {!file ? (
         <label className="btn file-pick">
-          elegir fichero CSV
+          Elegir fichero CSV
           <input type="file" accept=".csv,text/csv" onChange={(e) => choose(e.target.files?.[0])} />
         </label>
       ) : (
@@ -77,19 +77,19 @@ export function ImportSection({ accounts }: { accounts: Account[] }) {
             </List>
             {shown.unmatched_categories.length > 0 && (
               <Message kind="note" className="import-note">
-                sin equivalencia, irán por reglas:{" "}
+                Sin equivalencia, irán por reglas:{" "}
                 {shown.unmatched_categories.map((c) => `${c.name} (${c.rows})`).join(", ")}
               </Message>
             )}
             <Message kind="note" className="import-note">
-              las transferencias de MoneyLover entran como ingresos y gastos; marca ⇄ las que sean entre tus cuentas
+              Las transferencias de MoneyLover entran como ingresos y gastos; marca ⇄ las que sean entre tus cuentas
             </Message>
             <div className="actions">
               <Button variant="primary" disabled={total === 0 || run.isPending} onClick={importNow}>
-                importar {total} movimientos
+                Importar {total} movimientos
               </Button>
               <Button variant="quiet" onClick={reset}>
-                cancelar
+                Cancelar
               </Button>
             </div>
           </>
@@ -113,10 +113,10 @@ function Wallet({ wallet: w, accounts, onTarget }: WalletProps) {
         </div>
         <ul className="outcome">
           {w.target === null ? (
-            <li>no se importa</li>
+            <li>No se importa</li>
           ) : (
             <>
-              <li className="pos">entran {w.to_import}</li>
+              <li className="pos">Entran {w.to_import}</li>
               {w.skipped > 0 && w.bank_since && (
                 <li>
                   {w.skipped} ya los trajo el banco (desde {shortDate(w.bank_since)})
@@ -128,14 +128,14 @@ function Wallet({ wallet: w, accounts, onTarget }: WalletProps) {
           {w.adjustments > 0 && <li>{w.adjustments} ajustes de saldo no se importan</li>}
         </ul>
       </div>
-      <Select label="dónde van" value={targetValue(w.target)} onChange={(e) => onTarget(e.target.value)}>
-        <option value="new">nueva cuenta</option>
+      <Select label="Dónde van" value={targetValue(w.target)} onChange={(e) => onTarget(e.target.value)}>
+        <option value="new">Nueva cuenta</option>
         {accounts.map((a) => (
           <option key={a.id} value={a.id}>
             {a.name}
           </option>
         ))}
-        <option value="none">no importar</option>
+        <option value="none">No importar</option>
       </Select>
     </ListItem>
   );

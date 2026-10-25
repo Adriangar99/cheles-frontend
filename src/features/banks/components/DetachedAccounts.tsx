@@ -15,7 +15,7 @@ export function DetachedAccounts({
   if (accounts.length === 0) return null;
   return (
     <section aria-labelledby={headingId}>
-      <h2 id={headingId}>cuentas sin banco</h2>
+      <h2 id={headingId}>Cuentas sin banco</h2>
       <List>
         {accounts.map((a) => (
           <AccountRow key={a.id} account={a} onRoleChange={(role) => onRoleChange(a.id, role)} />

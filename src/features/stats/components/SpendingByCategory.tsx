@@ -10,10 +10,10 @@ export function SpendingByCategory({ summary }: { summary: Summary }) {
   const { segments, left } = spendingStrip(summary.by_category, summary.income, summary.expenses);
   return (
     <>
-      <h2>la nómina repartida</h2>
+      <h2>La nómina repartida</h2>
       {segments.length === 0 ? (
         <List>
-          <ListItem muted>sin gastos este mes</ListItem>
+          <ListItem muted>Sin gastos este mes</ListItem>
         </List>
       ) : (
         <Card className="spending">
@@ -29,13 +29,13 @@ export function SpendingByCategory({ summary }: { summary: Summary }) {
                 color={s.color}
               />
             ))}
-            <Meter orientation="segment" label="sobra" value={left.pct} max={100} color={LEFT_COLOR} />
+            <Meter orientation="segment" label="Sobra" value={left.pct} max={100} color={LEFT_COLOR} />
           </div>
           <ul className="legend">
             {segments.map((s) => (
               <Share key={s.name} name={`${s.icon} ${s.name}`} amount={s.amount} pct={s.pct} color={s.color} />
             ))}
-            <Share name="sobra" amount={left.amount} pct={left.pct} color={LEFT_COLOR} />
+            <Share name="Sobra" amount={left.amount} pct={left.pct} color={LEFT_COLOR} />
           </ul>
         </Card>
       )}

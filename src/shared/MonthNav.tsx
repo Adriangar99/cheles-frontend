@@ -1,6 +1,6 @@
 "use client";
 
-import { monthLabel } from "./format";
+import { capitalize, monthLabel } from "./format";
 import { currentMonth, shiftMonth } from "./month";
 import { Button } from "./ui";
 
@@ -8,14 +8,14 @@ import { Button } from "./ui";
 export function MonthNav({ month, onChange }: { month: string; onChange: (month: string) => void }) {
   return (
     <nav className="month-nav" aria-label="mes">
-      <h1>{monthLabel(month)}</h1>
-      <Button onClick={() => onChange(shiftMonth(month, -1))} aria-label="mes anterior">
+      <h1>{capitalize(monthLabel(month))}</h1>
+      <Button onClick={() => onChange(shiftMonth(month, -1))} aria-label="Mes anterior">
         ‹
       </Button>
       <Button
         disabled={month === currentMonth()}
         onClick={() => onChange(shiftMonth(month, 1))}
-        aria-label="mes siguiente"
+        aria-label="Mes siguiente"
       >
         ›
       </Button>

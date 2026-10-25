@@ -33,7 +33,7 @@ export function historyBars(points: MonthTotals[]) {
 export function versus(current: number, previous: number, previousMonth: string, riseIs: "pos" | "neg") {
   const diff = Math.round((current - previous) * 100) / 100;
   const month = monthName(previousMonth);
-  if (diff === 0) return { text: `igual que en ${month}`, tone: undefined };
+  if (diff === 0) return { text: `Igual que en ${month}`, tone: undefined };
   const fallIs = riseIs === "pos" ? "neg" : "pos";
   return diff > 0
     ? { text: `${money(diff)} más que en ${month}`, tone: riseIs }

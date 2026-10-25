@@ -4,10 +4,10 @@ import { USER } from "./stack";
 
 test("a wrong code keeps the user on the login with the API's message", async ({ page }) => {
   await page.goto("/login");
-  await page.getByPlaceholder("usuario").fill(USER.username);
-  await page.getByPlaceholder("contraseña").fill(USER.password);
-  await page.getByPlaceholder("código de 6 dígitos").fill("000000");
-  await page.getByRole("button", { name: "entrar" }).click();
+  await page.getByPlaceholder("Usuario").fill(USER.username);
+  await page.getByPlaceholder("Contraseña").fill(USER.password);
+  await page.getByPlaceholder("Código de 6 dígitos").fill("000000");
+  await page.getByRole("button", { name: "Entrar" }).click();
 
   // Next.js adds its own (empty) route announcer alert, so the message is found by its text
   await expect(page.getByRole("alert").filter({ hasText: "Datos incorrectos" })).toBeVisible();
@@ -26,7 +26,7 @@ test("logging in opens «mi mes» and logging out closes the session", async ({ 
   await expect(page.getByRole("navigation", { name: "mes" })).toBeVisible();
 
   await page.goto("/bancos");
-  await page.getByRole("button", { name: "salir" }).click();
+  await page.getByRole("button", { name: "Salir" }).click();
 
   await expect(page).toHaveURL("/login");
   await page.goto("/movimientos");

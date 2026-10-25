@@ -22,7 +22,7 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
       <div className="section-head">
         <h2 id={headingId}>{c.bank}</h2>
         <Button variant="quiet" size="small" onClick={onRemove}>
-          quitar
+          Quitar
         </Button>
       </div>
       <List>
@@ -34,11 +34,11 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
           </div>
           {status.needsReconnect ? (
             <Button variant="primary" onClick={onReconnect}>
-              reconectar
+              Reconectar
             </Button>
           ) : (
             <Button disabled={syncing} onClick={onSync}>
-              {syncing ? "leyendo…" : "leer ahora"}
+              {syncing ? "Leyendo…" : "Leer ahora"}
             </Button>
           )}
         </ListItem>

@@ -11,7 +11,7 @@ const validFor = (days: number) => new Date(now + days * DAY).toISOString();
 test("exactly 14 days of consent is still healthy", () => {
   expect(consentStatus(connection({ valid_until: validFor(14) }), now)).toEqual({
     tone: "pos",
-    text: "al día · 14 días de permiso",
+    text: "Al día · 14 días de permiso",
     needsReconnect: false,
   });
 });
@@ -19,7 +19,7 @@ test("exactly 14 days of consent is still healthy", () => {
 test("a revoked connection needs reconnecting", () => {
   expect(consentStatus(connection({ status: "revoked", valid_until: validFor(90) }), now)).toEqual({
     tone: "neg",
-    text: "hay que reconectar",
+    text: "Hay que reconectar",
     needsReconnect: true,
   });
 });
@@ -30,5 +30,5 @@ test("a consent ending right now needs reconnecting", () => {
 });
 
 test("a failed authorization wins over a successful one", () => {
-  expect(authorizationMessage("?connected=1&error=1")).toBe("no se pudo conectar el banco");
+  expect(authorizationMessage("?connected=1&error=1")).toBe("No se pudo conectar el banco");
 });

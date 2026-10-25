@@ -20,16 +20,16 @@ export function LoginForm() {
     <div className="login">
       <div className="cover">
         <header className="cover-title">
-          <h1>cheles</h1>
-          <p>entra para ver tus cuentas</p>
+          <h1>Cheles</h1>
+          <p>Entra para ver tus cuentas</p>
         </header>
         <form className="card" onSubmit={submit}>
-          <input name="username" placeholder="usuario" autoComplete="username" autoCapitalize="none" required />
-          <input name="password" type="password" placeholder="contraseña" autoComplete="current-password" required />
+          <input name="username" placeholder="Usuario" autoComplete="username" autoCapitalize="none" required />
+          <input name="password" type="password" placeholder="Contraseña" autoComplete="current-password" required />
           <input
             name="code"
             inputMode="numeric"
-            placeholder="código de 6 dígitos"
+            placeholder="Código de 6 dígitos"
             autoComplete="one-time-code"
             maxLength={6}
             required
@@ -37,7 +37,7 @@ export function LoginForm() {
           {login.error && <Message kind="error">{login.error.message}</Message>}
           {/* Still disabled after success: the browser is already navigating to / */}
           <Button type="submit" variant="primary" disabled={login.isPending || login.isSuccess}>
-            entrar
+            Entrar
           </Button>
         </form>
       </div>

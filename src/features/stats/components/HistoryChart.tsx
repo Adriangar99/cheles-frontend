@@ -6,8 +6,8 @@ import { HISTORY_BAR_PX, historyBars } from "../domain/charts";
 export function HistoryChart({ history }: { history: MonthTotals[] }) {
   return (
     <>
-      <h2>últimos 12 meses</h2>
-      <List className="history" aria-label="ingresos y gastos por mes">
+      <h2>Últimos 12 meses</h2>
+      <List className="history" aria-label="Ingresos y gastos por mes">
         {historyBars(history).map((h) => (
           <li className="col" key={h.month} title={`${h.month}: ${money(h.income)} / ${money(h.expenses)}`}>
             <Meter
@@ -28,7 +28,7 @@ export function HistoryChart({ history }: { history: MonthTotals[] }) {
           </li>
         ))}
       </List>
-      <p className="sub chart-key">verde = ingresos · rojo = gastos</p>
+      <p className="sub chart-key">Verde = ingresos · rojo = gastos</p>
     </>
   );
 }

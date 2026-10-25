@@ -6,5 +6,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Healthy: Story = { args: { tone: "pos", children: "al día · 80 días de permiso" } };
-export const NeedsAction: Story = { args: { tone: "neg", children: "hay que reconectar" } };
-export const Plain: Story = { args: { children: "sin leer aún" } };
+export const NeedsAction: Story = { args: { tone: "neg", children: "Hay que reconectar" } };
+export const Plain: Story = { args: { children: "Sin leer aún" } };

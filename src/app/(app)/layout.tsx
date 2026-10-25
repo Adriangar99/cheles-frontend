@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const tabs = [
-  { href: "/", label: "mi mes", icon: "◔" },
-  { href: "/movimientos", label: "movimientos", icon: "☰" },
-  { href: "/bancos", label: "bancos", icon: "⌂" },
+  { href: "/", label: "Mi mes", icon: "◔" },
+  { href: "/movimientos", label: "Movimientos", icon: "☰" },
+  { href: "/bancos", label: "Bancos", icon: "⌂" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

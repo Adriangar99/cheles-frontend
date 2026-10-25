@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { errorMessage } from "@/shared/api/client";
-import { dayLabel } from "@/shared/format";
+import { capitalize, dayLabel } from "@/shared/format";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
 import { Amount, List, ListItem, Message } from "@/shared/ui";
@@ -23,13 +23,13 @@ export function TransactionsScreen() {
   return (
     <>
       <MonthNav month={month} onChange={setMonth} />
-      <input placeholder="buscar…" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <input placeholder="Buscar…" value={query} onChange={(e) => setQuery(e.target.value)} />
       {error && <Message kind="error">{error}</Message>}
 
       <h2>{txs.length} movimientos</h2>
       {txs.length === 0 && (
         <List>
-          <ListItem muted>nada por aquí</ListItem>
+          <ListItem muted>Nada por aquí</ListItem>
         </List>
       )}
       {byDay(txs).map((day) => (
@@ -58,7 +58,7 @@ function Day({ date, total, transactions, categories, onChange }: DayProps) {
   return (
     <section aria-labelledby={headingId} className="day">
       <div className="section-head">
-        <h3 id={headingId}>{dayLabel(date)}</h3>
+        <h3 id={headingId}>{capitalize(dayLabel(date))}</h3>
         <Amount value={total} tone={total > 0 ? "pos" : undefined} />
       </div>
       <List>

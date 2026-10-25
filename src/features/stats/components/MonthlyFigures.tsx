@@ -19,19 +19,19 @@ export function MonthlyFigures({ summary, previous }: Props) {
   return (
     <>
       <Figures>
-        <Figure label="ingresos" value={money(summary.income)} tone="pos">
+        <Figure label="Ingresos" value={money(summary.income)} tone="pos">
           {vs(summary.income, (p) => p.income, "pos")}
         </Figure>
-        <Figure label="gastos" value={money(summary.expenses)}>
+        <Figure label="Gastos" value={money(summary.expenses)}>
           {vs(summary.expenses, (p) => p.expenses, "neg")}
         </Figure>
-        <Figure label="sobra" value={money(summary.net)} tone={netTone(summary.net)}>
+        <Figure label="Sobra" value={money(summary.net)} tone={netTone(summary.net)}>
           {vs(summary.net, (p) => p.income - p.expenses, "pos")}
         </Figure>
-        <Figure label="enviado a ahorro" value={money(summary.saved)} />
-        <Figure label="saldo total ahora" value={money(summary.balances.total)} total>
+        <Figure label="Enviado a ahorro" value={money(summary.saved)} />
+        <Figure label="Saldo total ahora" value={money(summary.balances.total)} total>
           <dd className="sub">
-            día a día {money(summary.balances.main ?? 0)} · ahorro {money(summary.balances.savings ?? 0)}
+            Día a día {money(summary.balances.main ?? 0)} · ahorro {money(summary.balances.savings ?? 0)}
           </dd>
         </Figure>
       </Figures>

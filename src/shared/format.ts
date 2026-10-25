@@ -1,6 +1,9 @@
 const eur = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
 export const money = (n: number | null | undefined) => (n == null ? "—" : eur.format(n));
 
+// A text that starts a line: its first letter in capital («octubre de 2026» → «Octubre de 2026»)
+export const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
 export const monthLabel = (m: string) =>
   new Date(`${m}-01T00:00:00`).toLocaleDateString("es-ES", { month: "long", year: "numeric" });
 
