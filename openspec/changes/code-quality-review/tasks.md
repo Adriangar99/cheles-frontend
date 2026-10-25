@@ -14,7 +14,7 @@ mutation check.
 
 ## 3. Small fixes
 
-- [ ] 3.1 `skipToken` in `useTransactions`, `parseRole` for the role selector, fake timers in «Typing quickly», `@tests/*` alias with its Biome restriction; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the screens look unchanged in Docker (throwaway stack)
+- [x] 3.1 `skipToken` in `useTransactions`, `parseRole` for the role selector, fake timers in «Typing quickly», `@tests/*` alias with its Biome restriction; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build` and CI pass, and the screens look unchanged in Docker (throwaway stack)
 
 ## Workflow follow-up
 
