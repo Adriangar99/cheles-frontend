@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLogout } from "@/features/auth";
+import { ImportSection } from "@/features/imports";
 import { errorMessage } from "@/shared/api/client";
 import { Button, Message } from "@/shared/ui";
 import type { Role } from "../api";
@@ -95,6 +96,13 @@ export function BanksScreen() {
         loading={available.isPending}
         onOpen={() => available.mutate(undefined, onError)}
         onConnect={(b) => connect.mutate({ name: b.name, country: b.country }, onError)}
+      />
+
+      <ImportSection
+        accounts={[
+          ...(banks.data?.connections.flatMap((c) => c.accounts) ?? []),
+          ...(banks.data?.detached_accounts ?? []),
+        ]}
       />
 
       <ReprocessCard
