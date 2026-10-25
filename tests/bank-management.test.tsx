@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, expect, test } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import Banks from "@/app/(app)/bancos/page";
 import { fail, fakeApi, ok, pending } from "./fake-api";
 import { stubLocation, today } from "./location";
@@ -46,6 +46,14 @@ test("Expired connection", async () => {
   expect(screen.getByText("x".repeat(120))).toBeInTheDocument();
 });
 
+test("Consent date already passed", async () => {
+  open([connection({ status: "active", valid_until: daysFromNow(-3) })]);
+
+  expect(await status("hay que reconectar")).toHaveAttribute("data-tone", "neg");
+  expect(screen.getByRole("button", { name: "reconectar" })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "leer ahora" })).not.toBeInTheDocument();
+});
+
 test("Never synced", async () => {
   open([connection({ valid_until: daysFromNow(90), last_synced_at: null })]);
 
@@ -75,6 +83,18 @@ test("Reconnect", async () => {
   expect(api.to("POST", "/api/banks/connect")[0].body).toEqual({ name: "BBVA", country: "ES" });
 });
 
+test("Reconnect in the connection's country", async () => {
+  const { api } = open([connection({ bank: "Revolut", country: "LT", status: "expired" })], {
+    "POST /api/banks/connect": ok({ url: "https://revolut.example/authorize" }),
+  });
+
+  await userEvent.click(await screen.findByRole("button", { name: "reconectar" }));
+
+  await waitFor(() =>
+    expect(api.to("POST", "/api/banks/connect")[0]?.body).toEqual({ name: "Revolut", country: "LT" }),
+  );
+});
+
 test("Pick a bank", async () => {
   const { api, location } = open([], {
     "GET /api/banks/available": ok([
@@ -102,6 +122,13 @@ test("Back from a failed authorization", async () => {
   open([], {}, "/bancos?error=1");
 
   expect(await screen.findByText("no se pudo conectar el banco")).toBeInTheDocument();
+});
+
+test("Reloading after the result", async () => {
+  const { location } = open([], {}, "/bancos?connected=1");
+
+  expect(await screen.findByText("banco conectado ✓")).toBeInTheDocument();
+  expect(location.href).toBe("http://localhost/bancos");
 });
 
 test("Change role", async () => {
@@ -312,4 +339,47 @@ test("No detached accounts", async () => {
 
   await screen.findByText("Nómina");
   expect(screen.queryByRole("heading", { name: "cuentas sin banco" })).not.toBeInTheDocument();
+});
+
+// ---------- Removing a connection ----------
+
+const QUESTION = '¿Quitar BBVA? Sus cuentas y movimientos se quedan en "cuentas sin banco".';
+
+test("Remove a connection", async () => {
+  const confirm = vi.fn(() => true);
+  vi.stubGlobal("confirm", confirm);
+  const { api } = open([connection({ id: 3, bank: "BBVA", valid_until: daysFromNow(90) })], {
+    "DELETE /api/banks/3": { status: 204 },
+  });
+
+  await userEvent.click(await screen.findByRole("button", { name: "quitar" }));
+
+  expect(confirm).toHaveBeenCalledWith(QUESTION);
+  await waitFor(() => expect(api.to("GET", "/api/banks")).toHaveLength(2));
+  expect(api.to("DELETE", "/api/banks/3")).toHaveLength(1);
+});
+
+test("Cancel removing", async () => {
+  vi.stubGlobal(
+    "confirm",
+    vi.fn(() => false),
+  );
+  const { api } = open([connection({ id: 3, bank: "BBVA", valid_until: daysFromNow(90) })]);
+
+  await userEvent.click(await screen.findByRole("button", { name: "quitar" }));
+
+  expect(api.requests.filter((r) => r.method === "DELETE")).toEqual([]);
+});
+
+test("Removing fails", async () => {
+  vi.stubGlobal(
+    "confirm",
+    vi.fn(() => true),
+  );
+  open([connection({ id: 3, bank: "BBVA", valid_until: daysFromNow(90) })], { "DELETE /api/banks/3": fail(500) });
+
+  await userEvent.click(await screen.findByRole("button", { name: "quitar" }));
+
+  expect(await screen.findByText("Error 500")).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "BBVA" })).toBeInTheDocument();
 });

@@ -200,3 +200,25 @@ test("Summary error first when both fail", async () => {
   await waitFor(() => expect(alert()).toHaveTextContent("Error 500"));
   expect(screen.queryByText("Error 503")).not.toBeInTheDocument();
 });
+
+// ---------- Other currencies warning ----------
+
+test("Dollars left out", async () => {
+  open({ other_currencies: ["USD"] });
+
+  expect(await screen.findByRole("note")).toHaveTextContent("No se cuentan importes en USD");
+});
+
+test("Only euros", async () => {
+  open({ other_currencies: [] });
+
+  await card("ingresos");
+  expect(screen.queryByRole("note")).not.toBeInTheDocument();
+});
+
+// Requirement detail not covered by a scenario: several currencies are joined by commas.
+test("Several currencies left out", async () => {
+  open({ other_currencies: ["GBP", "USD"] });
+
+  expect(await screen.findByRole("note")).toHaveTextContent("No se cuentan importes en GBP, USD");
+});

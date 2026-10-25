@@ -19,16 +19,23 @@ type FigureProps = { label: string; value: string; tone?: "pos" | "neg"; wide?: 
 
 export function MonthlyFigures({ summary }: { summary: Summary }) {
   return (
-    <dl className="stats">
-      <Figure label="ingresos" value={money(summary.income)} tone="pos" />
-      <Figure label="gastos" value={money(summary.expenses)} />
-      <Figure label="sobra" value={money(summary.net)} tone={netTone(summary.net)} />
-      <Figure label="enviado a ahorro" value={money(summary.saved)} />
-      <Figure label="saldo total ahora" value={money(summary.balances.total)} wide>
-        <dd className="sub">
-          día a día {money(summary.balances.main ?? 0)} · ahorro {money(summary.balances.savings ?? 0)}
-        </dd>
-      </Figure>
-    </dl>
+    <>
+      <dl className="stats">
+        <Figure label="ingresos" value={money(summary.income)} tone="pos" />
+        <Figure label="gastos" value={money(summary.expenses)} />
+        <Figure label="sobra" value={money(summary.net)} tone={netTone(summary.net)} />
+        <Figure label="enviado a ahorro" value={money(summary.saved)} />
+        <Figure label="saldo total ahora" value={money(summary.balances.total)} wide>
+          <dd className="sub">
+            día a día {money(summary.balances.main ?? 0)} · ahorro {money(summary.balances.savings ?? 0)}
+          </dd>
+        </Figure>
+      </dl>
+      {summary.other_currencies.length > 0 && (
+        <p className="sub" role="note">
+          No se cuentan importes en {summary.other_currencies.join(", ")}
+        </p>
+      )}
+    </>
   );
 }

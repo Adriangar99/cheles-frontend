@@ -140,6 +140,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/banks/{connection_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Connection */
+        delete: operations["remove_connection_api_banks__connection_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/banks/{connection_id}/sync": {
         parameters: {
             query?: never;
@@ -414,6 +431,8 @@ export interface components {
             accounts: components["schemas"]["AccountOut"][];
             /** Bank */
             bank: string;
+            /** Country */
+            country: string;
             /** Id */
             id: number;
             /** Last Error */
@@ -492,6 +511,8 @@ export interface components {
             month: string;
             /** Net */
             net: number;
+            /** Other Currencies */
+            other_currencies: string[];
             /** Saved */
             saved: number;
         };
@@ -783,6 +804,35 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["AuthorizationUrlOut"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_connection_api_banks__connection_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                connection_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

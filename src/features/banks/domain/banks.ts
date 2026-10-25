@@ -8,12 +8,15 @@ const ERROR_EXCERPT_LENGTH = 120;
 export const ROLE_LABEL: Record<Role, string> = { main: "día a día", savings: "ahorro", excluded: "no cuenta" };
 
 // Part of a day of consent counts as a whole one.
+// A consent whose date has passed needs reconnecting even before a sync marks the connection expired.
 export function consentStatus(connection: Connection, now: number) {
-  if (connection.status !== "active") return { tone: "neg", text: "hay que reconectar" } as const;
   const days = Math.ceil((new Date(connection.valid_until).getTime() - now) / DAY_MS);
+  if (connection.status !== "active" || days <= 0) {
+    return { tone: "neg", text: "hay que reconectar", needsReconnect: true } as const;
+  }
   return days < EXPIRY_WARNING_DAYS
-    ? ({ tone: "neg", text: `caduca en ${days} días` } as const)
-    : ({ tone: "pos", text: `al día · ${days} días de permiso` } as const);
+    ? ({ tone: "neg", text: `caduca en ${days} días`, needsReconnect: false } as const)
+    : ({ tone: "pos", text: `al día · ${days} días de permiso`, needsReconnect: false } as const);
 }
 
 export const lastReadLabel = (lastSyncedAt: string | null) =>
