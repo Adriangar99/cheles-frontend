@@ -2,7 +2,7 @@
 
 The look is «Libreta de ahorros», the bank passbook: ruled sheets on cool paper with navy ink (light) or on the navy
 cloth cover (dark), amounts in tabular figures that line up in columns, statuses as short labels. The one memorable
-element is «la nómina repartida» in «mi mes»: the month's money as one strip split into categories and what is left.
+element is «La nómina repartida» in «Mi mes»: the month's money as one strip split into categories and what is left.
 Each screen opens with what matters most (the month compared with the previous one, the day totals, the bank summary),
 and sections share one head (title left, quiet action or figure right) so new information has a place to go. It lives in two places, so a redesign changes them and not the features:
 

@@ -23,7 +23,7 @@ test("without a session every screen sends the browser to the login", async ({ p
 
 test("logging in opens «mi mes» and logging out closes the session", async ({ page }) => {
   await logIn(page);
-  await expect(page.getByRole("navigation", { name: "mes" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Mes" })).toBeVisible();
 
   await page.goto("/bancos");
   await page.getByRole("button", { name: "Salir" }).click();

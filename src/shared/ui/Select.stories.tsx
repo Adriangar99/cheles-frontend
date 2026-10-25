@@ -9,13 +9,13 @@ const meta = {
     defaultValue: "savings",
     children: [
       <option key="main" value="main">
-        día a día
+        Día a día
       </option>,
       <option key="savings" value="savings">
-        ahorro
+        Ahorro
       </option>,
       <option key="excluded" value="excluded">
-        no cuenta
+        No cuenta
       </option>,
     ],
   },

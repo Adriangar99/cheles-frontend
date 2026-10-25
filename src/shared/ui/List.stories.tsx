@@ -26,7 +26,7 @@ export const Rows: Story = {
 export const Empty: Story = {
   render: () => (
     <List>
-      <ListItem muted>nada por aquí</ListItem>
+      <ListItem muted>Nada por aquí</ListItem>
     </List>
   ),
 };
@@ -35,8 +35,8 @@ export const PlainCard: Story = {
   render: () => (
     <Card>
       <div className="row">
-        <div className="grow">reprocesar desde los bancos</div>
-        <Button>hazlo ahora</Button>
+        <div className="grow">Reprocesar desde los bancos</div>
+        <Button>Hazlo ahora</Button>
       </div>
     </Card>
   ),
