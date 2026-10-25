@@ -2,7 +2,7 @@
 
 ## 1. Stack
 
-- [ ] 1.1 Fake Enable Banking server and `e2e/compose.yaml`; verify by hand that the stack starts, the API reaches the fake (`/api/banks/available` through the web) and the authorization page redirects to the callback
+- [x] 1.1 Fake Enable Banking server and `e2e/compose.yaml`; verify by hand that the stack starts, the API reaches the fake (`/api/banks/available` through the web) and the authorization page redirects to the callback
 - [ ] 1.2 Playwright config, global setup/teardown (key pair, compose up/down, user and TOTP secret), `pnpm e2e`; verify an empty run starts and tears down the stack
 
 ## 2. Tests

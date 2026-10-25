@@ -4,3 +4,7 @@ node_modules/
 .DS_Store
 tsconfig.tsbuildinfo
 next-env.d.ts
+e2e/.state/
+e2e/screenshots/
+test-results/
+playwright-report/
