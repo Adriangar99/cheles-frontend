@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLogout } from "@/features/auth";
 import { errorMessage } from "@/shared/api/client";
+import { Button, Message } from "@/shared/ui";
 import type { Role } from "../api";
 import { authorizationMessage } from "../domain/banks";
 import {
@@ -58,9 +59,9 @@ export function BanksScreen() {
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
       {shown && (
-        <p className="sub" role="status" style={{ marginTop: 12 }}>
+        <Message kind="status" style={{ marginTop: 12 }}>
           {shown}
-        </p>
+        </Message>
       )}
 
       {banks.data?.connections.map((c) => (
@@ -101,9 +102,9 @@ export function BanksScreen() {
         }}
       />
 
-      <button type="button" className="btn" style={{ marginTop: 28 }} onClick={() => logout.mutate(undefined, onError)}>
+      <Button style={{ marginTop: 28 }} onClick={() => logout.mutate(undefined, onError)}>
         salir
-      </button>
+      </Button>
     </>
   );
 }

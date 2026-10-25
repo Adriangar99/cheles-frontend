@@ -4,6 +4,7 @@ import { useState } from "react";
 import { errorMessage } from "@/shared/api/client";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
+import { List, ListItem, Message } from "@/shared/ui";
 import { useCategories, useDebounced, useTransactions, useUpdateTransaction } from "../hooks";
 import { TransactionRow } from "./TransactionRow";
 
@@ -20,14 +21,10 @@ export function TransactionsScreen() {
     <>
       <MonthNav month={month} onChange={setMonth} />
       <input placeholder="buscar…" value={query} onChange={(e) => setQuery(e.target.value)} />
-      {error && (
-        <p className="err" role="alert">
-          {error}
-        </p>
-      )}
+      {error && <Message kind="error">{error}</Message>}
 
       <h2>{txs.length} movimientos</h2>
-      <ul className="card">
+      <List>
         {txs.map((tx) => (
           <TransactionRow
             key={tx.id}
@@ -36,8 +33,8 @@ export function TransactionsScreen() {
             onChange={(patch) => update.mutate({ id: tx.id, patch })}
           />
         ))}
-        {txs.length === 0 && <li className="row muted">nada por aquí</li>}
-      </ul>
+        {txs.length === 0 && <ListItem muted>nada por aquí</ListItem>}
+      </List>
     </>
   );
 }

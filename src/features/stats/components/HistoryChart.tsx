@@ -1,4 +1,5 @@
 import { money } from "@/shared/format";
+import { List } from "@/shared/ui";
 import type { MonthTotals } from "../api";
 import { HISTORY_BAR_PX, historyBars } from "../domain/charts";
 
@@ -22,7 +23,7 @@ export function HistoryChart({ history }: { history: MonthTotals[] }) {
   return (
     <>
       <h2>últimos 12 meses</h2>
-      <ul className="card history" aria-label="ingresos y gastos por mes">
+      <List className="history" aria-label="ingresos y gastos por mes">
         {historyBars(history).map((h) => (
           <li className="col" key={h.month} title={`${h.month}: ${money(h.income)} / ${money(h.expenses)}`}>
             <Bar label={`${h.month} ingresos`} px={h.incomePx} color="var(--color-positive)" />
@@ -32,7 +33,7 @@ export function HistoryChart({ history }: { history: MonthTotals[] }) {
             </span>
           </li>
         ))}
-      </ul>
+      </List>
       <p className="sub" style={{ margin: "8px 4px" }}>
         verde = ingresos · rojo = gastos
       </p>

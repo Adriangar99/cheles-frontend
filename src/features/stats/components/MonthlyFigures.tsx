@@ -1,4 +1,5 @@
 import { money } from "@/shared/format";
+import { Message } from "@/shared/ui";
 import type { Summary } from "../api";
 import { netTone } from "../domain/charts";
 
@@ -32,9 +33,7 @@ export function MonthlyFigures({ summary }: { summary: Summary }) {
         </Figure>
       </dl>
       {summary.other_currencies.length > 0 && (
-        <p className="sub" role="note">
-          No se cuentan importes en {summary.other_currencies.join(", ")}
-        </p>
+        <Message kind="note">No se cuentan importes en {summary.other_currencies.join(", ")}</Message>
       )}
     </>
   );

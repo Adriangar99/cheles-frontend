@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { dayMonth, money } from "@/shared/format";
+import { Button, ListItem, Select } from "@/shared/ui";
 import type { Category, Transaction, TransactionPatch } from "../api";
 import { categoryOptions, isCredit, rowLabel } from "../domain/transactions";
 
@@ -10,7 +11,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
   const { uncategorized, options } = categoryOptions(tx, categories);
   const labelId = useId();
   return (
-    <li className="row" aria-labelledby={labelId} data-kind={tx.kind} style={transfer ? { opacity: 0.55 } : undefined}>
+    <ListItem aria-labelledby={labelId} data-kind={tx.kind} style={transfer ? { opacity: 0.55 } : undefined}>
       <div className="grow">
         <div className="ellipsis" id={labelId}>
           {rowLabel(tx)}
@@ -20,20 +21,18 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
           {tx.status === "PDNG" && " · pendiente"}
         </div>
         {transfer ? (
-          <button
-            type="button"
-            className="btn"
+          <Button
             style={{ marginTop: 6, padding: "4px 10px", fontSize: "var(--text-xs)" }}
             onClick={() => onChange({ kind: "normal" })}
           >
             ⇄ entre mis cuentas (quitar)
-          </button>
+          </Button>
         ) : (
           <div style={{ display: "flex", gap: 6, marginTop: 6, alignItems: "center" }}>
-            <select
+            <Select
               value={tx.category_id ?? ""}
               onChange={(e) => onChange({ category_id: Number(e.target.value) })}
-              aria-label="categoría"
+              label="categoría"
             >
               {uncategorized && <option value="">sin categoría</option>}
               {options.map((c) => (
@@ -41,22 +40,20 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
                   {c.icon} {c.name}
                 </option>
               ))}
-            </select>
-            <button
-              type="button"
-              className="btn"
+            </Select>
+            <Button
               style={{ padding: "6px 10px", fontSize: "var(--text-xs)" }}
               onClick={() => onChange({ kind: "transfer" })}
               title="marcar como transferencia entre mis cuentas"
             >
               ⇄
-            </button>
+            </Button>
           </div>
         )}
       </div>
       <div className={`tx-amount ${isCredit(tx) ? "pos" : ""}`} data-tone={isCredit(tx) ? "pos" : undefined}>
         {money(tx.amount)}
       </div>
-    </li>
+    </ListItem>
   );
 }

@@ -1,4 +1,5 @@
 import { money } from "@/shared/format";
+import { List, ListItem } from "@/shared/ui";
 import type { CategorySpending } from "../api";
 import { categoryBars } from "../domain/charts";
 
@@ -6,10 +7,10 @@ export function SpendingByCategory({ categories }: { categories: CategorySpendin
   return (
     <>
       <h2>en qué se va</h2>
-      <ul className="card">
-        {categories.length === 0 && <li className="row muted">sin gastos este mes</li>}
+      <List>
+        {categories.length === 0 && <ListItem muted>sin gastos este mes</ListItem>}
         {categoryBars(categories).map((c) => (
-          <li className="row" key={c.name} style={{ display: "block" }}>
+          <ListItem key={c.name} style={{ display: "block" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span>
                 {c.icon} {c.name}
@@ -27,9 +28,9 @@ export function SpendingByCategory({ categories }: { categories: CategorySpendin
                 style={{ width: `${c.widthPct}%`, background: c.color }}
               />
             </div>
-          </li>
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </>
   );
 }
