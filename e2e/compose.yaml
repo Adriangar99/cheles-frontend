@@ -1,0 +1,56 @@
+# Throwaway stack for the end-to-end tests (`pnpm e2e`): project cheles-e2e, nothing shared with the real "cheles" one.
+name: cheles-e2e
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cheles
+      POSTGRES_PASSWORD: e2e
+      POSTGRES_DB: cheles
+    tmpfs: [/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "cheles"]
+      interval: 1s
+      retries: 30
+
+  fake-eb:
+    image: python:3.12-alpine
+    command: ["python", "-u", "/srv/server.py"]
+    volumes: ["./fake-enable-banking/server.py:/srv/server.py:ro"]
+    ports: ["127.0.0.1:3101:8080"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/aspsps')"]
+      interval: 1s
+      retries: 30
+
+  api:
+    build: ../../cheles-backend
+    depends_on:
+      db: { condition: service_healthy }
+      fake-eb: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgresql+psycopg://cheles:e2e@db:5432/cheles
+      PUBLIC_URL: http://127.0.0.1:3100
+      COOKIE_SECURE: "false"
+      EB_API_URL: http://fake-eb:8080
+      EB_APPLICATION_ID: e2e
+      EB_PRIVATE_KEY_PATH: /run/secrets/eb_private_key
+      TZ: Europe/Madrid
+    volumes: ["./.state/eb_private_key.pem:/run/secrets/eb_private_key:ro"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 1s
+      retries: 60
+    networks:
+      default:
+        aliases: [api]
+
+  web:
+    build: .. # built with the default API_URL=http://api:8000 (fixed at build time)
+    depends_on:
+      api: { condition: service_healthy }
+    # A different runtime value: «API URL fixed at build time» holds only if this one is ignored
+    environment:
+      API_URL: http://nowhere.invalid:1
+    ports: ["127.0.0.1:3100:3000"]
