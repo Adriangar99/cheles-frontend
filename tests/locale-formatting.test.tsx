@@ -48,7 +48,7 @@ test("Month heading", async () => {
 
   const heading = screen.getByRole("heading", { level: 1 });
   expect(heading).toHaveTextContent("octubre de 2026");
-  expect(heading).toHaveStyle({ textTransform: "capitalize" });
+  expect(heading).not.toHaveStyle({ textTransform: "capitalize" });
 });
 
 test("Forward across the year", async () => {

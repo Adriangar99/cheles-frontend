@@ -3,8 +3,8 @@ type Props = {
   value: number;
   max: number;
   color: string;
-  // horizontal: a full-width track; vertical: a column bar `length` px tall at `max`
-  orientation?: "horizontal" | "vertical";
+  // horizontal: a full-width track; vertical: a column bar `length` px tall at `max`; segment: a piece of a strip
+  orientation?: "horizontal" | "vertical" | "segment";
   length?: number;
 };
 
@@ -19,6 +19,9 @@ export function Meter({ label, value, max, color, orientation = "horizontal", le
     "aria-valuemax": max,
     "aria-valuenow": value,
   } as const;
+  if (orientation === "segment") {
+    return <span className="seg" {...meter} style={{ width: `${share * 100}%`, background: color }} />;
+  }
   if (orientation === "vertical") {
     return <div className="b" {...meter} style={{ height: `${share * length}px`, background: color }} />;
   }

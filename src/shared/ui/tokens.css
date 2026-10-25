@@ -11,8 +11,10 @@
   --color-muted: #5b6a84; /* faded ink */
   --color-accent: #24427a; /* the cover: primary actions, focus */
   --color-on-accent: #f8f9fb;
-  --color-positive: #2d7a57; /* credit ink */
+  --color-positive: #276d4d; /* credit ink */
   --color-negative: #b23a31; /* stamp ink */
+  --color-cover: #24427a; /* the passbook's cloth cover (login) */
+  --color-on-cover: #e8ecf1;
 
   /* Type */
   --font-sans: "IBM Plex Sans", ui-sans-serif, -apple-system, system-ui, sans-serif;
@@ -54,6 +56,7 @@
     --color-on-accent: #0e1828;
     --color-positive: #71c99e;
     --color-negative: #f08a80;
+    --color-cover: #0a1220;
     color-scheme: dark;
   }
 }
@@ -69,5 +72,6 @@
   --color-on-accent: #0e1828;
   --color-positive: #71c99e;
   --color-negative: #f08a80;
+  --color-cover: #0a1220;
   color-scheme: dark;
 }

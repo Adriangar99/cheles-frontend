@@ -8,10 +8,10 @@ import { Button } from "./ui";
 export function MonthNav({ month, onChange }: { month: string; onChange: (month: string) => void }) {
   return (
     <nav className="month-nav" aria-label="mes">
+      <h1>{monthLabel(month)}</h1>
       <Button onClick={() => onChange(shiftMonth(month, -1))} aria-label="mes anterior">
         ‹
       </Button>
-      <h1 style={{ textTransform: "capitalize" }}>{monthLabel(month)}</h1>
       <Button
         disabled={month === currentMonth()}
         onClick={() => onChange(shiftMonth(month, 1))}

@@ -23,7 +23,7 @@ export function MyMonthScreen() {
       {summary.data && (
         <>
           <MonthlyFigures summary={summary.data} />
-          <SpendingByCategory categories={summary.data.by_category} />
+          <SpendingByCategory summary={summary.data} />
         </>
       )}
       <HistoryChart history={history.data ?? []} />

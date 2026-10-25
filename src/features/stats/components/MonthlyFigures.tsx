@@ -11,7 +11,7 @@ export function MonthlyFigures({ summary }: { summary: Summary }) {
         <Figure label="gastos" value={money(summary.expenses)} />
         <Figure label="sobra" value={money(summary.net)} tone={netTone(summary.net)} />
         <Figure label="enviado a ahorro" value={money(summary.saved)} />
-        <Figure label="saldo total ahora" value={money(summary.balances.total)} wide>
+        <Figure label="saldo total ahora" value={money(summary.balances.total)} total>
           <dd className="sub">
             día a día {money(summary.balances.main ?? 0)} · ahorro {money(summary.balances.savings ?? 0)}
           </dd>

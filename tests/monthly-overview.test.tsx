@@ -84,20 +84,41 @@ test("No savings accounts", async () => {
   expect(await screen.findByText("día a día 1500,00 € · ahorro 0,00 €")).toBeInTheDocument();
 });
 
+// A legend line of «la nómina repartida», named by its category
+const share = (name: string) => screen.getByRole("listitem", { name });
+
 test("Spending breakdown", async () => {
   open({
+    income: 2000,
+    expenses: 420,
     by_category: [
       { id: 1, name: "Supermercado", icon: "🛒", color: "#4caf50", amount: 300 },
       { id: 2, name: "Restaurantes", icon: "🍽", color: "#ff9800", amount: 120 },
     ],
   });
 
-  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "100");
-  expect(meter("🍽 Restaurantes")).toHaveAttribute("aria-valuenow", "40");
-  // The bar takes the category's own color
+  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "15");
+  expect(meter("🍽 Restaurantes")).toHaveAttribute("aria-valuenow", "6");
+  expect(meter("sobra")).toHaveAttribute("aria-valuenow", "79");
+  // Each segment takes the category's own color
   expect(meter("🛒 Supermercado").style.background).toBe("rgb(76, 175, 80)");
   expect(meter("🍽 Restaurantes").style.background).toBe("rgb(255, 152, 0)");
-  expect(screen.getByText("en qué se va")).toBeInTheDocument();
+  expect(share("🛒 Supermercado")).toHaveTextContent("300,00 €15 %");
+  expect(share("🍽 Restaurantes")).toHaveTextContent("120,00 €6 %");
+  expect(share("sobra")).toHaveTextContent("1580,00 €79 %");
+  expect(screen.getByRole("heading", { name: "la nómina repartida" })).toBeInTheDocument();
+});
+
+test("Spending over income", async () => {
+  open({
+    income: 1000,
+    expenses: 1250,
+    by_category: [{ id: 1, name: "Supermercado", icon: "🛒", color: "#4caf50", amount: 1250 }],
+  });
+
+  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "100");
+  expect(meter("sobra")).toHaveAttribute("aria-valuenow", "0");
+  expect(share("sobra")).toHaveTextContent("0,00 €0 %");
 });
 
 test("No spending", async () => {

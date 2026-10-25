@@ -1,12 +1,13 @@
 import { expect, test } from "vitest";
-import { categoryBars, historyBars } from "./charts";
+import { historyBars, spendingStrip } from "./charts";
 
 // Screen tests cover the scaling; these cover the guard against dividing by zero.
 
-test("a month whose categories all sum zero has empty bars", () => {
-  const bars = categoryBars([{ id: 1, name: "Supermercado", icon: "🛒", color: "#4caf50", amount: 0 }]);
+test("a month with no money has an empty strip", () => {
+  const strip = spendingStrip([{ id: 1, name: "Supermercado", icon: "🛒", color: "#4caf50", amount: 0 }], 0, 0);
 
-  expect(bars.map((b) => b.widthPct)).toEqual([0]);
+  expect(strip.segments.map((s) => s.pct)).toEqual([0]);
+  expect(strip.left).toEqual({ amount: 0, pct: 0 });
 });
 
 test("a history with no movements has flat bars", () => {

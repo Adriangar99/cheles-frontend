@@ -26,7 +26,7 @@ with the date, the concept and the amount aligned in columns, and stamps from th
 | faded ink | `#5B6A84` | `#93A0B6` | dates, secondary text |
 | rule | `#CBD4E0` | `#24334E` | ruling between lines |
 | cover | `#24427A` | `#8FB0F0` | primary actions, focus, the cover |
-| credit | `#2D7A57` | `#71C99E` | money in, healthy states |
+| credit | `#276D4D` | `#71C99E` | money in, healthy states |
 | stamp | `#B23A31` | `#F08A80` | money out over income, states that need action |
 
 All text/background pairs meet WCAG AA in both themes (checked with axe on every story).
