@@ -18,7 +18,8 @@ after 5 failures the API asks to wait.
 
 ## «Movimientos» — [transactions](../openspec/specs/transactions/spec.md)
 
-- The month's transactions with search («Buscar…»), date, account and «pendiente» marks.
+- The month's transactions grouped by day with the day's total, with search («Buscar…»), account and «pendiente»
+  marks.
 - Change a category (only those of the transaction's sign) and mark or unmark a transfer between your own accounts
   (⇄); load and edit errors below the search box.
 

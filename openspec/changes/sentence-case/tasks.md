@@ -10,4 +10,4 @@ checks.
 
 ## 2. Verification
 
-- [ ] 2.1 Fakes and stories updated; Storybook screenshots of every screen in both themes reviewed; axe; docs quoting texts updated; `pnpm check`, `typecheck`, `test`, `build`, `build-storybook`, `pnpm e2e`, CI
+- [x] 2.1 Fakes and stories updated; Storybook screenshots of every screen in both themes reviewed; axe; docs quoting texts updated; `pnpm check`, `typecheck`, `test`, `build`, `build-storybook`, `pnpm e2e`, CI
