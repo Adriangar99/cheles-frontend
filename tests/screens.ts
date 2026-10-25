@@ -11,6 +11,7 @@ export const summary = (overrides: Partial<Schemas["SummaryOut"]> = {}): Schemas
   saved: 0,
   by_category: [],
   balances: { total: 0, main: 0, savings: 0 },
+  other_currencies: [],
   ...overrides,
 });
 
@@ -56,6 +57,7 @@ export const account = (overrides: Partial<Schemas["AccountOut"]> = {}): Schemas
 export const connection = (overrides: Partial<Schemas["ConnectionOut"]> = {}): Schemas["ConnectionOut"] => ({
   id: 1,
   bank: "BBVA",
+  country: "ES",
   status: "active",
   valid_until: "2027-01-13T12:00:00+00:00",
   last_synced_at: "2026-10-15T08:00:00+00:00",
