@@ -89,6 +89,17 @@ test("Error without detail", async () => {
   expect(await screen.findByText("Error 500")).toBeInTheDocument();
 });
 
+test("Validation error", async () => {
+  stubLocation("/bancos");
+  const detail = [{ loc: ["body", "role"], msg: "Input should be 'main'", type: "enum" }];
+  fakeApi({ "GET /api/banks": noBanks, "POST /api/reprocess": fail(422, { detail }) });
+  renderScreen(<Banks />);
+
+  await userEvent.click(await screen.findByRole("button", { name: "hazlo ahora" }));
+
+  expect(await screen.findByText("Datos no válidos")).toBeInTheDocument();
+});
+
 test("Headers on a page", async () => {
   const config = await nextConfig();
 

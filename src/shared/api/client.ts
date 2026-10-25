@@ -28,7 +28,10 @@ export async function call<T>(pending: Promise<Result<T>>, { redirectOn401 = tru
   }
   if (!response.ok || data === undefined) {
     const detail = error && typeof error === "object" && "detail" in error ? error.detail : undefined;
-    throw new Error(detail === undefined ? `Error ${response.status}` : String(detail));
+    // A validation error's detail is a list of field errors, not a message for the user
+    throw new Error(
+      typeof detail === "string" ? detail : Array.isArray(detail) ? "Datos no válidos" : `Error ${response.status}`,
+    );
   }
   return data;
 }
