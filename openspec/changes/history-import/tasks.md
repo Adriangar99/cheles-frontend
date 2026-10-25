@@ -5,7 +5,7 @@ mutation checks. Starts after the backend change `history-import` is merged.
 
 ## 1. Contract
 
-- [ ] 1.1 `pnpm api:sync` with the backend's `openapi.json`; feature `imports` (port, HTTP adapter, provider, hooks, fake adapter)
+- [x] 1.1 `pnpm api:sync` with the backend's `openapi.json`; feature `imports` (port, HTTP adapter, provider, hooks, fake adapter)
 
 ## 2. Screen
 

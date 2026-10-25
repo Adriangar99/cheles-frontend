@@ -208,6 +208,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/imports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Run Import */
+        post: operations["run_import_api_imports_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/imports/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Import */
+        post: operations["preview_import_api_imports_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/reprocess": {
         parameters: {
             query?: never;
@@ -455,6 +489,62 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** ImportIn */
+        ImportIn: {
+            /** Accounts */
+            accounts: {
+                [key: string]: number | "new" | null;
+            };
+            /** File */
+            file: string;
+        };
+        /** ImportPreviewOut */
+        ImportPreviewOut: {
+            /** Unmatched Categories */
+            unmatched_categories: components["schemas"]["UnmatchedCategoryOut"][];
+            /** Wallets */
+            wallets: components["schemas"]["ImportWalletOut"][];
+        };
+        /** ImportResultOut */
+        ImportResultOut: {
+            /** Adjustments */
+            adjustments: number;
+            /** Already Imported */
+            already_imported: number;
+            /** Imported */
+            imported: number;
+            /** Skipped */
+            skipped: number;
+        };
+        /** ImportWalletOut */
+        ImportWalletOut: {
+            /** Adjustments */
+            adjustments: number;
+            /** Already Imported */
+            already_imported: number;
+            /** Bank Since */
+            bank_since: string | null;
+            /**
+             * First Date
+             * Format: date
+             */
+            first_date: string;
+            /**
+             * Last Date
+             * Format: date
+             */
+            last_date: string;
+            /** Name */
+            name: string;
+            /** Rows */
+            rows: number;
+            /** Skipped */
+            skipped: number;
+            /** Target */
+            target: number | "new" | null;
+            /** To Import */
+            to_import: number;
+        };
         /** LoginBody */
         LoginBody: {
             /** Code */
@@ -583,6 +673,13 @@ export interface components {
             kind?: ("normal" | "transfer") | null;
             /** Note */
             note?: string | null;
+        };
+        /** UnmatchedCategoryOut */
+        UnmatchedCategoryOut: {
+            /** Name */
+            name: string;
+            /** Rows */
+            rows: number;
         };
         /** ValidationError */
         ValidationError: {
@@ -912,6 +1009,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["OkOut"];
+                };
+            };
+        };
+    };
+    run_import_api_imports_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportResultOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    preview_import_api_imports_preview_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportPreviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

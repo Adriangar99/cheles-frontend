@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { AuthApiProvider, httpAuthApi } from "@/features/auth";
 import { BanksApiProvider, httpBanksApi } from "@/features/banks";
+import { httpImportsApi, ImportsApiProvider } from "@/features/imports";
 import { httpStatsApi, StatsApiProvider } from "@/features/stats";
 import { httpTransactionsApi, TransactionsApiProvider } from "@/features/transactions";
 import { createQueryClient } from "@/shared/query";
@@ -16,7 +17,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <AuthApiProvider adapter={httpAuthApi}>
         <StatsApiProvider adapter={httpStatsApi}>
           <TransactionsApiProvider adapter={httpTransactionsApi}>
-            <BanksApiProvider adapter={httpBanksApi}>{children}</BanksApiProvider>
+            <BanksApiProvider adapter={httpBanksApi}>
+              <ImportsApiProvider adapter={httpImportsApi}>{children}</ImportsApiProvider>
+            </BanksApiProvider>
           </TransactionsApiProvider>
         </StatsApiProvider>
       </AuthApiProvider>
