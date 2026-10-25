@@ -13,7 +13,7 @@
 
 ## 3. Docs and verification
 
-- [ ] 3.1 Document `pnpm e2e` in `docs/development.md`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, CI, and two consecutive `pnpm e2e` runs pass and leave no containers, networks or volumes behind
+- [x] 3.1 Document `pnpm e2e` in `docs/development.md`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, CI, and two consecutive `pnpm e2e` runs pass and leave no containers, networks or volumes behind
 
 ## Workflow follow-up
 
