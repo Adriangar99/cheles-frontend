@@ -18,7 +18,7 @@ Refactor note: characterization and e2e tests stay green unchanged after every t
 
 ## 4. Docs and verification
 
-- [ ] 4.1 `docs/design-system.md`, CI step `pnpm build-storybook`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm e2e` and CI
+- [x] 4.1 `docs/design-system.md`, CI step `pnpm build-storybook`; verify `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm e2e` and CI
 
 ## Workflow follow-up
 

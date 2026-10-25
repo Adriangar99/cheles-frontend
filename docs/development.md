@@ -12,6 +12,7 @@
 | `pnpm api:types` | Regenerates `src/shared/api/schema.d.ts` from the versioned contract |
 | `pnpm build` | Production build |
 | `pnpm e2e` | End-to-end tests against a throwaway stack (see below) |
+| `pnpm storybook` | Storybook: tokens, primitives and screens ([design system](design-system.md)) |
 
 CI (GitHub Actions) runs `check`, `typecheck`, `test`, verifies the generated API types match the versioned contract,
 and builds the app.
