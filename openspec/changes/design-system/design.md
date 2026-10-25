@@ -17,8 +17,9 @@ through context, which lets stories pass in-memory adapters.
 ### Tokens
 `src/shared/ui/tokens.css`: colors (`--color-bg`, `--color-surface`, `--color-surface-raised`, `--color-line`,
 `--color-text`, `--color-muted`, `--color-positive`, `--color-negative`), `--radius`, the font sizes in use
-(`--text-xs` 10px … `--text-xl` 22px) and spacing steps in use. The old short names (`--bg`, `--accent`…) are replaced
-everywhere, including inline styles.
+(`--text-2xs` 10px … `--text-2xl` 28px). The old short names (`--bg`, `--accent`…) are replaced everywhere, including
+inline styles. *Spacing is not tokenized*: today's CSS uses a dozen unrelated pixel values with no scale; inventing one
+now would only be replaced by the redesign, which defines the spacing scale.
 
 ### Primitives keep today's DOM
 Each primitive renders exactly the element, classes and ARIA the features use now (for example `Meter` renders the
@@ -43,8 +44,8 @@ and after.
 
 - [Primitives that only wrap classes look thin] → They are the seam the redesign will change; their props (variant,
   tone, orientation) are the design system's vocabulary.
-- [Pixel comparison sensitive to fonts and dates] → Same machine, same day, same e2e data; compared with the e2e run
-  just before and just after.
+- [Pixel comparison sensitive to fonts and dates] → Same machine, same day, same e2e data. The «leído el …» time
+  changes on every run, so the e2e screenshot masks it; the baseline was taken from `main` with the masked test.
 
 ## Migration Plan
 

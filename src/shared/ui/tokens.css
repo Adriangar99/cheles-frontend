@@ -1,0 +1,27 @@
+/* Design tokens: the only place colors, radius and type sizes are defined. */
+:root {
+  /* Colors */
+  --color-bg: #121212;
+  --color-surface: #1b1b1b;
+  --color-surface-raised: #242424;
+  --color-line: #2a2a2a;
+  --color-text: #ececec;
+  --color-muted: #8d8d8d;
+  --color-positive: #4fc08d;
+  --color-negative: #e5645a;
+
+  /* Shape */
+  --radius: 18px;
+
+  /* Type scale */
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+
+  color-scheme: dark;
+}

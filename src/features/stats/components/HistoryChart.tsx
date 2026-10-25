@@ -25,9 +25,9 @@ export function HistoryChart({ history }: { history: MonthTotals[] }) {
       <ul className="card history" aria-label="ingresos y gastos por mes">
         {historyBars(history).map((h) => (
           <li className="col" key={h.month} title={`${h.month}: ${money(h.income)} / ${money(h.expenses)}`}>
-            <Bar label={`${h.month} ingresos`} px={h.incomePx} color="var(--accent)" />
-            <Bar label={`${h.month} gastos`} px={h.expensesPx} color="var(--danger)" />
-            <span className="sub" style={{ fontSize: 10 }}>
+            <Bar label={`${h.month} ingresos`} px={h.incomePx} color="var(--color-positive)" />
+            <Bar label={`${h.month} gastos`} px={h.expensesPx} color="var(--color-negative)" />
+            <span className="sub" style={{ fontSize: "var(--text-2xs)" }}>
               {h.label}
             </span>
           </li>

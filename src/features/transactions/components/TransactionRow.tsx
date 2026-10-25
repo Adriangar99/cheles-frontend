@@ -23,7 +23,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
           <button
             type="button"
             className="btn"
-            style={{ marginTop: 6, padding: "4px 10px", fontSize: 12 }}
+            style={{ marginTop: 6, padding: "4px 10px", fontSize: "var(--text-xs)" }}
             onClick={() => onChange({ kind: "normal" })}
           >
             ⇄ entre mis cuentas (quitar)
@@ -45,7 +45,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
             <button
               type="button"
               className="btn"
-              style={{ padding: "6px 10px", fontSize: 12 }}
+              style={{ padding: "6px 10px", fontSize: "var(--text-xs)" }}
               onClick={() => onChange({ kind: "transfer" })}
               title="marcar como transferencia entre mis cuentas"
             >

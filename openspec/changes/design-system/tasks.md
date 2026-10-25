@@ -4,7 +4,7 @@ Refactor note: characterization and e2e tests stay green unchanged after every t
 
 ## 1. Baseline and tokens
 
-- [ ] 1.1 Run `pnpm e2e` on `main` and keep its screenshots as the "before"; move the colors, radius, type sizes and spacing to `src/shared/ui/tokens.css` with the new names; verify tests pass
+- [x] 1.1 Run `pnpm e2e` on `main` and keep its screenshots as the "before"; move the colors, radius and type sizes to `src/shared/ui/tokens.css` with the new names; verify tests pass
 
 ## 2. Primitives
 
