@@ -23,7 +23,11 @@ export function BanksScreen() {
 
   useEffect(() => {
     const result = authorizationMessage(window.location.search);
-    if (result) setMessage(result);
+    if (result) {
+      setMessage(result);
+      // Shown once: a reload of the screen must not show it again
+      window.history.replaceState(null, "", window.location.pathname);
+    }
   }, []);
 
   // Sync, reprocess and role changes clear the previous message; opening the bank list, connecting and logging out

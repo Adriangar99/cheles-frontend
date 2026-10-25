@@ -124,6 +124,13 @@ test("Back from a failed authorization", async () => {
   expect(await screen.findByText("no se pudo conectar el banco")).toBeInTheDocument();
 });
 
+test("Reloading after the result", async () => {
+  const { location } = open([], {}, "/bancos?connected=1");
+
+  expect(await screen.findByText("banco conectado ✓")).toBeInTheDocument();
+  expect(location.href).toBe("http://localhost/bancos");
+});
+
 test("Change role", async () => {
   const { api } = open(
     [connection({ valid_until: daysFromNow(90), accounts: [account({ id: 8, name: "Colchón", iban_tail: "9876" })] })],

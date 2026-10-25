@@ -10,7 +10,7 @@ TDD: write the scenario test first and see it fail for the right reason. Commit 
 
 - [x] 2.1 «Validation error»: test, then map a list `detail` to «Datos no válidos» in `call()`
 - [x] 2.2 «Consent date already passed» and «Reconnect in the connection's country»: tests, then `needsReconnect` and the connection's country
-- [ ] 2.3 «Reloading after the result»: test with a `history` stub, then `replaceState` after reading the result
+- [x] 2.3 «Reloading after the result»: test with a `history` stub, then `replaceState` after reading the result
 
 ## 3. New capabilities
 
