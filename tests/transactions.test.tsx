@@ -40,7 +40,7 @@ function open(stored: Tx[]) {
   return api;
 }
 
-const rowOf = async (text: string) => (await screen.findByText(text)).closest(".row") as HTMLElement;
+const rowOf = (name: string) => screen.findByRole("listitem", { name });
 const optionsOf = (row: HTMLElement) =>
   within(row)
     .getAllByRole("option")
@@ -75,7 +75,7 @@ test("Pending debit", async () => {
 
   const row = await rowOf("MERCADONA");
   expect(within(row).getByText("3 oct · Nómina · pendiente")).toBeInTheDocument();
-  expect(within(row).getByText("-12,50 €")).not.toHaveClass("pos");
+  expect(within(row).getByText("-12,50 €")).not.toHaveAttribute("data-tone");
 });
 
 test("Empty month", async () => {
@@ -104,7 +104,7 @@ test("Categories offered for a credit", async () => {
   const row = await rowOf("EMPRESA SL");
 
   await waitFor(() => expect(optionsOf(row)).toEqual(["💶 Nómina", "🛒 Supermercado"]));
-  expect(within(row).getByText("2000,00 €")).toHaveClass("pos");
+  expect(within(row).getByText("2000,00 €")).toHaveAttribute("data-tone", "pos");
 });
 
 test("Mark as transfer", async () => {
@@ -114,8 +114,9 @@ test("Mark as transfer", async () => {
 
   expect(api.to("PATCH", "/api/transactions/4")[0].body).toEqual({ kind: "transfer" });
   const quitar = await screen.findByRole("button", { name: "⇄ entre mis cuentas (quitar)" });
-  const row = quitar.closest(".row") as HTMLElement;
-  expect(row.style.opacity).toBe("0.55");
+  const row = screen.getByRole("listitem", { name: "MERCADONA" });
+  expect(within(row).getByRole("button", { name: "⇄ entre mis cuentas (quitar)" })).toBe(quitar);
+  expect(row).toHaveAttribute("data-kind", "transfer");
   expect(within(row).queryByRole("combobox")).not.toBeInTheDocument();
 });
 
@@ -127,18 +128,18 @@ test("Unmark a transfer", async () => {
   expect(api.to("PATCH", "/api/transactions/5")[0].body).toEqual({ kind: "normal" });
   const row = await rowOf("MERCADONA");
   expect(await within(row).findByRole("combobox", { name: "categoría" })).toBeInTheDocument();
-  expect(row.style.opacity).toBe("");
+  expect(row).toHaveAttribute("data-kind", "normal");
 });
 
 // ---------- Load and edit errors ----------
 
-const belowSearch = () => screen.getByPlaceholderText("buscar…").nextElementSibling;
+const alert = () => screen.getByRole("alert");
 
 test("List unavailable", async () => {
   fakeApi({ "GET /api/transactions": fail(500), "GET /api/categories": ok([]) });
   renderScreen(<Movements />);
 
-  await waitFor(() => expect(belowSearch()).toHaveTextContent("Error 500"));
+  await waitFor(() => expect(alert()).toHaveTextContent("Error 500"));
 });
 
 test("Change rejected", async () => {
@@ -153,7 +154,7 @@ test("Change rejected", async () => {
 
   await userEvent.selectOptions(within(row).getByRole("combobox", { name: "categoría" }), "🍽 Restaurantes");
 
-  await waitFor(() => expect(belowSearch()).toHaveTextContent("Categoría inexistente"));
+  await waitFor(() => expect(alert()).toHaveTextContent("Categoría inexistente"));
   expect(api.to("GET", "/api/transactions")).toHaveLength(1);
 });
 

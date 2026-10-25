@@ -243,3 +243,15 @@ nav.tabs a.on {
   white-space: nowrap;
   font-weight: 500;
 }
+
+/* Semantic lists and figure terms keep the look of the plain blocks they replaced */
+ul.card,
+ul.history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+dl.stats,
+dl.stats dd {
+  margin: 0;
+}

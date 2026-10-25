@@ -6,7 +6,7 @@ import { currentMonth, shiftMonth } from "./month";
 // Previous/next month buttons around the month heading; the next one stops at the current month.
 export function MonthNav({ month, onChange }: { month: string; onChange: (month: string) => void }) {
   return (
-    <div className="month-nav">
+    <nav className="month-nav" aria-label="mes">
       <button type="button" className="btn" onClick={() => onChange(shiftMonth(month, -1))} aria-label="mes anterior">
         ‹
       </button>
@@ -20,6 +20,6 @@ export function MonthNav({ month, onChange }: { month: string; onChange: (month:
       >
         ›
       </button>
-    </div>
+    </nav>
   );
 }

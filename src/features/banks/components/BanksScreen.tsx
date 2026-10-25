@@ -45,7 +45,7 @@ export function BanksScreen() {
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
       {shown && (
-        <p className="sub" style={{ marginTop: 12 }}>
+        <p className="sub" role="status" style={{ marginTop: 12 }}>
           {shown}
         </p>
       )}

@@ -16,16 +16,16 @@ export function BankPicker({ banks, loading, onOpen, onConnect }: Props) {
           conectar un banco
         </button>
       ) : (
-        <div className="card">
+        <ul className="card">
           {banks.map((b) => (
-            <div className="row" key={`${b.name}${b.country}`}>
+            <li className="row" key={`${b.name}${b.country}`} aria-label={b.name}>
               <span>{b.name}</span>
               <button type="button" className="btn" onClick={() => onConnect(b)}>
                 conectar
               </button>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </>
   );

@@ -29,20 +29,20 @@ test("Healthy connection", async () => {
   // Consent ends at any time of day; part of a day counts as a whole one.
   open([connection({ valid_until: daysFromNow(89.75), last_synced_at: "2026-10-23T17:00:00+00:00" })]);
 
-  expect(await status("al día · 90 días de permiso")).toHaveClass("pos");
+  expect(await status("al día · 90 días de permiso")).toHaveAttribute("data-tone", "pos");
   expect(screen.getByText("leído el 23 oct, 19:00")).toBeInTheDocument();
 });
 
 test("Consent about to expire", async () => {
   open([connection({ valid_until: daysFromNow(10) })]);
 
-  expect(await status("caduca en 10 días")).toHaveClass("neg");
+  expect(await status("caduca en 10 días")).toHaveAttribute("data-tone", "neg");
 });
 
 test("Expired connection", async () => {
   open([connection({ status: "expired", valid_until: daysFromNow(-1), last_error: `${"x".repeat(130)}` })]);
 
-  expect(await status("hay que reconectar")).toHaveClass("neg");
+  expect(await status("hay que reconectar")).toHaveAttribute("data-tone", "neg");
   expect(screen.getByText("x".repeat(120))).toBeInTheDocument();
 });
 
@@ -85,7 +85,7 @@ test("Pick a bank", async () => {
   });
 
   await userEvent.click(await screen.findByRole("button", { name: "conectar un banco" }));
-  const revolut = (await screen.findByText("Revolut")).closest(".row") as HTMLElement;
+  const revolut = await screen.findByRole("listitem", { name: "Revolut" });
   await userEvent.click(within(revolut).getByRole("button", { name: "conectar" }));
 
   await waitFor(() => expect(location.href).toBe("https://revolut.example/authorize"));
@@ -109,7 +109,7 @@ test("Change role", async () => {
     [connection({ valid_until: daysFromNow(90), accounts: [account({ id: 8, name: "Colchón", iban_tail: "9876" })] })],
     { "PATCH /api/accounts/8": ok(account({ id: 8, role: "savings" })) },
   );
-  const row = (await screen.findByText("Colchón")).closest(".row") as HTMLElement;
+  const row = await screen.findByRole("listitem", { name: "Colchón" });
   expect(within(row).getByText("·· 9876")).toBeInTheDocument();
   expect(within(row).getByText("1000,00 €")).toBeInTheDocument();
 
@@ -290,8 +290,8 @@ function openWithDetached(routes: Routes = {}) {
 test("Detached account", async () => {
   openWithDetached();
 
-  const section = (await screen.findByRole("heading", { name: "cuentas sin banco" })).nextElementSibling as HTMLElement;
-  const row = within(section).getByText("Colchón").closest(".row") as HTMLElement;
+  const section = await screen.findByRole("region", { name: "cuentas sin banco" });
+  const row = within(section).getByRole("listitem", { name: "Colchón" });
   expect(within(row).getByText("·· 9876")).toBeInTheDocument();
   expect(within(row).getByText("500,00 €")).toBeInTheDocument();
   expect(within(row).getByRole("combobox", { name: "para qué es esta cuenta" })).toHaveValue("main");
@@ -299,7 +299,7 @@ test("Detached account", async () => {
 
 test("Role of a detached account", async () => {
   const { api } = openWithDetached({ "PATCH /api/accounts/9": ok(account({ id: 9, role: "savings" })) });
-  const row = (await screen.findByText("Colchón")).closest(".row") as HTMLElement;
+  const row = await screen.findByRole("listitem", { name: "Colchón" });
 
   await userEvent.selectOptions(within(row).getByRole("combobox", { name: "para qué es esta cuenta" }), "ahorro");
 

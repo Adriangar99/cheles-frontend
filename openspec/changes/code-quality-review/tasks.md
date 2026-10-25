@@ -9,8 +9,8 @@ mutation check.
 
 ## 2. Markup and tests
 
-- [ ] 2.1 Semantic lists, labelled bars, figures as `dl`, labelled month `nav` and `role="alert"` errors across the three screens and login; keep classes so the current styles still apply
-- [ ] 2.2 Rewrite the test lookups to roles and accessible names (no CSS selectors, no `as HTMLElement`); verify every test passes and a grep finds no class selector in `tests/`
+- [x] 2.1 Semantic lists, labelled bars, figures as `dl`, labelled month `nav` and `role="alert"` errors across the three screens and login; keep classes so the current styles still apply
+- [x] 2.2 Rewrite the test lookups to roles and accessible names (no CSS selectors, no `as HTMLElement`); verify every test passes and a grep finds no class selector in `tests/`
 
 ## 3. Small fixes
 

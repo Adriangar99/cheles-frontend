@@ -1,13 +1,15 @@
+import { useId } from "react";
 import { money } from "@/shared/format";
 import type { Account, Role } from "../api";
 import { ROLE_LABEL } from "../domain/banks";
 
 export function AccountRow({ account: a, onRoleChange }: { account: Account; onRoleChange: (role: Role) => void }) {
+  const nameId = useId();
   return (
-    <div className="row">
+    <li className="row" aria-labelledby={nameId}>
       <div className="grow">
         <div className="ellipsis">
-          {a.name}
+          <span id={nameId}>{a.name}</span>
           {a.iban_tail && <span className="muted"> ·· {a.iban_tail}</span>}
         </div>
         <div className="sub">{money(a.balance)}</div>
@@ -23,6 +25,6 @@ export function AccountRow({ account: a, onRoleChange }: { account: Account; onR
           </option>
         ))}
       </select>
-    </div>
+    </li>
   );
 }

@@ -18,7 +18,11 @@ export function MyMonthScreen() {
   return (
     <>
       <MonthNav month={month} onChange={setMonth} />
-      {error && <p className="err">{error}</p>}
+      {error && (
+        <p className="err" role="alert">
+          {error}
+        </p>
+      )}
       {summary.data && (
         <>
           <MonthlyFigures summary={summary.data} />

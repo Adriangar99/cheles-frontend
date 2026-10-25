@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { Account, Role } from "../api";
 import { AccountRow } from "./AccountRow";
 
@@ -9,15 +10,16 @@ export function DetachedAccounts({
   accounts: Account[];
   onRoleChange: (accountId: number, role: Role) => void;
 }) {
+  const headingId = useId();
   if (accounts.length === 0) return null;
   return (
-    <section>
-      <h2>cuentas sin banco</h2>
-      <div className="card">
+    <section aria-labelledby={headingId}>
+      <h2 id={headingId}>cuentas sin banco</h2>
+      <ul className="card">
         {accounts.map((a) => (
           <AccountRow key={a.id} account={a} onRoleChange={(role) => onRoleChange(a.id, role)} />
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

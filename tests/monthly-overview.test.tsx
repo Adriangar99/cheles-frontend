@@ -20,12 +20,10 @@ function open(month: Partial<Summary> = {}, history: unknown[] = []) {
   return api;
 }
 
-const card = async (label: string) => (await screen.findByText(label)).nextElementSibling as HTMLElement;
+// A figure is a term (dt) followed by its value (dd)
+const card = async (label: string) => (await screen.findByText(label, { selector: "dt" })).nextElementSibling;
 const heading = () => screen.getByRole("heading", { level: 1 });
-const inline = (el: Element) => {
-  const { width, height, background } = (el as HTMLElement).style;
-  return { width, height, background };
-};
+const meter = (name: string) => screen.getByRole("meter", { name });
 
 test("Default month", async () => {
   const api = open();
@@ -61,7 +59,7 @@ test("Positive month", async () => {
   expect(await card("ingresos")).toHaveTextContent("2000,00 €");
   expect(await card("gastos")).toHaveTextContent("1200,00 €");
   expect(await card("sobra")).toHaveTextContent("800,00 €");
-  expect(await card("sobra")).toHaveClass("pos");
+  expect(await card("sobra")).toHaveAttribute("data-tone", "pos");
   expect(await card("enviado a ahorro")).toHaveTextContent("300,00 €");
 });
 
@@ -69,14 +67,14 @@ test("Negative month", async () => {
   open({ net: -150 });
 
   expect(await card("sobra")).toHaveTextContent("-150,00 €");
-  expect(await card("sobra")).toHaveClass("neg");
+  expect(await card("sobra")).toHaveAttribute("data-tone", "neg");
 });
 
 // Requirement boundary not covered by a scenario: «sobra» is green when zero.
 test("Break-even month", async () => {
   open({ net: 0 });
 
-  expect(await card("sobra")).toHaveClass("pos");
+  expect(await card("sobra")).toHaveAttribute("data-tone", "pos");
 });
 
 test("No savings accounts", async () => {
@@ -94,10 +92,11 @@ test("Spending breakdown", async () => {
     ],
   });
 
-  const bar = async (label: string) =>
-    (await screen.findByText(label)).closest(".row")?.querySelector(".bar span") as HTMLElement;
-  expect(inline(await bar("🛒 Supermercado"))).toMatchObject({ width: "100%", background: "rgb(76, 175, 80)" });
-  expect(inline(await bar("🍽 Restaurantes"))).toMatchObject({ width: "40%", background: "rgb(255, 152, 0)" });
+  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "100");
+  expect(meter("🍽 Restaurantes")).toHaveAttribute("aria-valuenow", "40");
+  // The bar takes the category's own color
+  expect(meter("🛒 Supermercado").style.background).toBe("rgb(76, 175, 80)");
+  expect(meter("🍽 Restaurantes").style.background).toBe("rgb(255, 152, 0)");
   expect(screen.getByText("en qué se va")).toBeInTheDocument();
 });
 
@@ -113,11 +112,10 @@ test("History bars", async () => {
     { month: "2026-09", income: 2000, expenses: 1000 },
   ]);
 
-  const september = (await screen.findByText("09")).closest(".col") as HTMLElement;
-  const [income, expenses] = september.querySelectorAll(".b");
-  expect(inline(income)).toMatchObject({ height: "70px", background: "var(--accent)" });
-  expect(inline(expenses)).toMatchObject({ height: "35px", background: "var(--danger)" });
-  expect(september.title.replace(/\s/g, " ")).toBe("2026-09: 2000,00 € / 1000,00 €");
+  expect(await screen.findByRole("meter", { name: "2026-09 ingresos" })).toHaveAttribute("aria-valuenow", "70");
+  expect(meter("2026-09 gastos")).toHaveAttribute("aria-valuenow", "35");
+  expect(screen.getByText("09")).toBeInTheDocument();
+  expect(screen.getByTitle("2026-09: 2000,00 € / 1000,00 €")).toBeInTheDocument();
   expect(screen.getByText("verde = ingresos · rojo = gastos")).toBeInTheDocument();
 });
 
@@ -125,9 +123,8 @@ test("History bars", async () => {
 test("Expenses can set the history scale", async () => {
   open({}, [{ month: "2026-09", income: 500, expenses: 1000 }]);
 
-  const [income, expenses] = (await screen.findByText("09")).closest(".col")?.querySelectorAll(".b") ?? [];
-  expect(inline(income).height).toBe("35px");
-  expect(inline(expenses).height).toBe("70px");
+  expect(await screen.findByRole("meter", { name: "2026-09 ingresos" })).toHaveAttribute("aria-valuenow", "35");
+  expect(meter("2026-09 gastos")).toHaveAttribute("aria-valuenow", "70");
 });
 
 // Current behavior not covered by a scenario: figures stay until the next month's arrive.
@@ -162,13 +159,13 @@ test("Month navigation does not reload history", async () => {
 
 // ---------- Load errors ----------
 
-const belowHeading = () => heading().closest(".month-nav")?.nextElementSibling;
+const alert = () => screen.getByRole("alert");
 
 test("Summary unavailable", async () => {
   fakeApi({ "GET /api/stats/summary": fail(500), "GET /api/stats/history": ok([]) });
   renderScreen(<MyMonth />);
 
-  await waitFor(() => expect(belowHeading()).toHaveTextContent("Error 500"));
+  await waitFor(() => expect(alert()).toHaveTextContent("Error 500"));
   expect(screen.queryByText("ingresos")).not.toBeInTheDocument();
 });
 
@@ -176,7 +173,7 @@ test("History unavailable", async () => {
   fakeApi({ "GET /api/stats/summary": ok(summary({ income: 2000 })), "GET /api/stats/history": fail(503) });
   renderScreen(<MyMonth />);
 
-  await waitFor(() => expect(belowHeading()).toHaveTextContent("Error 503"));
+  await waitFor(() => expect(alert()).toHaveTextContent("Error 503"));
   expect(await card("ingresos")).toHaveTextContent("2000,00 €");
 });
 
@@ -200,6 +197,6 @@ test("Summary error first when both fail", async () => {
   fakeApi({ "GET /api/stats/summary": fail(500), "GET /api/stats/history": fail(503) });
   renderScreen(<MyMonth />);
 
-  await waitFor(() => expect(belowHeading()).toHaveTextContent("Error 500"));
+  await waitFor(() => expect(alert()).toHaveTextContent("Error 500"));
   expect(screen.queryByText("Error 503")).not.toBeInTheDocument();
 });
