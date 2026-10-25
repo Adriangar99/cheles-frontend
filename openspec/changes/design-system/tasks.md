@@ -14,7 +14,7 @@ Refactor note: characterization and e2e tests stay green unchanged after every t
 ## 3. Storybook
 
 - [x] 3.1 Storybook 10 (react-vite, docs, a11y), preview with styles and a query client, `pnpm storybook` / `pnpm build-storybook`, a tokens page and stories for every primitive; verify it builds and the a11y panel shows no violations on the primitives
-- [ ] 3.2 Fake adapters for the four feature ports and stories for every screen in its states (loaded, empty, loading, error); verify they render in Storybook
+- [x] 3.2 Fake adapters for the four feature ports and stories for every screen in its states (loaded, empty, loading, error); verify they render in Storybook
 
 ## 4. Docs and verification
 
