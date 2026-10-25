@@ -1,18 +1,20 @@
+import { Button, Card } from "@/shared/ui";
+
 export function ReprocessCard({ busy, onReprocess }: { busy: boolean; onReprocess: () => void }) {
   return (
     <>
       <h2>si algo no cuadra</h2>
-      <div className="card">
+      <Card>
         <div className="row">
           <div className="grow">
             <div>reprocesar desde los bancos</div>
             <div className="sub">recalcula categorías y transferencias; no cambia lo que has tocado a mano</div>
           </div>
-          <button type="button" className="btn" disabled={busy} onClick={onReprocess}>
+          <Button disabled={busy} onClick={onReprocess}>
             {busy ? "…" : "hazlo ahora"}
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     </>
   );
 }

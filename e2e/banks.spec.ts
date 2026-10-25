@@ -24,7 +24,12 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
     const savings = page.getByRole("listitem", { name: "Ahorro" });
     await savings.getByRole("combobox", { name: "para qué es esta cuenta" }).selectOption({ label: "ahorro" });
     await expect(savings.getByRole("combobox")).toHaveValue("savings");
-    await page.screenshot({ path: `${SCREENSHOTS}/bancos.png`, fullPage: true });
+    // The last read time changes on every run: masked so screenshots compare across runs
+    await page.screenshot({
+      path: `${SCREENSHOTS}/bancos.png`,
+      fullPage: true,
+      mask: [page.getByText(/^leído el /)],
+    });
   });
 
   await test.step("«mi mes» counts the month, without the transfer to savings", async () => {

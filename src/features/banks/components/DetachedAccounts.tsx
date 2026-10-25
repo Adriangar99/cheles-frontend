@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { List } from "@/shared/ui";
 import type { Account, Role } from "../api";
 import { AccountRow } from "./AccountRow";
 
@@ -15,11 +16,11 @@ export function DetachedAccounts({
   return (
     <section aria-labelledby={headingId}>
       <h2 id={headingId}>cuentas sin banco</h2>
-      <ul className="card">
+      <List>
         {accounts.map((a) => (
           <AccountRow key={a.id} account={a} onRoleChange={(role) => onRoleChange(a.id, role)} />
         ))}
-      </ul>
+      </List>
     </section>
   );
 }

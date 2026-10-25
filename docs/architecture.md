@@ -14,7 +14,7 @@ and format; pnpm.
       components/            React components
       domain/                pure rules (no React, no fetch), with unit tests next to them
     src/shared/              typed API client and generated contract, es-ES formatting, month arithmetic, MonthNav,
-                             query client
+                             query client, and the design system (ui/: tokens and primitives)
     src/middleware.ts        session guard (cookie presence)
     next.config.ts           /api/* rewrite to the API and security headers
 

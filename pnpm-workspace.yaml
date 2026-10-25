@@ -1,3 +1,5 @@
-# Packages allowed to run install scripts. sharp ships prebuilt binaries (@img/sharp-*), so its script never runs.
+# Packages allowed to run install scripts. sharp and esbuild ship prebuilt binaries as optional dependencies
+# (@img/sharp-*, @esbuild/*), so their scripts never run.
 allowBuilds:
+  esbuild: false
   sharp: false

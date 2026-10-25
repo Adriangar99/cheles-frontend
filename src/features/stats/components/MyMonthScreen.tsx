@@ -4,6 +4,7 @@ import { useState } from "react";
 import { errorMessage } from "@/shared/api/client";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
+import { Message } from "@/shared/ui";
 import { useHistory, useSummary } from "../hooks";
 import { HistoryChart } from "./HistoryChart";
 import { MonthlyFigures } from "./MonthlyFigures";
@@ -18,11 +19,7 @@ export function MyMonthScreen() {
   return (
     <>
       <MonthNav month={month} onChange={setMonth} />
-      {error && (
-        <p className="err" role="alert">
-          {error}
-        </p>
-      )}
+      {error && <Message kind="error">{error}</Message>}
       {summary.data && (
         <>
           <MonthlyFigures summary={summary.data} />

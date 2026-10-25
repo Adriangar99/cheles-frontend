@@ -1,28 +1,16 @@
-:root {
-  --bg: #121212;
-  --card: #1b1b1b;
-  --card-2: #242424;
-  --line: #2a2a2a;
-  --text: #ececec;
-  --muted: #8d8d8d;
-  --accent: #4fc08d;
-  --danger: #e5645a;
-  --radius: 18px;
-  color-scheme: dark;
-}
-
+@import "../shared/ui/tokens.css";
 * {
   box-sizing: border-box;
   margin: 0;
 }
 html,
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 body {
   font-family: ui-sans-serif, -apple-system, "SF Pro Text", system-ui, sans-serif;
-  font-size: 16px;
+  font-size: var(--text-base);
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   padding-bottom: calc(76px + env(safe-area-inset-bottom));
@@ -34,34 +22,34 @@ main {
   padding: 20px 16px;
 }
 h1 {
-  font-size: 28px;
+  font-size: var(--text-2xl);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 h2 {
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 500;
-  color: var(--muted);
+  color: var(--color-muted);
   margin: 24px 4px 8px;
   text-transform: lowercase;
 }
 .sub {
-  color: var(--muted);
-  font-size: 14px;
+  color: var(--color-muted);
+  font-size: var(--text-md);
 }
 .muted {
-  color: var(--muted);
+  color: var(--color-muted);
 }
 .pos {
-  color: var(--accent);
+  color: var(--color-positive);
 }
 .neg {
-  color: var(--danger);
+  color: var(--color-negative);
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius);
 }
 .row {
@@ -72,7 +60,7 @@ h2 {
   padding: 14px 16px;
 }
 .row + .row {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-line);
 }
 .row > .grow {
   flex: 1;
@@ -85,20 +73,20 @@ h2 {
 }
 
 .btn {
-  background: var(--card-2);
-  color: var(--text);
-  border: 1px solid var(--line);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-line);
   border-radius: 999px;
   padding: 9px 16px;
   font: inherit;
-  font-size: 14px;
+  font-size: var(--text-md);
   cursor: pointer;
 }
 .btn:disabled {
   opacity: 0.5;
 }
 .btn.primary {
-  background: var(--accent);
+  background: var(--color-positive);
   color: #0b1a12;
   border-color: transparent;
   font-weight: 600;
@@ -107,18 +95,18 @@ h2 {
 input,
 select {
   width: 100%;
-  background: var(--card-2);
-  color: var(--text);
-  border: 1px solid var(--line);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-line);
   border-radius: 14px;
   padding: 13px 14px;
   font: inherit;
-  font-size: 16px; /* 16px prevents zoom on iOS */
+  font-size: var(--text-base); /* 16px prevents zoom on iOS */
 }
 select {
   width: auto;
   padding: 8px 10px;
-  font-size: 14px;
+  font-size: var(--text-md);
   border-radius: 999px;
 }
 
@@ -132,11 +120,11 @@ select {
   padding: 14px 16px;
 }
 .stat .label {
-  color: var(--muted);
-  font-size: 13px;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
 }
 .stat .value {
-  font-size: 22px;
+  font-size: var(--text-xl);
   font-weight: 600;
   margin-top: 2px;
   letter-spacing: -0.02em;
@@ -148,7 +136,7 @@ select {
 .bar {
   height: 8px;
   border-radius: 999px;
-  background: var(--card-2);
+  background: var(--color-surface-raised);
   overflow: hidden;
   margin-top: 8px;
 }
@@ -202,13 +190,13 @@ nav.tabs {
   justify-content: space-around;
   background: rgba(18, 18, 18, 0.92);
   backdrop-filter: blur(14px);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-line);
   padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
 }
 nav.tabs a {
-  color: var(--muted);
+  color: var(--color-muted);
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--text-xs);
   text-align: center;
   padding: 4px 16px;
   display: flex;
@@ -216,10 +204,10 @@ nav.tabs a {
   gap: 2px;
 }
 nav.tabs a span.i {
-  font-size: 20px;
+  font-size: var(--text-lg);
 }
 nav.tabs a.on {
-  color: var(--text);
+  color: var(--color-text);
 }
 
 .login {
@@ -235,8 +223,8 @@ nav.tabs a.on {
   gap: 12px;
 }
 .err {
-  color: var(--danger);
-  font-size: 14px;
+  color: var(--color-negative);
+  font-size: var(--text-md);
 }
 .tx-amount {
   font-variant-numeric: tabular-nums;

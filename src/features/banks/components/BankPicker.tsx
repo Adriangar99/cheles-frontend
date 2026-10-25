@@ -1,3 +1,4 @@
+import { Button, List, ListItem } from "@/shared/ui";
 import type { AvailableBank } from "../api";
 
 type Props = {
@@ -12,20 +13,18 @@ export function BankPicker({ banks, loading, onOpen, onConnect }: Props) {
     <>
       <h2>añadir un banco</h2>
       {!banks ? (
-        <button type="button" className="btn primary" disabled={loading} onClick={onOpen}>
+        <Button variant="primary" disabled={loading} onClick={onOpen}>
           conectar un banco
-        </button>
+        </Button>
       ) : (
-        <ul className="card">
+        <List>
           {banks.map((b) => (
-            <li className="row" key={`${b.name}${b.country}`} aria-label={b.name}>
+            <ListItem key={`${b.name}${b.country}`} aria-label={b.name}>
               <span>{b.name}</span>
-              <button type="button" className="btn" onClick={() => onConnect(b)}>
-                conectar
-              </button>
-            </li>
+              <Button onClick={() => onConnect(b)}>conectar</Button>
+            </ListItem>
           ))}
-        </ul>
+        </List>
       )}
     </>
   );

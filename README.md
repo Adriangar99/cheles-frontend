@@ -23,6 +23,7 @@ Install and start the [backend](https://github.com/Adriangar99/cheles-backend) f
 | [Features](docs/features.md) | What each screen does, with links to the specs |
 | [Architecture](docs/architecture.md) | Features, ports, typed API client, enforced boundaries |
 | [Development](docs/development.md) | Commands, tests, API contract, workflow |
+| [Design system](docs/design-system.md) | Tokens, primitives, Storybook |
 
 Behavior is specified in [`openspec/specs/`](openspec/specs/), one capability per screen or user flow. Installation,
 Enable Banking and operations are documented in the [backend](https://github.com/Adriangar99/cheles-backend#documentation).

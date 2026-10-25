@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, Message } from "@/shared/ui";
 import { useLogin } from "../hooks";
 
 export function LoginForm() {
@@ -30,15 +31,11 @@ export function LoginForm() {
           maxLength={6}
           required
         />
-        {login.error && (
-          <p className="err" role="alert">
-            {login.error.message}
-          </p>
-        )}
+        {login.error && <Message kind="error">{login.error.message}</Message>}
         {/* Still disabled after success: the browser is already navigating to / */}
-        <button type="submit" className="btn primary" disabled={login.isPending || login.isSuccess}>
+        <Button type="submit" variant="primary" disabled={login.isPending || login.isSuccess}>
           entrar
-        </button>
+        </Button>
       </form>
     </div>
   );
