@@ -1,5 +1,8 @@
+export { Amount } from "./Amount";
 export { Button } from "./Button";
 export { Card } from "./Card";
+export { Figure, Figures, type Tone } from "./Figure";
 export { List, ListItem } from "./List";
 export { Message } from "./Message";
+export { Meter } from "./Meter";
 export { Select } from "./Select";

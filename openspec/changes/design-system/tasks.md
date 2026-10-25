@@ -9,7 +9,7 @@ Refactor note: characterization and e2e tests stay green unchanged after every t
 ## 2. Primitives
 
 - [x] 2.1 `Button`, `Card`, `List`/`ListItem`, `Select`, `Message` in `src/shared/ui/`, used by every feature; verify tests pass
-- [ ] 2.2 `Figures`/`Figure`, `Meter`, `Amount`, used by stats, transactions and banks; verify tests pass and the e2e screenshots are pixel-identical to the baseline
+- [x] 2.2 `Figures`/`Figure`, `Meter`, `Amount`, used by stats, transactions and banks; verify tests pass and the e2e screenshots are pixel-identical to the baseline
 
 ## 3. Storybook
 

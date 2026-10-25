@@ -1,6 +1,6 @@
 import { useId } from "react";
-import { dayMonth, money } from "@/shared/format";
-import { Button, ListItem, Select } from "@/shared/ui";
+import { dayMonth } from "@/shared/format";
+import { Amount, Button, ListItem, Select } from "@/shared/ui";
 import type { Category, Transaction, TransactionPatch } from "../api";
 import { categoryOptions, isCredit, rowLabel } from "../domain/transactions";
 
@@ -51,9 +51,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
           </div>
         )}
       </div>
-      <div className={`tx-amount ${isCredit(tx) ? "pos" : ""}`} data-tone={isCredit(tx) ? "pos" : undefined}>
-        {money(tx.amount)}
-      </div>
+      <Amount as="div" value={tx.amount} tone={isCredit(tx) ? "pos" : undefined} />
     </ListItem>
   );
 }
