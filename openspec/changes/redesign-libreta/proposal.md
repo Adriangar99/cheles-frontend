@@ -32,6 +32,7 @@ None.
 
 - `monthly-overview`: figures as a sheet of lines, spending as «la nómina repartida», lowercase month heading.
 - `locale-formatting`: headings show the lowercase month label.
+- `app-shell`: the theme color and the iOS status bar follow the light or dark scheme.
 
 ## Impact
 

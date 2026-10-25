@@ -166,6 +166,12 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/ibm-plex-mono':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource/ibm-plex-sans':
+        specifier: 5.3.0
+        version: 5.3.0
       '@tanstack/react-query':
         specifier: 5.104.5
         version: 5.104.5(@types/react@19.0.7)(react@19.0.0)
@@ -618,6 +624,12 @@ packages:
     peerDependenciesMeta:
       '@noble/hashes':
         optional: true
+
+  '@fontsource/ibm-plex-mono@5.3.0':
+    resolution: {integrity: sha512-eTgnZjZEGk1QtD3ZstF+Vclo2HLAni8YMy34/DxllwZvyz1lR/1RF/xTiAquOBO7MvqBx8D2Ig2WCPMVfdZu7Q==}
+
+  '@fontsource/ibm-plex-sans@5.3.0':
+    resolution: {integrity: sha512-CbE4CbbEEZJX860XyUiRpsksXIQR8Rp2XDva2VO53NJox9tVNtusrysd2x5YkUEY3ErQ66W1IiiQL8/wihhw5w==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -2649,6 +2661,10 @@ snapshots:
   '@exodus/bytes@1.16.0(@noble/hashes@2.4.0)':
     optionalDependencies:
       '@noble/hashes': 2.4.0
+
+  '@fontsource/ibm-plex-mono@5.3.0': {}
+
+  '@fontsource/ibm-plex-sans@5.3.0': {}
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:

@@ -5,7 +5,7 @@ marking the redesign done.
 
 ## 1. Foundations
 
-- [ ] 1.1 Fonts (`@fontsource` Plex Sans and Mono) and the light/dark token set (colors, type scale, spacing, radii); `color-scheme` and the theme color meta; Storybook toolbar to switch themes; verify axe on every story in both themes
+- [x] 1.1 Fonts (`@fontsource` Plex Sans and Mono) and the light/dark token set (colors, type scale, spacing, radii); `color-scheme` and the theme color meta; Storybook toolbar to switch themes; verify axe on every story in both themes
 
 ## 2. Primitives
 
