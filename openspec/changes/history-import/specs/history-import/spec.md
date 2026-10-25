@@ -16,8 +16,7 @@ preview with every wallet going to a new account.
 For each wallet the screen SHALL show its name, «<n> movimientos · <first date> – <last date>», a selector «dónde
 van» with «nueva cuenta», every existing account and «no importar», and what would happen: «entran <n>», «<n> ya
 los trajo el banco (desde <date>)» when some are skipped, «<n> ya importados» when some were imported before. Changing
-a selector requests the preview again with the new targets. Categories without an equivalent are listed as «sin
-equivalencia, irán por reglas: <name> (<rows>), …».
+a selector requests the preview again with the new targets.
 
 #### Scenario: Wallet onto a bank account
 - **WHEN** the user sends «Cuenta Principal» to «Nómina» and the preview answers 300 to import and 120 skipped since
@@ -28,6 +27,10 @@ equivalencia, irán por reglas: <name> (<rows>), …».
 #### Scenario: Not imported
 - **WHEN** the user chooses «no importar» for «Revolut»
 - **THEN** the preview is requested with «Revolut» going nowhere
+
+### Requirement: Categories without an equivalent
+The preview SHALL list the MoneyLover categories that have no equivalent as «sin equivalencia, irán por reglas:
+<name> (<rows>), …».
 
 #### Scenario: Categories without equivalent
 - **WHEN** the preview lists «Ahorro» with 12 rows and «Invertir» with 3
