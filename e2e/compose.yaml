@@ -47,7 +47,7 @@ services:
         aliases: [api]
 
   web:
-    build: ..   # built with the default API_URL=http://api:8000 (fixed at build time)
+    build: .. # built with the default API_URL=http://api:8000 (fixed at build time)
     depends_on:
       api: { condition: service_healthy }
     # A different runtime value: «API URL fixed at build time» holds only if this one is ignored
