@@ -78,7 +78,8 @@ const TRANSACTIONS: Transaction[] = [
 
 // An in-memory TransactionsApi for stories and feature tests; edits change its data
 export function fakeTransactionsApi(state: FakeState = "loaded"): TransactionsApi {
-  const stored = TRANSACTIONS.map((t) => ({ ...t }));
+  // Newest first, like the API
+  const stored = TRANSACTIONS.map((t) => ({ ...t })).reverse();
   return {
     list: ({ q }) =>
       answer(

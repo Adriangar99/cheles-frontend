@@ -22,9 +22,9 @@ marking the redesign done.
 
 ## 5. Review round (owner feedback)
 
-- [ ] 5.1 Straight status labels instead of tilted stamps; drop Plex Mono for Plex Sans tabular figures
-- [ ] 5.2 Tests first, then: comparison with the previous month («mi mes»), movements grouped by day with day totals, summary at the top of «bancos»
-- [ ] 5.3 Screenshots in both themes, axe, full verification; owner review
+- [x] 5.1 Straight status labels instead of tilted stamps; drop Plex Mono for Plex Sans tabular figures
+- [x] 5.2 Tests first, then: comparison with the previous month («mi mes»), movements grouped by day with day totals, summary at the top of «bancos»
+- [x] 5.3 Screenshots in both themes, axe, full verification; owner review
 
 ## Workflow follow-up
 
