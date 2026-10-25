@@ -14,4 +14,4 @@ mutation checks. Starts after the backend change `history-import` is merged.
 
 ## 3. Look and verification
 
-- [ ] 3.1 Stories for the section (preview, nothing to import, error) in both themes with axe; e2e: import an invented export through the fake stack and see its month in «mi mes»; docs; `pnpm check`, `typecheck`, `test`, `build`, `build-storybook`, `pnpm e2e`, CI; preview of the owner's export checked by hand against the running app
+- [x] 3.1 Stories for the section (preview, nothing to import, error) in both themes with axe; e2e: import an invented export through the fake stack and see its month in «mi mes»; docs; `pnpm check`, `typecheck`, `test`, `build`, `build-storybook`, `pnpm e2e`, CI; preview of the owner's export checked by hand against the running app
