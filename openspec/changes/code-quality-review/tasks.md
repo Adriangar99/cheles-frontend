@@ -5,7 +5,7 @@ mutation check.
 
 ## 1. Typed HTTP boundary
 
-- [ ] 1.1 Add `openapi-fetch` (exact version) and `src/shared/api/client.ts` with the error middleware; move every adapter to it and remove `request()`; verify `pnpm typecheck` and every characterization test pass, and mutation-check the middleware (401 redirect, login exception, detail, «Error <status>», JSON content type)
+- [x] 1.1 Add `openapi-fetch` (exact version) and `src/shared/api/client.ts` with the error middleware; move every adapter to it and remove `request()`; verify `pnpm typecheck` and every characterization test pass, and mutation-check the middleware (401 redirect, login exception, detail, «Error <status>», JSON content type)
 
 ## 2. Markup and tests
 
