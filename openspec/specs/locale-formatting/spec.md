@@ -27,12 +27,12 @@ separator only from five integer digits up (es-ES does not group four-digit numb
 - **THEN** it reads «—»
 
 ### Requirement: Month label
-A month (`YYYY-MM`) SHALL be labeled with its es-ES long name and year in lowercase («octubre de 2026»). Headings
-display it with every word capitalized («Octubre De 2026»).
+A month (`YYYY-MM`) SHALL be labeled with its es-ES long name and year in lowercase («octubre de 2026»), also in
+headings.
 
 #### Scenario: Month heading
 - **WHEN** the month `2026-10` is shown as a heading
-- **THEN** the label is «octubre de 2026» and the heading displays «Octubre De 2026»
+- **THEN** the heading reads «octubre de 2026»
 
 ### Requirement: Month arithmetic
 Moving a month forward or backward SHALL produce a valid `YYYY-MM` across year boundaries, and the current month SHALL
@@ -51,9 +51,9 @@ be derived from the current date in the user's local time zone.
 - **THEN** the current month is `2026-11`
 
 ### Requirement: Short dates and timestamps
-Transaction dates SHALL be shown as day and short month in es-ES (e.g. «3 oct»), and sync timestamps as day, short
-month, hour and minutes (e.g. «23 oct, 19:00»).
+Transaction days SHALL be shown as weekday, day and month in es-ES (e.g. «sábado, 3 de octubre»), and sync timestamps
+as day, short month, hour and minutes (e.g. «23 oct, 19:00»).
 
 #### Scenario: Transaction date
 - **WHEN** a transaction dated 2026-10-03 is listed
-- **THEN** its date reads «3 oct»
+- **THEN** its day reads «sábado, 3 de octubre»

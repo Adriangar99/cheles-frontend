@@ -37,10 +37,11 @@ Every app page SHALL show a fixed bottom tab bar with «mi mes» (`/`), «movimi
 - **THEN** no tab bar is displayed
 
 ### Requirement: Page metadata
-The web app SHALL declare Spanish as the document language, the title «Cheles», a dark theme color, no indexing by
-search engines, and iOS home-screen web app support.
+The web app SHALL declare Spanish as the document language, the title «Cheles», a theme color that follows the
+system's light or dark scheme, no indexing by search engines, and iOS home-screen web app support.
 
 #### Scenario: Metadata
 - **WHEN** any page is loaded
-- **THEN** the document has `lang="es"`, title «Cheles», theme color `#121212`, `robots` set to noindex/nofollow,
-  `mobile-web-app-capable` and the iOS web app title «Cheles» with a `black-translucent` status bar
+- **THEN** the document has `lang="es"`, title «Cheles», theme color `#E8ECF1` for the light scheme and `#0E1828` for
+  the dark one, `robots` set to noindex/nofollow, `mobile-web-app-capable` and the iOS web app title «Cheles» with the
+  `default` status bar
