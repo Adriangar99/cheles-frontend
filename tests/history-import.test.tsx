@@ -15,10 +15,10 @@ beforeEach(() => today("2026-10-15T12:00:00"));
 const CSV = "Id,Fecha,Categoria,Cantidad,Moneda,Nota,Cuenta\r\n1,25/10/2026,Gasolina,-47.80,EUR,,Revolut";
 const NOMINA = 7;
 
-// The API's preview for two wallets: onto Nómina the bank already has rows since July 2026
+// The API's preview for two wallets: onto Nómina the bank already has rows since July 2026 (all of Revolut's are older)
 function previewFor(req: ApiRequest) {
   const { accounts } = req.body as { accounts: Accounts };
-  const wallet = (name: string, rows: number, adjustments = 0) => {
+  const wallet = (name: string, rows: number, adjustments = 0, skippedOnBank = 120) => {
     const target = accounts[name] ?? null;
     const onBank = target === NOMINA;
     return {
@@ -27,15 +27,15 @@ function previewFor(req: ApiRequest) {
       first_date: "2025-05-05",
       last_date: "2026-10-25",
       target,
-      to_import: target === null ? 0 : onBank ? 300 : rows - adjustments,
-      skipped: onBank ? 120 : 0,
+      to_import: target === null ? 0 : onBank ? rows - adjustments - skippedOnBank : rows - adjustments,
+      skipped: onBank ? skippedOnBank : 0,
       bank_since: onBank ? "2026-07-01" : null,
       already_imported: 0,
       adjustments,
     };
   };
   return ok({
-    wallets: [wallet("Cuenta Principal", 422, 2), wallet("Revolut", 40)],
+    wallets: [wallet("Cuenta Principal", 422, 2), wallet("Revolut", 40, 0, 0)],
     unmatched_categories: [
       { name: "Ahorro", rows: 12 },
       { name: "Invertir", rows: 3 },
@@ -89,11 +89,14 @@ test("Wallet onto a bank account", async () => {
   await choose();
 
   await target("Cuenta Principal", "Nómina");
+  await target("Revolut", "Nómina");
 
   const wallet = await walletRow("Cuenta Principal");
   await waitFor(() => expect(within(wallet).getByText("entran 300")).toBeInTheDocument());
   expect(within(wallet).getByText("120 ya los trajo el banco (desde 1 jul 2026)")).toBeInTheDocument();
-  expect(previews(api).at(-1)?.accounts).toEqual({ "Cuenta Principal": NOMINA, Revolut: "new" });
+  expect(previews(api).at(-1)?.accounts).toEqual({ "Cuenta Principal": NOMINA, Revolut: NOMINA });
+  // Every Revolut row is older than the bank's: nothing skipped, no line about it
+  expect(within(await walletRow("Revolut")).queryByText(/ya los trajo el banco/)).not.toBeInTheDocument();
 });
 
 test("Balance adjustments", async () => {
