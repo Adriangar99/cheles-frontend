@@ -24,15 +24,11 @@ export function HistoryChart({ history }: { history: MonthTotals[] }) {
               max={HISTORY_BAR_PX}
               color="var(--color-negative)"
             />
-            <span className="sub" style={{ fontSize: "var(--text-2xs)" }}>
-              {h.label}
-            </span>
+            <span className="sub">{h.label}</span>
           </li>
         ))}
       </List>
-      <p className="sub" style={{ margin: "8px 4px" }}>
-        verde = ingresos · rojo = gastos
-      </p>
+      <p className="sub chart-key">verde = ingresos · rojo = gastos</p>
     </>
   );
 }

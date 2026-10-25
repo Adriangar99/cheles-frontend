@@ -277,6 +277,11 @@ input::placeholder {
 }
 .history .col .sub {
   font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+}
+.chart-key {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
 }
 
 /* Tabs */
@@ -320,9 +325,13 @@ nav.tabs a.on {
   padding: var(--space-4);
   background: var(--color-cover);
 }
-.login form {
+.login .cover {
   width: 100%;
   max-width: 360px;
+  display: grid;
+  gap: var(--space-6);
+}
+.login form {
   display: grid;
   gap: var(--space-3);
   padding: var(--space-6);
@@ -415,4 +424,45 @@ nav.tabs a.on {
   font-size: var(--text-sm);
   color: var(--color-muted);
   text-align: right;
+}
+
+/* «bancos»: the bank's name with its quiet «quitar», status stamps, notices */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--space-8) 0 var(--space-2);
+}
+.section-head h2 {
+  margin: 0;
+}
+.status {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-1);
+}
+.notice {
+  margin-top: var(--space-3);
+}
+.leave {
+  margin-top: var(--space-8);
+}
+
+/* «movimientos»: category and transfer controls under the concept; transfers fade */
+.tx-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.row[data-kind="transfer"] {
+  color: var(--color-muted);
+}
+.row[data-kind="transfer"] .tx-amount {
+  color: var(--color-muted); /* it does not count as income or spending */
+  text-decoration: line-through;
+  text-decoration-color: var(--color-line);
+}
+.row[data-kind] {
+  align-items: flex-start; /* the amount is printed on the concept's line */
 }

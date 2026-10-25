@@ -59,7 +59,7 @@ export function BanksScreen() {
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
       {shown && (
-        <Message kind="status" style={{ marginTop: 12 }}>
+        <Message kind="status" className="notice">
           {shown}
         </Message>
       )}
@@ -102,7 +102,7 @@ export function BanksScreen() {
         }}
       />
 
-      <Button style={{ marginTop: 28 }} onClick={() => logout.mutate(undefined, onError)}>
+      <Button className="leave" onClick={() => logout.mutate(undefined, onError)}>
         salir
       </Button>
     </>

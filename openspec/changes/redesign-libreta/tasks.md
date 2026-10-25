@@ -9,12 +9,12 @@ marking the redesign done.
 
 ## 2. Primitives
 
-- [ ] 2.1 Restyle `Button`, `Card`/`List`/`ListItem` as ruled sheets, `Figures`/`Figure` as ledger lines, `Message`, `Amount` in mono; custom `Select` with an aligned chevron; new `Stamp`; verify Storybook, axe, and the characterization tests
+- [x] 2.1 Restyle `Button`, `Card`/`List`/`ListItem` as ruled sheets, `Figures`/`Figure` as ledger lines, `Message`, `Amount` in mono; custom `Select` with an aligned chevron; new `Stamp`; verify Storybook, axe, and the characterization tests
 
 ## 3. Screens
 
-- [ ] 3.1 «mi mes»: tests first for the modified scenarios (lowercase heading, ledger figures, «la nómina repartida» shares, spending over income), then the strip with its one-time grow motion (respecting reduced motion) and legend lines
-- [ ] 3.2 «movimientos» and «bancos» (printed lines, «quitar» in the header, stamps) and the login cover; verify every characterization test
+- [x] 3.1 «mi mes»: tests first for the modified scenarios (lowercase heading, ledger figures, «la nómina repartida» shares, spending over income), then the strip with its one-time grow motion (respecting reduced motion) and legend lines
+- [x] 3.2 «movimientos» and «bancos» (printed lines, «quitar» in the header, stamps) and the login cover; verify every characterization test
 
 ## 4. Review and verification
 
