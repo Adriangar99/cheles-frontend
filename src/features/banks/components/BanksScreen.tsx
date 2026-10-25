@@ -16,6 +16,7 @@ import {
   useSyncConnection,
 } from "../hooks";
 import { BankPicker } from "./BankPicker";
+import { BanksSummary } from "./BanksSummary";
 import { ConnectionCard } from "./ConnectionCard";
 import { DetachedAccounts } from "./DetachedAccounts";
 import { ReprocessCard } from "./ReprocessCard";
@@ -63,6 +64,8 @@ export function BanksScreen() {
           {shown}
         </Message>
       )}
+
+      {banks.data && <BanksSummary banks={banks.data} now={Date.now()} />}
 
       {banks.data?.connections.map((c) => (
         <ConnectionCard

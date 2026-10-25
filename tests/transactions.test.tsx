@@ -79,8 +79,24 @@ test("Pending debit", async () => {
   open([tx({ counterparty: "MERCADONA", amount: -12.5, status: "PDNG", date: "2026-10-03", account: "Nómina" })]);
 
   const row = await rowOf("MERCADONA");
-  expect(within(row).getByText("3 oct · Nómina · pendiente")).toBeInTheDocument();
+  expect(within(row).getByText("Nómina · pendiente")).toBeInTheDocument();
   expect(within(row).getByText("-12,50 €")).not.toHaveAttribute("data-tone");
+  expect(within(screen.getByRole("region", { name: "sábado, 3 de octubre" })).getByRole("listitem")).toBe(row);
+});
+
+test("Day total", async () => {
+  open([
+    tx({ id: 1, date: "2026-10-03", amount: -62.4, counterparty: "MERCADONA" }),
+    tx({ id: 2, date: "2026-10-03", amount: 2000, counterparty: "EMPRESA SL" }),
+    tx({ id: 3, date: "2026-10-03", amount: -300, counterparty: "TRASPASO", kind: "transfer" }),
+    tx({ id: 4, date: "2026-10-02", amount: -24.9, counterparty: "BAR PEPE" }),
+  ]);
+
+  const day = await screen.findByRole("region", { name: "sábado, 3 de octubre" });
+  expect(within(day).getByText("1937,60 €")).toHaveAttribute("data-tone", "pos");
+  expect(within(day).getAllByRole("listitem")).toHaveLength(3);
+  const before = screen.getByRole("region", { name: "viernes, 2 de octubre" });
+  expect(within(before).getAllByText("-24,90 €")).toHaveLength(2);
 });
 
 test("Empty month", async () => {

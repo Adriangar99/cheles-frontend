@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { errorMessage } from "@/shared/api/client";
 import { MonthNav } from "@/shared/MonthNav";
-import { currentMonth } from "@/shared/month";
+import { currentMonth, shiftMonth } from "@/shared/month";
 import { Message } from "@/shared/ui";
 import { useHistory, useSummary } from "../hooks";
 import { HistoryChart } from "./HistoryChart";
@@ -15,6 +15,7 @@ export function MyMonthScreen() {
   const summary = useSummary(month);
   const history = useHistory();
   const error = errorMessage(summary.error, history.error);
+  const previous = history.data?.find((h) => h.month === shiftMonth(month, -1));
 
   return (
     <>
@@ -22,7 +23,7 @@ export function MyMonthScreen() {
       {error && <Message kind="error">{error}</Message>}
       {summary.data && (
         <>
-          <MonthlyFigures summary={summary.data} />
+          <MonthlyFigures summary={summary.data} previous={previous} />
           <SpendingByCategory summary={summary.data} />
         </>
       )}

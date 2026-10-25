@@ -82,7 +82,7 @@ test("Transaction date", async () => {
   fakeApi({ "GET /api/transactions": ok([tx({ date: "2026-10-03" })]), "GET /api/categories": ok([]) });
   renderScreen(<Movements />);
 
-  expect(await screen.findByText("3 oct · Nómina")).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: "sábado, 3 de octubre" })).toBeInTheDocument();
 });
 
 test("Just after midnight on the first day", async () => {

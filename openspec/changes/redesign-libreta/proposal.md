@@ -11,14 +11,16 @@ the bank passbook, with light and dark themes following the system.
 
 - **Tokens**: a cool paper palette with navy ink (light) and a navy cloth cover (dark), credit and stamp inks, a type
   scale on a 4 px baseline, and spacing tokens; `color-scheme: light dark`.
-- **Type**: IBM Plex Sans for the interface and IBM Plex Mono for printed figures (amounts, dates, stamps),
-  self-hosted with `@fontsource`.
+- **Type**: IBM Plex Sans with tabular figures for amounts, self-hosted with `@fontsource`.
 - **Primitives restyled**: sheets with ruled lines instead of cards, ledger figure lines, controls with a 6 px radius,
-  a **custom `Select`** (aligned chevron, same height and shape as buttons), a **`Stamp`** for connection status.
-- **«mi mes»**: figures as ledger lines; **«la nómina repartida»**, the month's income as one strip split into spending
+  a **custom `Select`** (aligned chevron, same height and shape as buttons), a **`Stamp`** status label for connection
+  status.
+- **«mi mes»**: figures as ledger lines with the **comparison with the previous month**; **«la nómina repartida»**, the month's income as one strip split into spending
   categories and what is left, with legend lines; lowercase month heading.
-- **«movimientos»**: printed lines (date, concept, amount) with the category select and ⇄ on a second line.
-- **«bancos»**: «quitar» in the connection header; status as a stamp; accounts as printed lines.
+- **«movimientos»**: **grouped by day** with the day's total; each line shows concept, account and amount, with the
+  category select and ⇄ below.
+- **«bancos»**: a **summary** (total balance, accounts, banks that need attention); «quitar» in the connection
+  header; status as a label.
 - **Login**: the passbook cover.
 - Storybook stories in both themes; docs updated.
 
@@ -30,14 +32,17 @@ None.
 
 ### Modified Capabilities
 
-- `monthly-overview`: figures as a sheet of lines, spending as «la nómina repartida», lowercase month heading.
-- `locale-formatting`: headings show the lowercase month label.
+- `monthly-overview`: figures as a sheet of lines, spending as «la nómina repartida», lowercase month heading,
+  comparison with the previous month.
+- `locale-formatting`: headings show the lowercase month label; transaction days read «sábado, 3 de octubre».
+- `transactions`: grouped by day with day totals.
+- `bank-management`: summary of banks and accounts.
 - `app-shell`: the theme color and the iOS status bar follow the light or dark scheme.
 
 ## Impact
 
 - **Features affected**: every screen's look; behavior unchanged except the spending presentation.
-- **Dependencies**: `@fontsource/ibm-plex-sans`, `@fontsource/ibm-plex-mono`.
+- **Dependencies**: `@fontsource/ibm-plex-sans`.
 - **Backend dependency**: none.
 - **Security surface**: none (fonts are bundled, no third-party requests).
 

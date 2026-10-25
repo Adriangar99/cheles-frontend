@@ -1,3 +1,4 @@
+import { money, monthName } from "@/shared/format";
 import type { CategorySpending, MonthTotals } from "../api";
 
 export const HISTORY_BAR_PX = 70;
@@ -26,4 +27,15 @@ export function historyBars(points: MonthTotals[]) {
     incomePx: (p.income / max) * HISTORY_BAR_PX,
     expensesPx: (p.expenses / max) * HISTORY_BAR_PX,
   }));
+}
+
+// How a figure compares to the previous month's. `riseIs` is the tone of a rise: good news for income, bad for spending.
+export function versus(current: number, previous: number, previousMonth: string, riseIs: "pos" | "neg") {
+  const diff = Math.round((current - previous) * 100) / 100;
+  const month = monthName(previousMonth);
+  if (diff === 0) return { text: `igual que en ${month}`, tone: undefined };
+  const fallIs = riseIs === "pos" ? "neg" : "pos";
+  return diff > 0
+    ? { text: `${money(diff)} más que en ${month}`, tone: riseIs }
+    : { text: `${money(-diff)} menos que en ${month}`, tone: fallIs };
 }

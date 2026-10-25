@@ -33,10 +33,11 @@ All text/background pairs meet WCAG AA in both themes (checked with axe on every
 
 ### Type
 
-- **IBM Plex Sans** for the interface: a banking-era grotesk with a slightly mechanical voice, regular and semibold.
-- **IBM Plex Mono** for printed lines only: amounts, dates and the stamp, like a passbook printer. Figures align in
-  columns without `font-variant` tricks. Never used for labels.
+- **IBM Plex Sans** for everything: a banking-era grotesk, regular and semibold. Amounts use its tabular figures
+  (`font-variant-numeric: tabular-nums`) so they align in columns and stay as easy to read as the text.
 - Self-hosted with `@fontsource` (no requests to Google at runtime, works in Next.js and Storybook).
+- *Review round*: the first pass printed amounts and statuses in IBM Plex Mono; the owner found it harder to read and
+  the tilted stamps odd, so mono was dropped.
 - Scale from 13 to 32 px on a 4 px baseline; titles in sentence case and lowercase month names, no all-caps anywhere.
 
 ### Layout
@@ -56,14 +57,19 @@ radius everywhere). No shadows: sheets sit on the paper with a 1 px rule.
     🛒 Supermercado   312,40 €   16 %
     sobra             712,70 €   36 %
 
-Movements and accounts are printed lines on a sheet (date | concept | amount). Bank status is a **stamp**: bordered
-mono text in credit or stamp color. «quitar» moves into the connection's header, next to the bank name.
+Movements are grouped by day (heading with the date and the day's total) on sheets, one line per movement (concept
+and account | amount). Bank status is a **status label**: straight, a soft tint of its color with a dot, in credit or
+stamp color. «quitar» moves into the connection's header, next to the bank name.
 
 ### Principles
 
 - **One memorable thing**: «la nómina repartida», the month's income as one strip split into what each category took
   and what is left. Everything else stays quiet.
-- **Printed figures**: every amount in mono, right aligned, tabular; credits in credit ink, overspending in stamp ink.
+- **Readable figures**: every amount right aligned with tabular figures; credits in credit ink, overspending in
+  stamp ink.
+- **Information that grows**: each screen opens with what matters most (the month's figures with how they compare to
+  the previous month, the bank summary, the day totals); sections share one head pattern (title left, quiet action
+  right) so new figures and actions have a place.
 - **Paper, not cards**: content sits on ruled sheets; no card grids, no gradients, no shadows.
 - **One motion**: the strip's segments grow once when a month loads (none with reduced motion).
 
@@ -73,8 +79,7 @@ mono text in credit or stamp color. «quitar» moves into the connection's heade
   cloth cover, not black.
 - *Cream with a serif display*: rejected; the paper is cool blue-grey and the type is a grotesk.
 - *Broadsheet hairlines everywhere*: ruling only inside sheets, sheets keep a radius.
-- *Monospace for small labels*: mono is reserved for printed figures and the stamp, where the passbook printer
-  justifies it; labels stay in the sans.
+- *Monospace for small labels*: no mono at all after the review round.
 - *Middle-dot meta strings*: kept only where the specs fix the copy («al día · 90 días de permiso»); new copy avoids
   them.
 
@@ -92,10 +97,22 @@ only the status line and the accounts.
 Tokens defined for light under `:root` and dark under `@media (prefers-color-scheme: dark)`; `color-scheme: light
 dark`. The theme color meta follows the scheme.
 
+### Review round (owner feedback)
+Tilted mono stamps read as decoration and mono amounts were harder to read: `Stamp` becomes a straight status label
+(tinted background, dot, sans) and amounts use Plex Sans tabular figures; `@fontsource/ibm-plex-mono` is removed. The
+owner asked for more information that can grow later, and chose three additions: the comparison with the previous
+month in «mi mes» (from the history already loaded, no new request), movements grouped by day with day totals, and a
+summary at the top of «bancos». All three are computed in the frontend from data the screens already load.
+
 ### Spec changes
 - `monthly-overview`: figures as ledger lines instead of cards (same literals and tones); spending as «la nómina
   repartida»; the month heading shows the lowercase label.
-- `locale-formatting`: headings show the lowercase label («octubre de 2026»).
+- `locale-formatting`: headings show the lowercase label («octubre de 2026»); transaction days read «sábado, 3 de
+  octubre».
+- `monthly-overview` (added): comparison with the previous month.
+- `transactions`: grouped by day with day totals; rows show the account instead of the date.
+- `bank-management` (added): summary of banks and accounts.
+- `app-shell`: theme color per scheme.
 Everything else keeps its copy and behavior.
 
 ### Verification

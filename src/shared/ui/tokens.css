@@ -18,7 +18,6 @@
 
   /* Type */
   --font-sans: "IBM Plex Sans", ui-sans-serif, -apple-system, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace; /* printed figures only */
   --text-2xs: 11px;
   --text-xs: 12px;
   --text-sm: 13px;

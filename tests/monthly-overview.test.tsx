@@ -84,6 +84,33 @@ test("No savings accounts", async () => {
   expect(await screen.findByText("día a día 1500,00 € · ahorro 0,00 €")).toBeInTheDocument();
 });
 
+test("Spending rose", async () => {
+  open({ income: 2000, expenses: 1200, net: 800 }, [{ month: "2026-09", income: 2000, expenses: 1000 }]);
+
+  const spendingRose = await screen.findByText("200,00 € más que en septiembre");
+  expect(spendingRose).toHaveAttribute("data-tone", "neg");
+  expect((await card("gastos"))?.nextElementSibling).toBe(spendingRose);
+  expect(screen.getByText("200,00 € menos que en septiembre")).toHaveAttribute("data-tone", "neg");
+  expect((await card("ingresos"))?.nextElementSibling).toHaveTextContent("igual que en septiembre");
+  expect(screen.getByText("igual que en septiembre")).not.toHaveAttribute("data-tone");
+});
+
+// Requirement detail: a rise in income or in what is left is good news
+test("Income rose", async () => {
+  open({ income: 2500, expenses: 1000, net: 1500 }, [{ month: "2026-09", income: 2000, expenses: 1000 }]);
+
+  expect((await card("ingresos"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
+  expect((await card("sobra"))?.nextElementSibling).toHaveTextContent("500,00 € más que en septiembre");
+  expect((await card("sobra"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
+});
+
+test("No previous month in the history", async () => {
+  open({ income: 2000 }, [{ month: "2026-08", income: 1500, expenses: 500 }]);
+
+  await card("ingresos");
+  expect(screen.queryByText(/que en (agosto|septiembre)/)).not.toBeInTheDocument();
+});
+
 // A legend line of «la nómina repartida», named by its category
 const share = (name: string) => screen.getByRole("listitem", { name });
 

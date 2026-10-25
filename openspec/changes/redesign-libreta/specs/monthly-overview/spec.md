@@ -50,3 +50,22 @@ line for what is left («sobra»). With no spending it shows «sin gastos este m
 #### Scenario: No spending
 - **WHEN** the month has no counted debits
 - **THEN** «sin gastos este mes» is shown
+
+## ADDED Requirements
+
+### Requirement: Comparison with the previous month
+Under «ingresos», «gastos» and «sobra» the screen SHALL show how each differs from the previous month, taken from the
+twelve-month history: «<amount> más que en <month>», «<amount> menos que en <month>» or «igual que en <month>», with
+the previous month's long name. A rise is shown in credit color for «ingresos» and «sobra» and in stamp color for
+«gastos», a fall the other way round, and no change without color. Nothing is compared when the history has no entry
+for the previous month.
+
+#### Scenario: Spending rose
+- **WHEN** October has income 2000, expenses 1200 and net 800, and the history has September with income 2000 and
+  expenses 1000
+- **THEN** «ingresos» shows «igual que en septiembre», «gastos» shows «200,00 € más que en septiembre» in stamp color
+  and «sobra» shows «200,00 € menos que en septiembre» in stamp color
+
+#### Scenario: No previous month in the history
+- **WHEN** the history has no entry for the month before the one shown
+- **THEN** no comparison is shown

@@ -1,5 +1,4 @@
 import { useId } from "react";
-import { dayMonth } from "@/shared/format";
 import { Amount, Button, ListItem, Select } from "@/shared/ui";
 import type { Category, Transaction, TransactionPatch } from "../api";
 import { categoryOptions, isCredit, rowLabel } from "../domain/transactions";
@@ -17,7 +16,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
           {rowLabel(tx)}
         </div>
         <div className="sub ellipsis">
-          {dayMonth(tx.date)} · {tx.account}
+          {tx.account}
           {tx.status === "PDNG" && " · pendiente"}
         </div>
         {transfer ? (
