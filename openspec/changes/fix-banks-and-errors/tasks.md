@@ -4,7 +4,7 @@ TDD: write the scenario test first and see it fail for the right reason. Commit 
 
 ## 1. Contract
 
-- [ ] 1.1 After `connection-lifecycle` and `stats-accuracy` are merged in cheles-backend, run `pnpm api:sync`; verify `pnpm typecheck` and the tests pass (fixtures gain `country` and `other_currencies`)
+- [x] 1.1 After `connection-lifecycle` and `stats-accuracy` are merged in cheles-backend, run `pnpm api:sync`; verify `pnpm typecheck` and the tests pass (fixtures gain `country` and `other_currencies`)
 
 ## 2. Fixes
 
