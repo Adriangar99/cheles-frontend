@@ -28,3 +28,10 @@ export function authorizationMessage(search: string) {
   if (params.get("connected")) return "banco conectado ✓";
   return null;
 }
+
+// A value from the role selector, checked against the known roles
+export function parseRole(value: string): Role {
+  const role = Object.keys(ROLE_LABEL).find((r): r is Role => r === value);
+  if (!role) throw new Error(`Unknown account role: ${value}`);
+  return role;
+}

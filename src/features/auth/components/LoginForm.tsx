@@ -30,7 +30,11 @@ export function LoginForm() {
           maxLength={6}
           required
         />
-        {login.error && <p className="err">{login.error.message}</p>}
+        {login.error && (
+          <p className="err" role="alert">
+            {login.error.message}
+          </p>
+        )}
         {/* Still disabled after success: the browser is already navigating to / */}
         <button type="submit" className="btn primary" disabled={login.isPending || login.isSuccess}>
           entrar

@@ -243,3 +243,11 @@ nav.tabs a.on {
   white-space: nowrap;
   font-weight: 500;
 }
+
+/* Semantic lists and figure terms keep the look of the plain blocks they replaced. :where() has no specificity:
+   it only removes the browser's list and definition defaults, and every .card/.history/.stats rule still wins. */
+:where(ul.card, ul.history, dl.stats, dl.stats dd) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

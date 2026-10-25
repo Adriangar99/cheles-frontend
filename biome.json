@@ -56,7 +56,7 @@
   },
   "overrides": [
     {
-      "includes": ["src/shared/**"],
+      "includes": ["src/shared/**", "!src/shared/**/*.test.ts", "!src/shared/**/*.test.tsx"],
       "linter": {
         "rules": {
           "style": {
@@ -71,6 +71,10 @@
                   {
                     "group": ["@/features/**", "@/app/**"],
                     "message": "Shared code cannot depend on features or routes."
+                  },
+                  {
+                    "group": ["@tests/**"],
+                    "message": "Test fixtures are for tests only."
                   }
                 ]
               }
@@ -80,7 +84,7 @@
       }
     },
     {
-      "includes": ["src/features/**"],
+      "includes": ["src/features/**", "!src/features/**/*.test.ts", "!src/features/**/*.test.tsx"],
       "linter": {
         "rules": {
           "style": {
@@ -95,6 +99,10 @@
                   {
                     "group": ["@/app/**"],
                     "message": "Features cannot depend on routes; use @/shared."
+                  },
+                  {
+                    "group": ["@tests/**"],
+                    "message": "Test fixtures are for tests only."
                   }
                 ]
               }

@@ -13,7 +13,7 @@ async function incomeShownFor(income: number) {
   today("2026-10-15T12:00:00");
   fakeApi({ "GET /api/stats/summary": ok(summary({ income })), "GET /api/stats/history": noHistory });
   renderScreen(<MyMonth />);
-  return (await screen.findByText("ingresos")).nextElementSibling?.textContent?.replace(/\s/g, " ");
+  return (await screen.findByText("ingresos", { selector: "dt" })).nextElementSibling?.textContent?.replace(/\s/g, " ");
 }
 
 test("Four digits are not grouped", async () => {

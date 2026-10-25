@@ -404,7 +404,7 @@ export interface components {
              * Country
              * @default ES
              */
-            country: string;
+            country?: string;
             /** Name */
             name: string;
         };
@@ -557,7 +557,7 @@ export interface components {
              * Clear Category
              * @default false
              */
-            clear_category: boolean;
+            clear_category?: boolean;
             /** Kind */
             kind?: ("normal" | "transfer") | null;
             /** Note */

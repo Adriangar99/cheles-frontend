@@ -1,5 +1,5 @@
+import { connection } from "@tests/screens";
 import { expect, test } from "vitest";
-import { connection } from "../../../../tests/screens";
 import { authorizationMessage, consentStatus } from "./banks";
 
 // Screen tests cover 90, 10 and expired; these cover the threshold, revoked consents and conflicting results.

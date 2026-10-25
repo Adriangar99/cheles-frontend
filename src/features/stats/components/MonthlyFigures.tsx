@@ -2,32 +2,33 @@ import { money } from "@/shared/format";
 import type { Summary } from "../api";
 import { netTone } from "../domain/charts";
 
+// Each figure is a term (dt) followed by its value (dd)
+function Figure({ label, value, tone, wide, children }: FigureProps) {
+  return (
+    <div className={`card stat${wide ? " wide" : ""}`}>
+      <dt className="label">{label}</dt>
+      <dd className={`value${tone ? ` ${tone}` : ""}`} data-tone={tone}>
+        {value}
+      </dd>
+      {children}
+    </div>
+  );
+}
+
+type FigureProps = { label: string; value: string; tone?: "pos" | "neg"; wide?: boolean; children?: React.ReactNode };
+
 export function MonthlyFigures({ summary }: { summary: Summary }) {
   return (
-    <div className="stats">
-      <div className="card stat">
-        <div className="label">ingresos</div>
-        <div className="value pos">{money(summary.income)}</div>
-      </div>
-      <div className="card stat">
-        <div className="label">gastos</div>
-        <div className="value">{money(summary.expenses)}</div>
-      </div>
-      <div className="card stat">
-        <div className="label">sobra</div>
-        <div className={`value ${netTone(summary.net)}`}>{money(summary.net)}</div>
-      </div>
-      <div className="card stat">
-        <div className="label">enviado a ahorro</div>
-        <div className="value">{money(summary.saved)}</div>
-      </div>
-      <div className="card stat wide">
-        <div className="label">saldo total ahora</div>
-        <div className="value">{money(summary.balances.total)}</div>
-        <div className="sub">
+    <dl className="stats">
+      <Figure label="ingresos" value={money(summary.income)} tone="pos" />
+      <Figure label="gastos" value={money(summary.expenses)} />
+      <Figure label="sobra" value={money(summary.net)} tone={netTone(summary.net)} />
+      <Figure label="enviado a ahorro" value={money(summary.saved)} />
+      <Figure label="saldo total ahora" value={money(summary.balances.total)} wide>
+        <dd className="sub">
           día a día {money(summary.balances.main ?? 0)} · ahorro {money(summary.balances.savings ?? 0)}
-        </div>
-      </div>
-    </div>
+        </dd>
+      </Figure>
+    </dl>
   );
 }

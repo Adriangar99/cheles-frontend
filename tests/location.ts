@@ -3,7 +3,7 @@ import { vi } from "vitest";
 // jsdom cannot navigate, so screens see a plain location whose href records where they sent the browser.
 export function stubLocation(path = "/") {
   const url = new URL(path, "http://localhost");
-  const location = { href: url.href, search: url.search, pathname: url.pathname };
+  const location = { href: url.href, search: url.search, pathname: url.pathname, origin: url.origin };
   vi.stubGlobal("location", location);
   return location;
 }

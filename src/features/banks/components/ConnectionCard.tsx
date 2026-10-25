@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { Connection, Role } from "../api";
 import { consentStatus, errorExcerpt, lastReadLabel } from "../domain/banks";
 import { AccountRow } from "./AccountRow";
@@ -13,13 +14,16 @@ type Props = {
 
 export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnect, onRoleChange }: Props) {
   const status = consentStatus(c, now);
+  const headingId = useId();
   return (
-    <section>
-      <h2>{c.bank}</h2>
-      <div className="card">
-        <div className="row">
+    <section aria-labelledby={headingId}>
+      <h2 id={headingId}>{c.bank}</h2>
+      <ul className="card">
+        <li className="row">
           <div className="grow">
-            <div className={status.tone}>{status.text}</div>
+            <div className={status.tone} data-tone={status.tone}>
+              {status.text}
+            </div>
             <div className="sub">{lastReadLabel(c.last_synced_at)}</div>
             {c.last_error && <div className="err">{errorExcerpt(c.last_error)}</div>}
           </div>
@@ -32,11 +36,11 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
               {syncing ? "leyendo…" : "leer ahora"}
             </button>
           )}
-        </div>
+        </li>
         {c.accounts.map((a) => (
           <AccountRow key={a.id} account={a} onRoleChange={(role) => onRoleChange(a.id, role)} />
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

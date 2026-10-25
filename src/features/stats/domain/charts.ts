@@ -1,6 +1,6 @@
 import type { CategorySpending, MonthTotals } from "../api";
 
-const HISTORY_BAR_PX = 70;
+export const HISTORY_BAR_PX = 70;
 
 // Green when the month ends even or better.
 export const netTone = (net: number) => (net >= 0 ? "pos" : "neg");

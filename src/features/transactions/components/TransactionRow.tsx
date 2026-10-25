@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { dayMonth, money } from "@/shared/format";
 import type { Category, Transaction, TransactionPatch } from "../api";
 import { categoryOptions, isCredit, rowLabel } from "../domain/transactions";
@@ -7,10 +8,13 @@ type Props = { tx: Transaction; categories: Category[]; onChange: (patch: Transa
 export function TransactionRow({ tx, categories, onChange }: Props) {
   const transfer = tx.kind === "transfer";
   const { uncategorized, options } = categoryOptions(tx, categories);
+  const labelId = useId();
   return (
-    <div className="row" style={transfer ? { opacity: 0.55 } : undefined}>
+    <li className="row" aria-labelledby={labelId} data-kind={tx.kind} style={transfer ? { opacity: 0.55 } : undefined}>
       <div className="grow">
-        <div className="ellipsis">{rowLabel(tx)}</div>
+        <div className="ellipsis" id={labelId}>
+          {rowLabel(tx)}
+        </div>
         <div className="sub ellipsis">
           {dayMonth(tx.date)} · {tx.account}
           {tx.status === "PDNG" && " · pendiente"}
@@ -50,7 +54,9 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
           </div>
         )}
       </div>
-      <div className={`tx-amount ${isCredit(tx) ? "pos" : ""}`}>{money(tx.amount)}</div>
-    </div>
+      <div className={`tx-amount ${isCredit(tx) ? "pos" : ""}`} data-tone={isCredit(tx) ? "pos" : undefined}>
+        {money(tx.amount)}
+      </div>
+    </li>
   );
 }

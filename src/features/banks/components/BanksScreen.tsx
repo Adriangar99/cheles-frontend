@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLogout } from "@/features/auth";
-import { errorMessage } from "@/shared/api/http";
+import { errorMessage } from "@/shared/api/client";
 import type { Role } from "../api";
 import { authorizationMessage } from "../domain/banks";
 import { useAvailableBanks, useBanks, useConnectBank, useReprocess, useSetRole, useSyncConnection } from "../hooks";
@@ -45,7 +45,7 @@ export function BanksScreen() {
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
       {shown && (
-        <p className="sub" style={{ marginTop: 12 }}>
+        <p className="sub" role="status" style={{ marginTop: 12 }}>
           {shown}
         </p>
       )}

@@ -1,4 +1,4 @@
-import { request } from "@/shared/api/http";
+import { api, call } from "@/shared/api/client";
 import type { components } from "@/shared/api/schema";
 
 type Schemas = components["schemas"];
@@ -20,19 +20,21 @@ export interface BanksApi {
 }
 
 export const httpBanksApi: BanksApi = {
-  list: () => request("/banks"),
-  available: () => request("/banks/available"),
+  list: () => call(api().GET("/api/banks")),
+  available: () => call(api().GET("/api/banks/available")),
   async connect(bank) {
-    const { url } = await request<Schemas["AuthorizationUrlOut"]>("/banks/connect", { method: "POST", json: bank });
+    const { url } = await call(api().POST("/api/banks/connect", { body: bank }));
     return url;
   },
   async sync(connectionId) {
-    await request(`/banks/${connectionId}/sync`, { method: "POST" });
+    await call(api().POST("/api/banks/{connection_id}/sync", { params: { path: { connection_id: connectionId } } }));
   },
   async reprocess() {
-    await request("/reprocess", { method: "POST" });
+    await call(api().POST("/api/reprocess"));
   },
   async setRole(accountId, role) {
-    await request(`/accounts/${accountId}`, { method: "PATCH", json: { role } });
+    await call(
+      api().PATCH("/api/accounts/{account_id}", { params: { path: { account_id: accountId } }, body: { role } }),
+    );
   },
 };
