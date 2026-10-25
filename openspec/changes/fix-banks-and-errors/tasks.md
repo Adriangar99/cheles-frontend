@@ -19,7 +19,7 @@ TDD: write the scenario test first and see it fail for the right reason. Commit 
 
 ## 4. Verification
 
-- [ ] 4.1 `pnpm check`, `pnpm typecheck`, `pnpm test` (spec-coverage included), `pnpm build`, mutation check of the new branches, CI, and an end-to-end check on a throwaway stack (remove a connection, reconnect country, 422 message)
+- [x] 4.1 `pnpm check`, `pnpm typecheck`, `pnpm test` (spec-coverage included), `pnpm build`, mutation check of the new branches, CI, and an end-to-end check on a throwaway stack (remove a connection, reconnect country, 422 message)
 
 ## Workflow follow-up
 
