@@ -215,3 +215,10 @@ test("Only euros", async () => {
   await card("ingresos");
   expect(screen.queryByRole("note")).not.toBeInTheDocument();
 });
+
+// Requirement detail not covered by a scenario: several currencies are joined by commas.
+test("Several currencies left out", async () => {
+  open({ other_currencies: ["GBP", "USD"] });
+
+  expect(await screen.findByRole("note")).toHaveTextContent("No se cuentan importes en GBP, USD");
+});
