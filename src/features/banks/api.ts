@@ -1,4 +1,4 @@
-import { api, call } from "@/shared/api/client";
+import { api, call, callNoContent } from "@/shared/api/client";
 import type { components } from "@/shared/api/schema";
 
 type Schemas = components["schemas"];
@@ -15,6 +15,8 @@ export interface BanksApi {
   // Returns the bank's authorization page
   connect(bank: { name: string; country: string }): Promise<string>;
   sync(connectionId: number): Promise<void>;
+  // Closes the bank session; the accounts stay as accounts without a bank
+  remove(connectionId: number): Promise<void>;
   reprocess(): Promise<void>;
   setRole(accountId: number, role: Role): Promise<void>;
 }
@@ -29,6 +31,8 @@ export const httpBanksApi: BanksApi = {
   async sync(connectionId) {
     await call(api().POST("/api/banks/{connection_id}/sync", { params: { path: { connection_id: connectionId } } }));
   },
+  remove: (connectionId) =>
+    callNoContent(api().DELETE("/api/banks/{connection_id}", { params: { path: { connection_id: connectionId } } })),
   async reprocess() {
     await call(api().POST("/api/reprocess"));
   },

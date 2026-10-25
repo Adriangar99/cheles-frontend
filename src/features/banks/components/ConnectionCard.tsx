@@ -9,10 +9,11 @@ type Props = {
   syncing: boolean;
   onSync: () => void;
   onReconnect: () => void;
+  onRemove: () => void;
   onRoleChange: (accountId: number, role: Role) => void;
 };
 
-export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnect, onRoleChange }: Props) {
+export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnect, onRemove, onRoleChange }: Props) {
   const status = consentStatus(c, now);
   const headingId = useId();
   return (
@@ -36,6 +37,11 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
               {syncing ? "leyendo…" : "leer ahora"}
             </button>
           )}
+        </li>
+        <li className="row">
+          <button type="button" className="btn" onClick={onRemove}>
+            quitar
+          </button>
         </li>
         {c.accounts.map((a) => (
           <AccountRow key={a.id} account={a} onRoleChange={(role) => onRoleChange(a.id, role)} />

@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, expect, test } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import Banks from "@/app/(app)/bancos/page";
 import { fail, fakeApi, ok, pending } from "./fake-api";
 import { stubLocation, today } from "./location";
@@ -339,4 +339,34 @@ test("No detached accounts", async () => {
 
   await screen.findByText("Nómina");
   expect(screen.queryByRole("heading", { name: "cuentas sin banco" })).not.toBeInTheDocument();
+});
+
+// ---------- Removing a connection ----------
+
+const QUESTION = '¿Quitar BBVA? Sus cuentas y movimientos se quedan en "cuentas sin banco".';
+
+test("Remove a connection", async () => {
+  const confirm = vi.fn(() => true);
+  vi.stubGlobal("confirm", confirm);
+  const { api } = open([connection({ id: 3, bank: "BBVA", valid_until: daysFromNow(90) })], {
+    "DELETE /api/banks/3": { status: 204 },
+  });
+
+  await userEvent.click(await screen.findByRole("button", { name: "quitar" }));
+
+  expect(confirm).toHaveBeenCalledWith(QUESTION);
+  await waitFor(() => expect(api.to("GET", "/api/banks")).toHaveLength(2));
+  expect(api.to("DELETE", "/api/banks/3")).toHaveLength(1);
+});
+
+test("Cancel removing", async () => {
+  vi.stubGlobal(
+    "confirm",
+    vi.fn(() => false),
+  );
+  const { api } = open([connection({ id: 3, bank: "BBVA", valid_until: daysFromNow(90) })]);
+
+  await userEvent.click(await screen.findByRole("button", { name: "quitar" }));
+
+  expect(api.requests.filter((r) => r.method === "DELETE")).toEqual([]);
 });

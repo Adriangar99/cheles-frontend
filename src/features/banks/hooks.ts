@@ -49,3 +49,8 @@ export function useSetRole() {
   const api = useBanksApi();
   return useBanksAction(({ accountId, role }: { accountId: number; role: Role }) => api.setRole(accountId, role));
 }
+
+export function useRemoveConnection() {
+  const api = useBanksApi();
+  return useBanksAction((connectionId: number) => api.remove(connectionId));
+}

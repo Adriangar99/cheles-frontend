@@ -5,7 +5,15 @@ import { useLogout } from "@/features/auth";
 import { errorMessage } from "@/shared/api/client";
 import type { Role } from "../api";
 import { authorizationMessage } from "../domain/banks";
-import { useAvailableBanks, useBanks, useConnectBank, useReprocess, useSetRole, useSyncConnection } from "../hooks";
+import {
+  useAvailableBanks,
+  useBanks,
+  useConnectBank,
+  useRemoveConnection,
+  useReprocess,
+  useSetRole,
+  useSyncConnection,
+} from "../hooks";
 import { BankPicker } from "./BankPicker";
 import { ConnectionCard } from "./ConnectionCard";
 import { DetachedAccounts } from "./DetachedAccounts";
@@ -18,6 +26,7 @@ export function BanksScreen() {
   const sync = useSyncConnection();
   const reprocess = useReprocess();
   const setRole = useSetRole();
+  const remove = useRemoveConnection();
   const logout = useLogout();
   const [message, setMessage] = useState("");
 
@@ -65,6 +74,12 @@ export function BanksScreen() {
             sync.mutate(c.id, onError);
           }}
           onReconnect={() => connect.mutate({ name: c.bank, country: c.country }, onError)}
+          onRemove={() => {
+            if (!window.confirm(`¿Quitar ${c.bank}? Sus cuentas y movimientos se quedan en "cuentas sin banco".`))
+              return;
+            setMessage("");
+            remove.mutate(c.id, onError);
+          }}
           onRoleChange={changeRole}
         />
       ))}
