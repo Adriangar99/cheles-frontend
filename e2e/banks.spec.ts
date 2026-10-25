@@ -65,4 +65,37 @@ test("connecting a bank fills every screen, and removing it keeps the accounts",
     await expect(detached.getByRole("listitem", { name: "Ahorro" })).toBeVisible();
     await expect(page.getByRole("region", { name: "Banco E2E" })).toHaveCount(0);
   });
+
+  await test.step("importing a MoneyLover export fills the previous month", async () => {
+    // Invented export, UTF-16 like MoneyLover writes it, dated in the month before the current one
+    const now = new Date();
+    const previous = new Date(now.getFullYear(), now.getMonth() - 1, 10);
+    const day = `10/${String(previous.getMonth() + 1).padStart(2, "0")}/${previous.getFullYear()}`;
+    const csv = [
+      "Id,Fecha,Categoria,Cantidad,Moneda,Nota,Cuenta",
+      `1,${day},Salario,1500.00,EUR,Nómina,Cartera E2E`,
+      `2,${day},Comida y bebida,-45.20,EUR,Mercado,Cartera E2E`,
+      `3,${day},Gasolina,-12.00,EUR,,Cartera E2E`,
+      `4,${day},Otros gastos,-5.00,EUR,Ajuste,Cartera E2E`,
+    ].join("\r\n");
+    const utf16 = Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(csv, "utf16le")]);
+
+    await page
+      .getByLabel("elegir fichero CSV")
+      .setInputFiles({ name: "moneylover.csv", mimeType: "text/csv", buffer: utf16 });
+    const wallet = page.getByRole("listitem", { name: "Cartera E2E" });
+    await expect(wallet).toContainText("entran 3");
+    await expect(wallet).toContainText("1 ajustes de saldo no se importan");
+    await page.getByRole("button", { name: "importar 3 movimientos" }).click();
+    await expect(page.getByRole("status")).toHaveText("3 movimientos importados ✓");
+    await expect(
+      page.getByRole("region", { name: "cuentas sin banco" }).getByRole("listitem", { name: "Cartera E2E" }),
+    ).toBeVisible();
+
+    await page.goto("/");
+    await page.getByRole("button", { name: "mes anterior" }).click();
+    const figure = (label: string) => page.locator("dt", { hasText: label }).locator("+ dd").first();
+    await expect(figure("ingresos")).toHaveText("1500,00 €");
+    await expect(figure("gastos")).toHaveText("57,20 €");
+  });
 });

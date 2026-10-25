@@ -9,5 +9,8 @@ export const monthName = (m: string) => new Date(`${m}-01T00:00:00`).toLocaleDat
 export const dayLabel = (date: string) =>
   new Date(`${date}T00:00:00`).toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
 
+export const shortDate = (date: string) =>
+  new Date(`${date}T00:00:00`).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" });
+
 export const dayMonthTime = (timestamp: string) =>
   new Date(timestamp).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
