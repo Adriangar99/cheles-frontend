@@ -72,7 +72,10 @@ test("Metadata", () => {
   expect(metadata).toMatchObject({
     title: "Cheles",
     robots: { index: false, follow: false },
-    appleWebApp: { capable: true, title: "Cheles", statusBarStyle: "black-translucent" },
+    appleWebApp: { capable: true, title: "Cheles", statusBarStyle: "default" },
   });
-  expect(viewport.themeColor).toBe("#121212");
+  expect(viewport.themeColor).toEqual([
+    { media: "(prefers-color-scheme: light)", color: "#E8ECF1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0E1828" },
+  ]);
 });

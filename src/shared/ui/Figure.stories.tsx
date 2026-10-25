@@ -13,7 +13,7 @@ export const Grid: Story = {
       <Figure label="gastos" value="1200,00 €" />
       <Figure label="sobra" value="-150,00 €" tone="neg" />
       <Figure label="enviado a ahorro" value="300,00 €" />
-      <Figure label="saldo total ahora" value="6912,70 €" wide>
+      <Figure label="saldo total ahora" value="6912,70 €" total>
         <dd className="sub">día a día 1612,70 € · ahorro 5300,00 €</dd>
       </Figure>
     </Figures>

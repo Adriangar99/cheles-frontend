@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { Button, List, ListItem } from "@/shared/ui";
+import { Button, List, ListItem, Stamp } from "@/shared/ui";
 import type { Connection, Role } from "../api";
 import { consentStatus, errorExcerpt, lastReadLabel } from "../domain/banks";
 import { AccountRow } from "./AccountRow";
@@ -19,13 +19,16 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
   const headingId = useId();
   return (
     <section aria-labelledby={headingId}>
-      <h2 id={headingId}>{c.bank}</h2>
+      <div className="section-head">
+        <h2 id={headingId}>{c.bank}</h2>
+        <Button variant="quiet" size="small" onClick={onRemove}>
+          quitar
+        </Button>
+      </div>
       <List>
         <ListItem>
-          <div className="grow">
-            <div className={status.tone} data-tone={status.tone}>
-              {status.text}
-            </div>
+          <div className="grow status">
+            <Stamp tone={status.tone}>{status.text}</Stamp>
             <div className="sub">{lastReadLabel(c.last_synced_at)}</div>
             {c.last_error && <div className="err">{errorExcerpt(c.last_error)}</div>}
           </div>
@@ -38,9 +41,6 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
               {syncing ? "leyendo…" : "leer ahora"}
             </Button>
           )}
-        </ListItem>
-        <ListItem>
-          <Button onClick={onRemove}>quitar</Button>
         </ListItem>
         {c.accounts.map((a) => (
           <AccountRow key={a.id} account={a} onRoleChange={(role) => onRoleChange(a.id, role)} />

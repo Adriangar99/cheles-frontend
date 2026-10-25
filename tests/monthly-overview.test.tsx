@@ -84,20 +84,68 @@ test("No savings accounts", async () => {
   expect(await screen.findByText("día a día 1500,00 € · ahorro 0,00 €")).toBeInTheDocument();
 });
 
+test("Spending rose", async () => {
+  open({ income: 2000, expenses: 1200, net: 800 }, [{ month: "2026-09", income: 2000, expenses: 1000 }]);
+
+  const spendingRose = await screen.findByText("200,00 € más que en septiembre");
+  expect(spendingRose).toHaveAttribute("data-tone", "neg");
+  expect((await card("gastos"))?.nextElementSibling).toBe(spendingRose);
+  expect(screen.getByText("200,00 € menos que en septiembre")).toHaveAttribute("data-tone", "neg");
+  expect((await card("ingresos"))?.nextElementSibling).toHaveTextContent("igual que en septiembre");
+  expect(screen.getByText("igual que en septiembre")).not.toHaveAttribute("data-tone");
+});
+
+// Requirement detail: a rise in income or in what is left is good news
+test("Income rose", async () => {
+  open({ income: 2500, expenses: 1000, net: 1500 }, [{ month: "2026-09", income: 2000, expenses: 1000 }]);
+
+  expect((await card("ingresos"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
+  expect((await card("sobra"))?.nextElementSibling).toHaveTextContent("500,00 € más que en septiembre");
+  expect((await card("sobra"))?.nextElementSibling).toHaveAttribute("data-tone", "pos");
+});
+
+test("No previous month in the history", async () => {
+  open({ income: 2000 }, [{ month: "2026-08", income: 1500, expenses: 500 }]);
+
+  await card("ingresos");
+  expect(screen.queryByText(/que en (agosto|septiembre)/)).not.toBeInTheDocument();
+});
+
+// A legend line of «la nómina repartida», named by its category
+const share = (name: string) => screen.getByRole("listitem", { name });
+
 test("Spending breakdown", async () => {
   open({
+    income: 2000,
+    expenses: 420,
     by_category: [
       { id: 1, name: "Supermercado", icon: "🛒", color: "#4caf50", amount: 300 },
       { id: 2, name: "Restaurantes", icon: "🍽", color: "#ff9800", amount: 120 },
     ],
   });
 
-  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "100");
-  expect(meter("🍽 Restaurantes")).toHaveAttribute("aria-valuenow", "40");
-  // The bar takes the category's own color
+  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "15");
+  expect(meter("🍽 Restaurantes")).toHaveAttribute("aria-valuenow", "6");
+  expect(meter("sobra")).toHaveAttribute("aria-valuenow", "79");
+  // Each segment takes the category's own color
   expect(meter("🛒 Supermercado").style.background).toBe("rgb(76, 175, 80)");
   expect(meter("🍽 Restaurantes").style.background).toBe("rgb(255, 152, 0)");
-  expect(screen.getByText("en qué se va")).toBeInTheDocument();
+  expect(share("🛒 Supermercado")).toHaveTextContent("300,00 €15 %");
+  expect(share("🍽 Restaurantes")).toHaveTextContent("120,00 €6 %");
+  expect(share("sobra")).toHaveTextContent("1580,00 €79 %");
+  expect(screen.getByRole("heading", { name: "la nómina repartida" })).toBeInTheDocument();
+});
+
+test("Spending over income", async () => {
+  open({
+    income: 1000,
+    expenses: 1250,
+    by_category: [{ id: 1, name: "Supermercado", icon: "🛒", color: "#4caf50", amount: 1250 }],
+  });
+
+  expect(await screen.findByRole("meter", { name: "🛒 Supermercado" })).toHaveAttribute("aria-valuenow", "100");
+  expect(meter("sobra")).toHaveAttribute("aria-valuenow", "0");
+  expect(share("sobra")).toHaveTextContent("0,00 €0 %");
 });
 
 test("No spending", async () => {

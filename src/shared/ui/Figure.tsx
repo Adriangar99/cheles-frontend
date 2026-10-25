@@ -3,18 +3,19 @@ import { cx } from "./cx";
 
 export type Tone = "pos" | "neg";
 
-// A grid of figures: a definition list, so each value is found by its term
+// A sheet of figures, one ledger line each: a definition list, so each value is found by its term
 export function Figures({ children }: { children: ReactNode }) {
-  return <dl className="stats">{children}</dl>;
+  return <dl className="card ledger">{children}</dl>;
 }
 
-type Props = { label: string; value: string; tone?: Tone; wide?: boolean; children?: ReactNode };
+type Props = { label: string; value: string; tone?: Tone; total?: boolean; children?: ReactNode };
 
-// One figure: its term (dt), its value (dd) with an optional tone, and any extra detail (more dd)
-export function Figure({ label, value, tone, wide, children }: Props) {
+// One ledger line: its term (dt), its value (dd) with an optional tone, and any extra detail (more dd).
+// `total` closes the sheet under a double rule.
+export function Figure({ label, value, tone, total, children }: Props) {
   return (
-    <div className={cx("card", "stat", wide && "wide")}>
-      <dt className="label">{label}</dt>
+    <div className={cx("line", total && "total")}>
+      <dt>{label}</dt>
       <dd className={cx("value", tone)} data-tone={tone}>
         {value}
       </dd>

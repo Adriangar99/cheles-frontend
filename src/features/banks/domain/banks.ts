@@ -1,5 +1,5 @@
 import { dayMonthTime } from "@/shared/format";
-import type { Connection, Role } from "../api";
+import type { Banks, Connection, Role } from "../api";
 
 const DAY_MS = 86_400_000;
 const EXPIRY_WARNING_DAYS = 14;
@@ -37,4 +37,23 @@ export function parseRole(value: string): Role {
   const role = Object.keys(ROLE_LABEL).find((r): r is Role => r === value);
   if (!role) throw new Error(`Unknown account role: ${value}`);
   return role;
+}
+
+// The top of the screen: what the euro accounts that count add up to, and how many banks need attention
+export function banksSummary(banks: Banks, now: number) {
+  const accounts = [...banks.connections.flatMap((c) => c.accounts), ...banks.detached_accounts];
+  if (accounts.length === 0 && banks.connections.length === 0) return null;
+  const counted = accounts.filter((a) => a.role !== "excluded" && a.currency === "EUR");
+  const attention = banks.connections.filter((c) => consentStatus(c, now).tone === "neg").length;
+  return {
+    total: counted.reduce((sum, a) => Math.round((sum + (a.balance ?? 0)) * 100) / 100, 0),
+    accounts: counted.length === 1 ? "en 1 cuenta" : `en ${counted.length} cuentas`,
+    attention:
+      attention === 0
+        ? ({ tone: "pos", text: "todos los bancos al día" } as const)
+        : ({
+            tone: "neg",
+            text: attention === 1 ? "1 banco necesita atención" : `${attention} bancos necesitan atención`,
+          } as const),
+  };
 }

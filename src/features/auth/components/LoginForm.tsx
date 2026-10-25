@@ -18,25 +18,29 @@ export function LoginForm() {
 
   return (
     <div className="login">
-      <form onSubmit={submit}>
-        <h1>cheles</h1>
-        <p className="sub">entra para ver tus cuentas</p>
-        <input name="username" placeholder="usuario" autoComplete="username" autoCapitalize="none" required />
-        <input name="password" type="password" placeholder="contraseña" autoComplete="current-password" required />
-        <input
-          name="code"
-          inputMode="numeric"
-          placeholder="código de 6 dígitos"
-          autoComplete="one-time-code"
-          maxLength={6}
-          required
-        />
-        {login.error && <Message kind="error">{login.error.message}</Message>}
-        {/* Still disabled after success: the browser is already navigating to / */}
-        <Button type="submit" variant="primary" disabled={login.isPending || login.isSuccess}>
-          entrar
-        </Button>
-      </form>
+      <div className="cover">
+        <header className="cover-title">
+          <h1>cheles</h1>
+          <p>entra para ver tus cuentas</p>
+        </header>
+        <form className="card" onSubmit={submit}>
+          <input name="username" placeholder="usuario" autoComplete="username" autoCapitalize="none" required />
+          <input name="password" type="password" placeholder="contraseña" autoComplete="current-password" required />
+          <input
+            name="code"
+            inputMode="numeric"
+            placeholder="código de 6 dígitos"
+            autoComplete="one-time-code"
+            maxLength={6}
+            required
+          />
+          {login.error && <Message kind="error">{login.error.message}</Message>}
+          {/* Still disabled after success: the browser is already navigating to / */}
+          <Button type="submit" variant="primary" disabled={login.isPending || login.isSuccess}>
+            entrar
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }

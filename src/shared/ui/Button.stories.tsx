@@ -10,3 +10,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Primary: Story = { args: { variant: "primary", children: "conectar un banco" } };
 export const Disabled: Story = { args: { disabled: true, children: "leyendo…" } };
+export const Quiet: Story = { args: { variant: "quiet", children: "quitar" } };
+export const Small: Story = { args: { size: "small", children: "⇄ entre mis cuentas (quitar)" } };

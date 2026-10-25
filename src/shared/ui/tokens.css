@@ -1,27 +1,76 @@
-/* Design tokens: the only place colors, radius and type sizes are defined. */
+/* Design tokens («Libreta de ahorros»): the only place colors, type, spacing and radii are defined.
+   Light is the page of a passbook; dark is its navy cloth cover. The system's scheme decides, and data-theme on <html>
+   can force either (Storybook's theme switch). */
 :root {
-  /* Colors */
-  --color-bg: #121212;
-  --color-surface: #1b1b1b;
-  --color-surface-raised: #242424;
-  --color-line: #2a2a2a;
-  --color-text: #ececec;
-  --color-muted: #8d8d8d;
-  --color-positive: #4fc08d;
-  --color-negative: #e5645a;
+  /* Colors: light */
+  --color-bg: #e8ecf1; /* paper */
+  --color-surface: #f8f9fb; /* ruled sheet */
+  --color-surface-raised: #eef1f5; /* controls */
+  --color-line: #cbd4e0; /* ruling */
+  --color-text: #1b2a47; /* ink */
+  --color-muted: #5b6a84; /* faded ink */
+  --color-accent: #24427a; /* the cover: primary actions, focus */
+  --color-on-accent: #f8f9fb;
+  --color-positive: #276d4d; /* credit ink */
+  --color-negative: #b23a31; /* stamp ink */
+  --color-cover: #24427a; /* the passbook's cloth cover (login) */
+  --color-on-cover: #e8ecf1;
 
-  /* Shape */
-  --radius: 18px;
-
-  /* Type scale */
-  --text-2xs: 10px;
+  /* Type */
+  --font-sans: "IBM Plex Sans", ui-sans-serif, -apple-system, system-ui, sans-serif;
+  --text-2xs: 11px;
   --text-xs: 12px;
   --text-sm: 13px;
   --text-md: 14px;
   --text-base: 16px;
-  --text-lg: 20px;
+  --text-lg: 18px;
   --text-xl: 22px;
-  --text-2xl: 28px;
+  --text-2xl: 32px;
 
+  /* Spacing: a 4 px baseline */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Shape: sheets and controls differ on purpose */
+  --radius: 10px; /* sheets */
+  --radius-control: 6px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #0e1828;
+    --color-surface: #152238;
+    --color-surface-raised: #1c2c47;
+    --color-line: #24334e;
+    --color-text: #e4e9f1;
+    --color-muted: #93a0b6;
+    --color-accent: #8fb0f0;
+    --color-on-accent: #0e1828;
+    --color-positive: #71c99e;
+    --color-negative: #f08a80;
+    --color-cover: #0a1220;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #0e1828;
+  --color-surface: #152238;
+  --color-surface-raised: #1c2c47;
+  --color-line: #24334e;
+  --color-text: #e4e9f1;
+  --color-muted: #93a0b6;
+  --color-accent: #8fb0f0;
+  --color-on-accent: #0e1828;
+  --color-positive: #71c99e;
+  --color-negative: #f08a80;
+  --color-cover: #0a1220;
   color-scheme: dark;
 }

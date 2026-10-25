@@ -1,25 +1,58 @@
-import { Amount, List, ListItem, Meter } from "@/shared/ui";
-import type { CategorySpending } from "../api";
-import { categoryBars } from "../domain/charts";
+import { useId } from "react";
+import { Amount, Card, List, ListItem, Meter } from "@/shared/ui";
+import type { Summary } from "../api";
+import { spendingStrip } from "../domain/charts";
 
-export function SpendingByCategory({ categories }: { categories: CategorySpending[] }) {
+const LEFT_COLOR = "var(--strip-left)";
+
+// «La nómina repartida»: the month's money as one strip, then one legend line per piece of it
+export function SpendingByCategory({ summary }: { summary: Summary }) {
+  const { segments, left } = spendingStrip(summary.by_category, summary.income, summary.expenses);
   return (
     <>
-      <h2>en qué se va</h2>
-      <List>
-        {categories.length === 0 && <ListItem muted>sin gastos este mes</ListItem>}
-        {categoryBars(categories).map((c) => (
-          <ListItem key={c.name} style={{ display: "block" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>
-                {c.icon} {c.name}
-              </span>
-              <Amount value={c.amount} />
-            </div>
-            <Meter label={`${c.icon} ${c.name}`} value={c.widthPct} max={100} color={c.color} />
-          </ListItem>
-        ))}
-      </List>
+      <h2>la nómina repartida</h2>
+      {segments.length === 0 ? (
+        <List>
+          <ListItem muted>sin gastos este mes</ListItem>
+        </List>
+      ) : (
+        <Card className="spending">
+          {/* Keyed by month, so the strip grows again when another month loads */}
+          <div className="strip" key={summary.month}>
+            {segments.map((s) => (
+              <Meter
+                key={s.name}
+                orientation="segment"
+                label={`${s.icon} ${s.name}`}
+                value={s.pct}
+                max={100}
+                color={s.color}
+              />
+            ))}
+            <Meter orientation="segment" label="sobra" value={left.pct} max={100} color={LEFT_COLOR} />
+          </div>
+          <ul className="legend">
+            {segments.map((s) => (
+              <Share key={s.name} name={`${s.icon} ${s.name}`} amount={s.amount} pct={s.pct} color={s.color} />
+            ))}
+            <Share name="sobra" amount={left.amount} pct={left.pct} color={LEFT_COLOR} />
+          </ul>
+        </Card>
+      )}
     </>
+  );
+}
+
+function Share({ name, amount, pct, color }: { name: string; amount: number; pct: number; color: string }) {
+  const nameId = useId();
+  return (
+    <li aria-labelledby={nameId}>
+      <span className="dot" style={{ background: color }} aria-hidden="true" />
+      <span id={nameId} className="ellipsis">
+        {name}
+      </span>
+      <Amount value={amount} />
+      <span className="pct">{pct} %</span>
+    </li>
   );
 }

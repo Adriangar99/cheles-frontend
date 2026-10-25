@@ -16,6 +16,7 @@ import {
   useSyncConnection,
 } from "../hooks";
 import { BankPicker } from "./BankPicker";
+import { BanksSummary } from "./BanksSummary";
 import { ConnectionCard } from "./ConnectionCard";
 import { DetachedAccounts } from "./DetachedAccounts";
 import { ReprocessCard } from "./ReprocessCard";
@@ -59,10 +60,12 @@ export function BanksScreen() {
       <h1>los bancos</h1>
       <p className="sub">de dónde salen tus movimientos</p>
       {shown && (
-        <Message kind="status" style={{ marginTop: 12 }}>
+        <Message kind="status" className="notice">
           {shown}
         </Message>
       )}
+
+      {banks.data && <BanksSummary banks={banks.data} now={Date.now()} />}
 
       {banks.data?.connections.map((c) => (
         <ConnectionCard
@@ -102,7 +105,7 @@ export function BanksScreen() {
         }}
       />
 
-      <Button style={{ marginTop: 28 }} onClick={() => logout.mutate(undefined, onError)}>
+      <Button className="leave" onClick={() => logout.mutate(undefined, onError)}>
         salir
       </Button>
     </>

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { errorMessage } from "@/shared/api/client";
+import { dayLabel } from "@/shared/format";
 import { MonthNav } from "@/shared/MonthNav";
 import { currentMonth } from "@/shared/month";
-import { List, ListItem, Message } from "@/shared/ui";
+import { Amount, List, ListItem, Message } from "@/shared/ui";
+import type { Category, Transaction, TransactionPatch } from "../api";
+import { byDay } from "../domain/transactions";
 import { useCategories, useDebounced, useTransactions, useUpdateTransaction } from "../hooks";
 import { TransactionRow } from "./TransactionRow";
 
@@ -24,17 +27,45 @@ export function TransactionsScreen() {
       {error && <Message kind="error">{error}</Message>}
 
       <h2>{txs.length} movimientos</h2>
-      <List>
-        {txs.map((tx) => (
-          <TransactionRow
-            key={tx.id}
-            tx={tx}
-            categories={categories.data ?? []}
-            onChange={(patch) => update.mutate({ id: tx.id, patch })}
-          />
-        ))}
-        {txs.length === 0 && <ListItem muted>nada por aquí</ListItem>}
-      </List>
+      {txs.length === 0 && (
+        <List>
+          <ListItem muted>nada por aquí</ListItem>
+        </List>
+      )}
+      {byDay(txs).map((day) => (
+        <Day
+          key={day.date}
+          {...day}
+          categories={categories.data ?? []}
+          onChange={(id, patch) => update.mutate({ id, patch })}
+        />
+      ))}
     </>
+  );
+}
+
+type DayProps = {
+  date: string;
+  total: number;
+  transactions: Transaction[];
+  categories: Category[];
+  onChange: (id: number, patch: TransactionPatch) => void;
+};
+
+// One day: its date and total, then its transactions
+function Day({ date, total, transactions, categories, onChange }: DayProps) {
+  const headingId = useId();
+  return (
+    <section aria-labelledby={headingId} className="day">
+      <div className="section-head">
+        <h3 id={headingId}>{dayLabel(date)}</h3>
+        <Amount value={total} tone={total > 0 ? "pos" : undefined} />
+      </div>
+      <List>
+        {transactions.map((tx) => (
+          <TransactionRow key={tx.id} tx={tx} categories={categories} onChange={(patch) => onChange(tx.id, patch)} />
+        ))}
+      </List>
+    </section>
   );
 }

@@ -1,5 +1,4 @@
 import { useId } from "react";
-import { dayMonth } from "@/shared/format";
 import { Amount, Button, ListItem, Select } from "@/shared/ui";
 import type { Category, Transaction, TransactionPatch } from "../api";
 import { categoryOptions, isCredit, rowLabel } from "../domain/transactions";
@@ -11,24 +10,21 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
   const { uncategorized, options } = categoryOptions(tx, categories);
   const labelId = useId();
   return (
-    <ListItem aria-labelledby={labelId} data-kind={tx.kind} style={transfer ? { opacity: 0.55 } : undefined}>
+    <ListItem aria-labelledby={labelId} data-kind={tx.kind}>
       <div className="grow">
         <div className="ellipsis" id={labelId}>
           {rowLabel(tx)}
         </div>
         <div className="sub ellipsis">
-          {dayMonth(tx.date)} · {tx.account}
+          {tx.account}
           {tx.status === "PDNG" && " · pendiente"}
         </div>
         {transfer ? (
-          <Button
-            style={{ marginTop: 6, padding: "4px 10px", fontSize: "var(--text-xs)" }}
-            onClick={() => onChange({ kind: "normal" })}
-          >
+          <Button size="small" className="tx-tools" onClick={() => onChange({ kind: "normal" })}>
             ⇄ entre mis cuentas (quitar)
           </Button>
         ) : (
-          <div style={{ display: "flex", gap: 6, marginTop: 6, alignItems: "center" }}>
+          <div className="tx-tools">
             <Select
               value={tx.category_id ?? ""}
               onChange={(e) => onChange({ category_id: Number(e.target.value) })}
@@ -42,7 +38,7 @@ export function TransactionRow({ tx, categories, onChange }: Props) {
               ))}
             </Select>
             <Button
-              style={{ padding: "6px 10px", fontSize: "var(--text-xs)" }}
+              size="small"
               onClick={() => onChange({ kind: "transfer" })}
               title="marcar como transferencia entre mis cuentas"
             >

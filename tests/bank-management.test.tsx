@@ -383,3 +383,59 @@ test("Removing fails", async () => {
   expect(await screen.findByText("Error 500")).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "BBVA" })).toBeInTheDocument();
 });
+
+const summary = () => screen.findByRole("region", { name: "resumen" });
+
+test("A bank needs attention", async () => {
+  open([
+    connection({
+      accounts: [
+        account({ id: 1, name: "Nómina", role: "main", balance: 1000 }),
+        account({ id: 2, name: "Colchón", role: "savings", balance: 500 }),
+      ],
+    }),
+    connection({
+      id: 2,
+      bank: "ING",
+      status: "expired",
+      valid_until: daysFromNow(-1),
+      accounts: [account({ id: 3, name: "Naranja", role: "excluded", balance: 12, connection_id: 2 })],
+    }),
+  ]);
+
+  const box = await summary();
+  expect(within(box).getByText("1500,00 €")).toBeInTheDocument();
+  expect(within(box).getByText("en 2 cuentas")).toBeInTheDocument();
+  expect(within(box).getByText("1 banco necesita atención")).toHaveAttribute("data-tone", "neg");
+});
+
+// Requirement detail: expiring soon also needs attention, several banks are counted, other currencies are not added
+test("Several banks need attention", async () => {
+  open([
+    connection({ valid_until: daysFromNow(10), accounts: [account({ balance: 100 })] }),
+    connection({
+      id: 2,
+      status: "expired",
+      accounts: [account({ id: 2, balance: 50, currency: "USD", connection_id: 2 })],
+    }),
+  ]);
+
+  const box = await summary();
+  expect(within(box).getByText("100,00 €")).toBeInTheDocument();
+  expect(within(box).getByText("en 1 cuenta")).toBeInTheDocument();
+  expect(within(box).getByText("2 bancos necesitan atención")).toHaveAttribute("data-tone", "neg");
+});
+
+test("Every bank up to date", async () => {
+  open([connection({ valid_until: daysFromNow(90), accounts: [account()] })]);
+
+  expect(within(await summary()).getByText("todos los bancos al día")).toHaveAttribute("data-tone", "pos");
+});
+
+test("Nothing connected yet", async () => {
+  const { api } = open([]);
+
+  await waitFor(() => expect(api.to("GET", "/api/banks")).toHaveLength(1));
+  await new Promise((resolve) => setTimeout(resolve, 50));
+  expect(screen.queryByRole("region", { name: "resumen" })).not.toBeInTheDocument();
+});
