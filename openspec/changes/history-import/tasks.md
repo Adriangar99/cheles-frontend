@@ -9,8 +9,8 @@ mutation checks. Starts after the backend change `history-import` is merged.
 
 ## 2. Screen
 
-- [ ] 2.1 Choosing a file and the preview per wallet with its selector («Choose a file», «Unrecognized file», «Wallet onto a bank account», «Balance adjustments», «Not imported», «Categories without equivalent»)
-- [ ] 2.2 Importing, nothing to import, cancel, failure («Import», «Nothing to import», «Cancel», «Import fails»)
+- [x] 2.1 Choosing a file and the preview per wallet with its selector («Choose a file», «Unrecognized file», «Wallet onto a bank account», «Balance adjustments», «Not imported», «Categories without equivalent»)
+- [x] 2.2 Importing, nothing to import, cancel, failure («Import», «Nothing to import», «Cancel», «Import fails»)
 
 ## 3. Look and verification
 
