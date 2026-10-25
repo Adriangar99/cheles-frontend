@@ -561,3 +561,6 @@ h3 {
   gap: var(--space-3);
   margin-top: var(--space-3);
 }
+.import-note {
+  margin-top: var(--space-2);
+}

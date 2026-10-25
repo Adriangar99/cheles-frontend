@@ -22,12 +22,16 @@ after 5 failures the API asks to wait.
 - Change a category (only those of the transaction's sign) and mark or unmark a transfer between your own accounts
   (⇄); load and edit errors below the search box.
 
-## «bancos» — [bank management](../openspec/specs/bank-management/spec.md)
+## «bancos» — [bank management](../openspec/specs/bank-management/spec.md), [history import](../openspec/specs/history-import/spec.md)
 
 - Each connection's consent status («al día», «caduca en N días», «hay que reconectar»), last read and last error.
 - «leer ahora», «reconectar» (in the connection's country) and «quitar» (with confirmation; accounts stay under
   «cuentas sin banco»).
 - Each account's role: «día a día», «ahorro» or «no cuenta».
+- A summary on top: balance of the accounts that count and how many banks need attention.
+- «importar movimientos»: choose a MoneyLover CSV export, pick where each of its wallets goes (a new account, an
+  existing one, or «no importar») seeing what would happen (rows to import, rows the bank already has, rows imported
+  before, balance adjustments left out, categories without an equivalent), then import.
 - «conectar un banco», «hazlo ahora» (reprocess) and «salir».
 
 ## Everywhere — [app shell](../openspec/specs/app-shell/spec.md), [API access](../openspec/specs/api-access/spec.md), [locale formatting](../openspec/specs/locale-formatting/spec.md)

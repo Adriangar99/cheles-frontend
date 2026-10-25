@@ -76,12 +76,12 @@ export function ImportSection({ accounts }: { accounts: Account[] }) {
               ))}
             </List>
             {shown.unmatched_categories.length > 0 && (
-              <Message kind="note">
+              <Message kind="note" className="import-note">
                 sin equivalencia, irán por reglas:{" "}
                 {shown.unmatched_categories.map((c) => `${c.name} (${c.rows})`).join(", ")}
               </Message>
             )}
-            <Message kind="note">
+            <Message kind="note" className="import-note">
               las transferencias de MoneyLover entran como ingresos y gastos; marca ⇄ las que sean entre tus cuentas
             </Message>
             <div className="actions">

@@ -1,17 +1,20 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { AuthApiProvider, fakeAuthApi } from "@/features/auth";
+import { fakeImportsApi, ImportsApiProvider } from "@/features/imports";
 import type { BanksApi } from "../api";
 import { fakeBanksApi } from "../fake";
 import { BanksApiProvider } from "../provider";
 import { BanksScreen } from "./BanksScreen";
 
-// «salir» uses the auth feature, so its port is provided too
+// «salir» uses the auth feature and «importar movimientos» the imports one, so their ports are provided too
 const withApi =
   (api: BanksApi): Decorator =>
   (Story) => (
     <AuthApiProvider adapter={fakeAuthApi()}>
       <BanksApiProvider adapter={api}>
-        <Story />
+        <ImportsApiProvider adapter={fakeImportsApi()}>
+          <Story />
+        </ImportsApiProvider>
       </BanksApiProvider>
     </AuthApiProvider>
   );
