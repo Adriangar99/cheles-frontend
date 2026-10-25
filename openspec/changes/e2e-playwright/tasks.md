@@ -8,7 +8,7 @@
 ## 2. Tests
 
 - [x] 2.1 Session: login with TOTP, session guard redirect, logout
-- [ ] 2.2 Banks: connect through the fake provider, accounts listed, transactions and «mi mes» figures, category edit kept after reload, remove the connection; screenshots of every screen
+- [x] 2.2 Banks: connect through the fake provider, accounts listed, transactions and «mi mes» figures, category edit kept after reload, remove the connection; screenshots of every screen
 - [ ] 2.3 «API URL fixed at build time» and «Proxied API response» as e2e tests; the meta-test reads `e2e/*.spec.ts` and only exempts «Access from another device»
 
 ## 3. Docs and verification
