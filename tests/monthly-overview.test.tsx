@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test } from "vitest";
 import MyMonth from "@/app/(app)/page";
@@ -134,6 +134,18 @@ test("Spending breakdown", async () => {
   expect(share("🍽 Restaurantes")).toHaveTextContent("120,00 €6 %");
   expect(share("Sobra")).toHaveTextContent("1580,00 €79 %");
   expect(screen.getByRole("heading", { name: "La nómina repartida" })).toBeInTheDocument();
+});
+
+test("Hover a long category name", async () => {
+  open({
+    income: 2000,
+    expenses: 90,
+    by_category: [{ id: 9, name: "Hogar, muebles y decoración", icon: "🛋", color: "#795548", amount: 90 }],
+  });
+
+  const name = "🛋 Hogar, muebles y decoración";
+
+  expect(within(await screen.findByRole("listitem", { name })).getByText(name)).toHaveAttribute("title", name);
 });
 
 test("Spending over income", async () => {
