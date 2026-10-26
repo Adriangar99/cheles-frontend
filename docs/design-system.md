@@ -13,7 +13,7 @@ and sections share one head (title left, quiet action or figure right) so new in
 - **Primitives** (`src/shared/ui/`, imported from `@/shared/ui`): `Button` (default, primary, quiet; small),
   `Card`, `List`/`ListItem` (a ruled sheet), `Select` (native control with a drawn chevron), `Message`,
   `Figures`/`Figure` (ledger lines; `total` closes the sheet), `Meter` (horizontal, vertical or a strip segment),
-  `Amount` and `Stamp`. Features compose screens from them instead of writing markup
+  `Amount`, `Stamp` and `Truncated` (text cut with an ellipsis that shows in full on hover). Features compose screens from them instead of writing markup
   and classes by hand. They render semantic HTML with the roles and names the tests rely on (list items named by
   their label, meters with a value, figures as a definition list, errors as alerts).
 

@@ -19,13 +19,15 @@ after 5 failures the API asks to wait.
 ## «Movimientos» — [transactions](../openspec/specs/transactions/spec.md)
 
 - The month's transactions grouped by day with the day's total, with search («Buscar…»), account and «pendiente»
-  marks.
+  marks. Each row is labeled by the transaction's title, with the bank's description in grey under it when it
+  differs.
 - Change a category (only those of the transaction's sign) and mark or unmark a transfer between your own accounts
   (⇄); load and edit errors below the search box.
 
 ## «Bancos» — [bank management](../openspec/specs/bank-management/spec.md), [history import](../openspec/specs/history-import/spec.md)
 
-- Each connection's consent status («Al día», «Caduca en N días», «Hay que reconectar»), last read and last error.
+- Each connection's consent status («Al día», «Caduca en N días», «Hay que reconectar»), last read and last error;
+  a new connection shows «Sincronizando…» and the screen reloads by itself until its first sync ends.
 - «Leer ahora», «Reconectar» (in the connection's country) and «Quitar» (with confirmation; accounts stay under
   «Cuentas sin banco»).
 - Each account's role: «Día a día», «Ahorro» or «No cuenta».
