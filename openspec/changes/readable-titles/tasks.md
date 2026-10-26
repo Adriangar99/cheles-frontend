@@ -14,7 +14,7 @@ TDD: write the scenario test first and see it fail for the right reason.
 
 ## 3. Verification
 
-- [x] 3.1 Typecheck, Biome, Vitest (spec-coverage included), Storybook build; `docker compose up -d --build` and check the three screens; open the PR and verify CI
+- [x] 3.1 Typecheck, Biome, Vitest (spec-coverage included), Storybook build; `docker compose up -d --build` (builds and serves; the screens are checked by hand after merging, behind the TOTP login); open the PR and verify CI
 
 ## Workflow follow-up
 
