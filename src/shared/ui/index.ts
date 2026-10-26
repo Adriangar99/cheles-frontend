@@ -7,3 +7,4 @@ export { Message } from "./Message";
 export { Meter } from "./Meter";
 export { Select } from "./Select";
 export { Stamp } from "./Stamp";
+export { Truncated } from "./Truncated";

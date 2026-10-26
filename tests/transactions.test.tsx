@@ -76,12 +76,39 @@ test("Typing quickly", async () => {
 });
 
 test("Pending debit", async () => {
-  open([tx({ counterparty: "MERCADONA", amount: -12.5, status: "PDNG", date: "2026-10-03", account: "Nómina" })]);
+  open([tx({ title: "MERCADONA", amount: -12.5, status: "PDNG", date: "2026-10-03", account: "Nómina" })]);
 
   const row = await rowOf("MERCADONA");
   expect(within(row).getByText("Nómina · pendiente")).toBeInTheDocument();
   expect(within(row).getByText("-12,50 €")).not.toHaveAttribute("data-tone");
   expect(within(screen.getByRole("region", { name: "Sábado, 3 de octubre" })).getByRole("listitem")).toBe(row);
+});
+
+test("Bank detail under the title", async () => {
+  const detail = "PAGO CON TARJETA EN GASOLINERAS // PAGO CON TARJETA // ACME FUEL";
+  open([
+    tx({ id: 1, counterparty: null, title: "ACME FUEL", description: detail }),
+    tx({ id: 2, title: "BAR PEPE", description: "" }),
+    tx({ id: 3, title: "NOMINA EMPRESA", description: "NOMINA EMPRESA", amount: 2000 }),
+  ]);
+
+  expect(within(await rowOf("ACME FUEL")).getByText(detail)).toBeInTheDocument();
+  expect(within(await rowOf("BAR PEPE")).getAllByText(/./, { selector: ".sub" })).toHaveLength(1);
+  expect(within(await rowOf("NOMINA EMPRESA")).getAllByText("NOMINA EMPRESA")).toHaveLength(1);
+});
+
+test("Hover a long transaction", async () => {
+  const detail = "PAGO CON TARJETA EN RESTAURANTES Y CAFETERIAS // PAGO CON TARJETA // LA CHURRERIA";
+  open([tx({ title: "LA CHURRERIA DEL PASEO MARITIMO", description: detail, category_id: 2 })]);
+
+  const row = await rowOf("LA CHURRERIA DEL PASEO MARITIMO");
+
+  expect(within(row).getByText("LA CHURRERIA DEL PASEO MARITIMO")).toHaveAttribute(
+    "title",
+    "LA CHURRERIA DEL PASEO MARITIMO",
+  );
+  expect(within(row).getByText(detail)).toHaveAttribute("title", detail);
+  expect(within(row).getByRole("combobox", { name: "Categoría" })).toHaveAttribute("title", "🍽 Restaurantes");
 });
 
 test("Day total", async () => {
