@@ -1,6 +1,9 @@
 import type { Category, Transaction } from "../api";
 
-export const rowLabel = (tx: Transaction) => tx.counterparty || tx.description || "—";
+export const rowLabel = (tx: Transaction) => tx.title || "—";
+
+// The bank's own text, under the title, when it says something the title does not
+export const rowDetail = (tx: Transaction) => (tx.description && tx.description !== tx.title ? tx.description : null);
 
 export const isCredit = (tx: Transaction) => tx.amount > 0;
 

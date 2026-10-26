@@ -15,6 +15,7 @@ export const summary = (overrides: Partial<Schemas["SummaryOut"]> = {}): Schemas
   ...overrides,
 });
 
+// Like the API, a transaction with a counterparty is titled by it unless a title is given
 export const tx = (overrides: Partial<Schemas["TransactionOut"]> = {}): Schemas["TransactionOut"] => ({
   id: 1,
   date: "2026-10-03",
@@ -31,6 +32,7 @@ export const tx = (overrides: Partial<Schemas["TransactionOut"]> = {}): Schemas[
   account_id: 1,
   note: null,
   ...overrides,
+  title: overrides.title ?? overrides.counterparty ?? "MERCADONA",
 });
 
 export const category = (overrides: Partial<Schemas["CategoryOut"]> = {}): Schemas["CategoryOut"] => ({

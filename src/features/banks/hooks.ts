@@ -1,12 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Role } from "./api";
+import { firstSyncPending } from "./domain/banks";
 import { useBanksApi } from "./provider";
 
 const BANKS_KEY = ["banks"];
+const FIRST_SYNC_POLL_MS = 5_000;
+// 10 minutes: a first sync that failed without recording anything must not be polled forever
+const FIRST_SYNC_MAX_RELOADS = 120;
 
+// Reloads by itself while a new connection is still being read for the first time.
 export function useBanks() {
   const api = useBanksApi();
-  return useQuery({ queryKey: BANKS_KEY, queryFn: () => api.list() });
+  return useQuery({
+    queryKey: BANKS_KEY,
+    queryFn: () => api.list(),
+    refetchInterval: (query) =>
+      query.state.data && firstSyncPending(query.state.data) && query.state.dataUpdateCount <= FIRST_SYNC_MAX_RELOADS
+        ? FIRST_SYNC_POLL_MS
+        : false,
+  });
 }
 
 // Fetched only when the user asks for the list.

@@ -659,6 +659,8 @@ export interface components {
             note: string | null;
             /** Status */
             status: string;
+            /** Title */
+            title: string;
         };
         /** TxPatch */
         TxPatch: {

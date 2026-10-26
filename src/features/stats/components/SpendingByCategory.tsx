@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { Amount, Card, List, ListItem, Meter } from "@/shared/ui";
+import { Amount, Card, List, ListItem, Meter, Truncated } from "@/shared/ui";
 import type { Summary } from "../api";
 import { spendingStrip } from "../domain/charts";
 
@@ -48,9 +48,7 @@ function Share({ name, amount, pct, color }: { name: string; amount: number; pct
   return (
     <li aria-labelledby={nameId}>
       <span className="dot" style={{ background: color }} aria-hidden="true" />
-      <span id={nameId} className="ellipsis">
-        {name}
-      </span>
+      <Truncated as="span" id={nameId} text={name} />
       <Amount value={amount} />
       <span className="pct">{pct} %</span>
     </li>

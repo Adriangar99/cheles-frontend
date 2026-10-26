@@ -19,8 +19,15 @@ export function consentStatus(connection: Connection, now: number) {
     : ({ tone: "pos", text: `Al día · ${days} días de permiso`, needsReconnect: false } as const);
 }
 
-export const lastReadLabel = (lastSyncedAt: string | null) =>
-  lastSyncedAt ? `Leído el ${dayMonthTime(lastSyncedAt)}` : "Sin leer aún";
+// A new connection is answered before its first sync, which goes on in the background until it records a time
+const firstSyncRunning = (connection: Connection) => connection.status === "active" && !connection.last_synced_at;
+
+export function lastReadLabel(connection: Connection) {
+  if (connection.last_synced_at) return `Leído el ${dayMonthTime(connection.last_synced_at)}`;
+  return firstSyncRunning(connection) ? "Sincronizando…" : "Sin leer aún";
+}
+
+export const firstSyncPending = (banks: Banks) => banks.connections.some(firstSyncRunning);
 
 export const errorExcerpt = (error: string) => error.slice(0, ERROR_EXCERPT_LENGTH);
 

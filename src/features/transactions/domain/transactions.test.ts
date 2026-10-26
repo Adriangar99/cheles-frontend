@@ -2,14 +2,10 @@ import { category, tx } from "@tests/screens";
 import { expect, test } from "vitest";
 import { categoryOptions, isCredit, rowLabel } from "./transactions";
 
-// Screen tests cover the counterparty label and the options of a categorized credit; these cover the rest.
+// Screen tests cover the title, the bank detail and the options of a categorized credit; these cover the rest.
 
-test("a transaction without counterparty is labeled by its description", () => {
-  expect(rowLabel(tx({ counterparty: null, description: "RECIBO LUZ" }))).toBe("RECIBO LUZ");
-});
-
-test("a transaction without counterparty or description is labeled «—»", () => {
-  expect(rowLabel(tx({ counterparty: null, description: "" }))).toBe("—");
+test("a transaction without title is labeled «—»", () => {
+  expect(rowLabel(tx({ title: "" }))).toBe("—");
 });
 
 test("an uncategorized debit offers «sin categoría» and the expense categories", () => {
