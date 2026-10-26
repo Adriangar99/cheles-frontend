@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { Amount, ListItem, Select } from "@/shared/ui";
+import { Amount, ListItem, Select, Truncated } from "@/shared/ui";
 import type { Account, Role } from "../api";
 import { parseRole, ROLE_LABEL } from "../domain/banks";
 
@@ -8,10 +8,10 @@ export function AccountRow({ account: a, onRoleChange }: { account: Account; onR
   return (
     <ListItem aria-labelledby={nameId}>
       <div className="grow">
-        <div className="ellipsis">
+        <Truncated text={a.iban_tail ? `${a.name} ·· ${a.iban_tail}` : a.name}>
           <span id={nameId}>{a.name}</span>
           {a.iban_tail && <span className="muted"> ·· {a.iban_tail}</span>}
-        </div>
+        </Truncated>
         <div className="sub">
           <Amount value={a.balance} />
         </div>

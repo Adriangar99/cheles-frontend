@@ -29,7 +29,7 @@ export function ConnectionCard({ connection: c, now, syncing, onSync, onReconnec
         <ListItem>
           <div className="grow status">
             <Stamp tone={status.tone}>{status.text}</Stamp>
-            <div className="sub">{lastReadLabel(c.last_synced_at)}</div>
+            <div className="sub">{lastReadLabel(c)}</div>
             {c.last_error && <div className="err">{errorExcerpt(c.last_error)}</div>}
           </div>
           {status.needsReconnect ? (

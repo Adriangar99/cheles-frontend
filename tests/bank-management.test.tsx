@@ -55,9 +55,29 @@ test("Consent date already passed", async () => {
 });
 
 test("Never synced", async () => {
-  open([connection({ valid_until: daysFromNow(90), last_synced_at: null })]);
+  open([connection({ status: "expired", valid_until: daysFromNow(90), last_synced_at: null })]);
 
   expect(await screen.findByText("Sin leer aún")).toBeInTheDocument();
+});
+
+test("First sync in progress", async () => {
+  // Timers advance with the test's clock (and with real time, so Testing Library's waits still work)
+  vi.useFakeTimers({
+    toFake: ["Date", "setTimeout", "clearTimeout", "setInterval", "clearInterval"],
+    shouldAdvanceTime: true,
+  });
+  vi.setSystemTime(new Date("2026-10-15T12:00:00"));
+  const syncing = connection({ valid_until: daysFromNow(90), last_synced_at: null });
+  const read = { ...syncing, last_synced_at: "2026-10-15T10:00:30+00:00" };
+  let reloads = 0;
+  open([], {
+    "GET /api/banks": () => ok({ connections: [reloads++ < 1 ? syncing : read], detached_accounts: [] }),
+  });
+
+  expect(await screen.findByText("Sincronizando…")).toBeInTheDocument();
+  await vi.advanceTimersByTimeAsync(5000);
+
+  expect(await screen.findByText("Leído el 15 oct, 12:00")).toBeInTheDocument();
 });
 
 test("Read now", async () => {
@@ -129,6 +149,19 @@ test("Reloading after the result", async () => {
 
   expect(await screen.findByText("Banco conectado ✓")).toBeInTheDocument();
   expect(location.href).toBe("http://localhost/bancos");
+});
+
+test("Hover a long account name", async () => {
+  open([
+    connection({
+      valid_until: daysFromNow(90),
+      accounts: [account({ id: 8, name: "Cuenta Online Sin Comisiones", iban_tail: "1234" })],
+    }),
+  ]);
+
+  const row = await screen.findByRole("listitem", { name: "Cuenta Online Sin Comisiones" });
+
+  expect(within(row).getByTitle("Cuenta Online Sin Comisiones ·· 1234")).toBeInTheDocument();
 });
 
 test("Change role", async () => {
